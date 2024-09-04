@@ -3,3 +3,60 @@
 
 /* Reset and normalize */
 @import url('./normalize.css');
+
+#main-container {
+    width: 80%;
+    background-color: #fff;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+body {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: #fcfcfc;
+}
+
+.teachers-list {
+    display: flex;
+}
+
+.teacher-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.teacher-photo {
+    width: 100px;
+    height: auto;
+}
+
+.left-arrow-button, .right-arrow-button {
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.left-arrow-button {
+    left: 0;
+}
+
+.right-arrow-button {
+    right: 0;
+}
+
+.left-arrow-pic, .right-arrow-pic {
+    width: 20px;
+    height: 20px;
+}
+
+.favorites-carousel {
+    position: relative;
+}
+
+.favorites-list {
+    display: flex;
+    justify-content: space-evenly;
+}

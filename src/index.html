@@ -15,7 +15,147 @@
    </head>
 
    <body itemscope itemtype="http://schema.org/WebPage">
-
+      <div id="main-container">
+         <header class="menu-header">
+            <div>
+            <p class="logo">Teachinder</p>
+            <form class="">
+               <input type="text" id="search-info" name="search-info" required minlength="1" maxlength="10" size="10" />
+               <button type="submit">Search</button>
+            </form>
+            </div>
+            <div class="info-panel">
+            <a href="">Teachers</a>
+            <a href="">Statistics</a>
+            <a href="">Favourites</a>
+            <a href="">About</a>
+            <button type="button">Add teacher</button>
+         </div>
+         </header>
+         <article class="section-name">Top Teachers</article>
+         <form>
+            <label>Age</label>
+         <select name="teacher-age">
+            <option value="1">18-30</option>
+            <option value="2">31-50</option>
+            <option value="3">50+</option>
+          </select>
+          <label>Region</label>
+          <select name="teacher-region">
+            <option value="1">Africa</option>
+            <option value="2">Asia</option>
+            <option value="3">Central America</option>
+            <option value="4">Europe</option>
+            <option value="5">Middle East</option>
+            <option value="6">North America</option>
+            <option value="7">South America</option>
+          </select>
+          <label>Sex</label>
+          <select name="teacher-sex">
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+          </select>
+          <input type="checkbox" id="photo-required" name="photo-required" unchecked />
+        <label for="scales">Only with photo</label>
+        <input type="checkbox" id="only-favorites" name="only-favorites" unchecked />
+        <label for="scales">Only favorites</label>
+      </form>
+      <div class="teachers-list">
+         <div class="teacher-profile">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="subject">Ukrainian language</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="subject">Ukrainian language</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="subject">Ukrainian language</label>
+            <label class="country">Ukraine</label>
+         </div>
+      </div>
+      <article class="section-name">Statistics</article>
+      <table class="teachers-table">
+         <tr>
+           <th>Name</th>
+           <th>Speciality</th>
+           <th>Age</th>
+           <th>Gender</th>
+           <th>Nationality</th>
+         </tr>
+         <tr>
+           <td>Daisy Alexander</td>
+           <td>Chemistry</td>
+           <td>28</td>
+           <td>Female</td>
+           <td>Vietnam</td>
+         </tr>
+         <tr>
+           <td>Julia Bradley</td>
+           <td>Math</td>
+           <td>26</td>
+           <td>Female</td>
+           <td>USA</td>
+         </tr>
+         <tr>
+            <td>Rita Hart</td>
+            <td>Art</td>
+            <td>41</td>
+            <td>Female</td>
+            <td>Ireland</td>
+          </tr>
+       </table>
+       <a href="">1</a>
+       <a href="">2</a>
+       <a href="">3</a>
+       <label >...</label>
+       <a href="">Last</a>
+       <article class="section-name">Favorites</article>
+       <div class="favorites-carousel">
+         <button class="left-arrow-button" type="button"><img src="/src/images/left-arrow.png" class="left-arrow-pic" alt="left arrow picture" /></button>
+         <div class="favorites-list">
+         <div class="teacher-profile favorite">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile favorite">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile favorite">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile favorite">
+            <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="country">Ukraine</label>
+         </div>
+      </div>
+         <button class="right-arrow-button" type="button"><img src="/src/images/righr-arrow.png" class="right-arrow-pic" alt="right arrow pic"/></button>
+       </div>
+       <article class="section-name underline">...</article>
+       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit ut dolorem eveniet exercitationem? Corporis rerum quidem voluptatum porro laboriosam, impedit reprehenderit in distinctio facere eos quasi culpa similique doloremque consequatur?</p>
+       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit delectus saepe id consectetur adipisci, et quisquam optio. Perspiciatis quibusdam maxime quasi illo quas. Laboriosam quisquam, eum quidem asperiores amet rerum!</p>
+       <footer>
+         <div class="info-panel">
+            <a href="">Teachers</a>
+            <a href="">Statistics</a>
+            <a href="">Favourites</a>
+            <a href="">About</a>
+            <button type="button">Add teacher</button>
+         </div>
+       </footer>
+      </div>
       <script type="text/javascript" src="../build/app.js"></script>
       
   </body>
