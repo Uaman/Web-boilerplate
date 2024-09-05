@@ -1,0 +1,29 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin arrow-styles($width: 20px, $height: 60px) {
+  width: $width;
+  height: $height;
+  &:hover {
+    .disabled-arrow {
+      display: none;
+    }
+    .active-arrow {
+      display: block;
+    }
+  }
+  .disabled-arrow {
+    display: block;
+  }
+  .active-arrow {
+    display: none;
+  }
+}
+
+@mixin arrow-hover-effect {
+  opacity: 1;
+  transition: 0.2s;
+}

@@ -1,22 +1,687 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="./scss/style.css" />
+        <title>Web project</title>
+    </head>
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+    <body>
+        <header>
+            <div class="container">
+                <div class="logo-section">
+                    <div class="logo-switch-container">
+                        <a href="#">
+                            <img
+                                class="logo"
+                                src="images/logo.png"
+                                alt="Logo"
+                            />
+                        </a>
+                        <a href="#">
+                            <img
+                                class="logo-hover"
+                                src="images/logo-hovered.png"
+                                alt="Logo"
+                            />
+                        </a>
+                    </div>
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <div class="header-search-block" id="header-search-block">
+                        <input
+                            type="text"
+                            class="header-search-field"
+                            id="header-search-field"
+                            name="search"
+                            placeholder="Name, note or age to search"
+                        />
+                        <button class="btn-search" id="search-button">
+                            Search
+                        </button>
+                    </div>
+                </div>
 
-      <title>Project</title>
+                <div class="nav-section">
+                    <nav class="nav-list">
+                        <ul>
+                            <a href="#teachers">
+                                <li>Teachers</li>
+                            </a>
+                            <a href="#statistics">
+                                <li>Statistics</li>
+                            </a>
+                            <a href="#favorites">
+                                <li>Favorites</li>
+                            </a>
+                            <a href="#about">
+                                <li>About</li>
+                            </a>
+                        </ul>
+                    </nav>
 
-      <link rel="stylesheet" href="./css/app.css">
+                    <button
+                        data-target="add-teacher-popup"
+                        type="button"
+                        class="btn"
+                    >
+                        Add teacher
+                    </button>
+                </div>
+            </div>
+        </header>
 
-   </head>
+        <main>
+            <!-- Top Teachers -->
+            <section id="teachers" class="container section">
+                <h2 class="section-title">Top Teachers</h2>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
+                <div class="teachers-filters">
+                    <div class="teacher-filter">
+                        <label for="age">Age</label>
+                        <select id="age" name="age">
+                            <option value="18-31">18-31</option>
+                            <option value="32-50">32-50</option>
+                            <option value="51-62">51-62</option>
+                            <option value="63-70">63-70</option>
+                            <option value="71-80">71-80</option>
+                        </select>
+                    </div>
 
-      <script type="text/javascript" src="../build/app.js"></script>
-      
-  </body>
+                    <div class="teacher-filter">
+                        <label for="region">Region</label>
+                        <select id="region" name="region">
+                            <option value="Europe">Europe</option>
+                            <option value="America">North America</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Africa">Africa</option>
+                        </select>
+                    </div>
+
+                    <div class="teacher-filter">
+                        <label for="sex">Sex</label>
+                        <select id="sex" name="sex">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="teacher-filter">
+                        <input type="checkbox" id="photo" name="photo" />
+                        <label for="photo">Only with photo</label>
+                    </div>
+
+                    <div class="teacher-filter">
+                        <input
+                            type="checkbox"
+                            id="favorites"
+                            name="favorites"
+                        />
+                        <label for="favorites">Only favorites</label>
+                    </div>
+                </div>
+
+                <div class="teachers-grid" id="teachers-grid">
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <img
+                                src="./images/patrick.png"
+                                alt="Teacher photo"
+                            />
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <div>
+                                <span>P.B</span>
+                            </div>
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                    <div class="teacher-card">
+                        <div class="teacher-card-photo">
+                            <div>
+                                <span>P.B</span>
+                            </div>
+                        </div>
+                        <p class="teacher-card-full-name">Patrick Bateman</p>
+                        <p class="teacher-card-country">United States</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+            <section id="statistics" class="container section">
+                <h2 class="section-title">Statistics</h2>
+
+                <table id="table" class="statistics-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name<img
+                                    class="statistics-table-head-arrow"
+                                    src="images/blue-arrow-down.png"
+                                    alt="arrow"
+                                />
+                            </th>
+                            <th>
+                                Specialty<img
+                                    class="statistics-table-head-arrow"
+                                    src="images/blue-arrow-down.png"
+                                    alt="arrow"
+                                />
+                            </th>
+                            <th>
+                                Age<img
+                                    class="statistics-table-head-arrow"
+                                    src="images/blue-arrow-down.png"
+                                    alt="arrow"
+                                />
+                            </th>
+                            <th>
+                                Gender<img
+                                    class="statistics-table-head-arrow"
+                                    src="images/blue-arrow-down.png"
+                                    alt="arrow"
+                                />
+                            </th>
+                            <th>
+                                Nationality<img
+                                    class="statistics-table-head-arrow"
+                                    src="images/blue-arrow-down.png"
+                                    alt="arrow"
+                                />
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="statistics-table-body">
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                        <tr>
+                            <td>Norbert Weishaupt</td>
+                            <td>Physics</td>
+                            <td>65</td>
+                            <td>male</td>
+                            <td>Germany</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div
+                    class="teachers-table-pagination"
+                    id="teachers-table-pagination"
+                >
+                    <nav>
+                        <ul>
+                            <a
+                                class="teachers-table-pagination-selected-page-number"
+                                ><li>1</li></a
+                            >
+                            <a><li>2</li></a>
+                            <a><li>3</li></a>
+                            ...
+                            <a><li>Last</li></a>
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+
+            <!-- Favorites -->
+            <section id="section-favorites" class="container-favorites section">
+                <h2 class="section-title">Favorites</h2>
+
+                <div class="favorites-slider">
+                    <div class="arrow-left">
+                        <a href="#">
+                            <img
+                                class="disabled-left-arrow"
+                                src="images/left-arrow.png"
+                                alt="Left arrow"
+                            />
+                        </a>
+                        <a href="#">
+                            <img
+                                class="active-left-arrow"
+                                src="images/left-arrow-hovered.png"
+                                alt="Left arrow"
+                            />
+                        </a>
+                    </div>
+
+                    <div class="favorites-slider-grid">
+                        <div
+                            class="teacher-card"
+                            onclick="show('teacher-info-popup')"
+                        >
+                            <div class="teacher-card-photo">
+                                <img
+                                    src="./images/patrick.png"
+                                    alt="Teacher photo"
+                                />
+                            </div>
+                            <p class="teacher-card-full-name">
+                                Patrick Bateman
+                            </p>
+                            <p class="teacher-card-country">United States</p>
+                        </div>
+                        <div
+                            class="teacher-card"
+                            onclick="show('teacher-info-popup')"
+                        >
+                            <div class="teacher-card-photo">
+                                <img
+                                    src="./images/patrick.png"
+                                    alt="Teacher photo"
+                                />
+                            </div>
+                            <p class="teacher-card-full-name">
+                                Patrick Bateman
+                            </p>
+                            <p class="teacher-card-country">United States</p>
+                        </div>
+                        <div
+                            class="teacher-card"
+                            onclick="show('teacher-info-popup')"
+                        >
+                            <div class="teacher-card-photo">
+                                <img
+                                    src="./images/patrick.png"
+                                    alt="Teacher photo"
+                                />
+                            </div>
+                            <p class="teacher-card-full-name">
+                                Patrick Bateman
+                            </p>
+                            <p class="teacher-card-country">United States</p>
+                        </div>
+                        <div
+                            class="teacher-card"
+                            onclick="show('teacher-info-popup')"
+                        >
+                            <div class="teacher-card-photo">
+                                <img
+                                    src="./images/patrick.png"
+                                    alt="Teacher photo"
+                                />
+                            </div>
+                            <p class="teacher-card-full-name">
+                                Patrick Bateman
+                            </p>
+                            <p class="teacher-card-country">United States</p>
+                        </div>
+                        <div
+                            class="teacher-card"
+                            onclick="show('teacher-info-popup')"
+                        >
+                            <div class="teacher-card-photo">
+                                <img
+                                    src="./images/patrick.png"
+                                    alt="Teacher photo"
+                                />
+                            </div>
+                            <p class="teacher-card-full-name">
+                                Patrick Bateman
+                            </p>
+                            <p class="teacher-card-country">United States</p>
+                        </div>
+                    </div>
+
+                    <div class="arrow-right">
+                        <a href="#">
+                            <img
+                                class="disabled-right-arrow"
+                                src="images/right-arrow.png"
+                                alt="Right arrow"
+                            />
+                        </a>
+                        <a href="#">
+                            <img
+                                class="active-right-arrow"
+                                src="images/right-arrow-hovered.png"
+                                alt="Right arrow"
+                            />
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section id="about" class="container section about-section">
+                <div class="about-text">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Ut efficitur ipsum sit amet ligula hendrerit aliquet. Ut
+                        sapien velit, ultricies in velit et, imperdiet vehicula
+                        odio. Praesent rhoncus ex quis velit dictum dignissim ac
+                        eu purus. Suspendisse id turpis metus. Donec accumsan,
+                        metus in finibus tempor, nibh risus semper dui, sit amet
+                        tempus nunc leo nec ipsum. Morbi posuere tortor et
+                        vulputate ullamcorper. Quisque maximus ex at suscipit
+                        pulvinar.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Ut efficitur ipsum sit amet ligula hendrerit aliquet.
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="container">
+            <nav class="nav-list">
+                <ul>
+                    <a href="#teachers">
+                        <li>Teachers</li>
+                    </a>
+                    <a href="#statistics">
+                        <li>Statistics</li>
+                    </a>
+                    <a href="#favorites">
+                        <li>Favorites</li>
+                    </a>
+                    <a href="#about">
+                        <li>About</li>
+                    </a>
+                </ul>
+            </nav>
+
+            <button type="button" data-target="add-teacher-popup" class="btn">
+                Add teacher
+            </button>
+        </footer>
+
+        <!-- Add Teacher Popup -->
+        <dialog id="add-teacher-popup" class="add-teacher-popup popup">
+            <div class="popup-header">
+                <h3>Add Teacher</h3>
+                <img
+                    id="close-add-teacher-button"
+                    class="close-popup-button"
+                    src="images/cross.png"
+                    alt="Close"
+                />
+            </div>
+
+            <form class="add-teacher-form">
+                <label for="name">Name</label><br />
+                <input
+                    class="add-teacher-form-input add-teacher-form-input-margin-top add-teacher-form-input-margin-bottom"
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Enter name"
+                    required
+                />
+
+                <label for="speciality">Speciality</label><br />
+                <select
+                    class="add-teacher-form-input add-teacher-form-input-margin-top add-teacher-form-input-margin-bottom"
+                    name="speciality"
+                    id="speciality"
+                >
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Art">Art</option>
+                    <option value="English">English</option>
+                    <option value="Biology">Biology</option>
+                </select>
+
+                <div
+                    class="form-row-with-two-fields add-teacher-form-input-margin-bottom"
+                >
+                    <div class="form-row-field">
+                        <label for="country">Country</label><br />
+                        <select
+                            class="add-teacher-form-input add-teacher-form-input-margin-top"
+                            name="country"
+                            id="country"
+                        >
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Spain">Spain</option>
+                            <option value="USA">USA</option>
+                            <option value="France">France</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row-field">
+                        <label for="city">City</label><br />
+                        <input
+                            class="add-teacher-form-input add-teacher-form-input-margin-top"
+                            type="text"
+                            name="city"
+                            id="city"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="form-row-with-two-fields add-teacher-form-input-margin-bottom"
+                >
+                    <div class="form-row-field">
+                        <label for="email">Email</label><br />
+                        <input
+                            class="add-teacher-form-input add-teacher-form-input-margin-top"
+                            type="email"
+                            name="email"
+                            id="email"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-row-field">
+                        <label for="phone_number">Phone</label><br />
+                        <input
+                            class="add-teacher-form-input add-teacher-form-input-margin-top"
+                            type="tel"
+                            name="phone_number"
+                            id="phone_number"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <label for="birth-date">Date of birth:</label><br />
+                <div class="form-row-field">
+                    <input
+                        class="add-teacher-form-input add-teacher-form-input-margin-top add-teacher-form-input-margin-bottom"
+                        type="date"
+                        name="birth-date"
+                        id="birth-date"
+                        placeholder="MM/DD/YYYY"
+                        required
+                    />
+                </div>
+
+                <div class="form-row add-teacher-form-input-margin-bottom">
+                    <p>Sex</p>
+                    <label for="gender-male">Male</label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        id="gender-male"
+                        value="Male"
+                        required
+                    />
+                    <label for="gender-female">Female</label>
+                    <input
+                        type="radio"
+                        name="gender"
+                        id="gender-female"
+                        value="Female"
+                        required
+                    />
+                </div>
+
+                <div class="form-row add-teacher-form-input-margin-bottom">
+                    <p>Background color</p>
+                    <label for="background-color"
+                        ><img src="images/color-picker.png" alt="Color picker"
+                    /></label>
+                    <input
+                        type="color"
+                        name="background-color"
+                        id="background-color"
+                    />
+                </div>
+
+                <label for="notes">Notes (optional)</label><br />
+                <textarea
+                    class="add-teacher-form-input-margin-top add-teacher-form-input-margin-bottom"
+                    name="notes"
+                    id="notes"
+                    required
+                ></textarea>
+
+                <button id="add-teacher-button" type="button" class="btn">
+                    Add
+                </button>
+            </form>
+        </dialog>
+
+        <!-- Teacher Info Popup -->
+        <dialog id="teacher-info-popup" class="teacher-info-popup popup">
+            <div class="popup-header">
+                <h3>Teacher Info</h3>
+                <img
+                    src="images/cross.png"
+                    id="close-teacher-info-button"
+                    class="close-popup-button"
+                    alt="Close"
+                />
+            </div>
+            <div class="teacher-info-details-container">
+                <div class="teacher-info-contact-details">
+                    <img src="./images/patrick.png" alt="Teacher photo" />
+                    <article>
+                        <h2>Patric Bateman</h2>
+                        <h4>Sales manager</h4>
+                        <p>NYC, United States</p>
+                        <p>24, male</p>
+                        <a href="mailto:american.psycho@gmail.com"
+                            >american.psycho@gmail.com</a
+                        >
+                        <p>071-488-9968</p>
+                    </article>
+                </div>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Sit similique maxime quidem neque eos veritatis facere
+                    suscipit mollitia dolorum totam recusandae assumenda libero
+                    nihil omnis veniam vel, excepturi labore velit placeat sed
+                    odit sunt alias! Et quas odio vitae architecto.
+                </p>
+                <a class="teacher-info-toggle-map" href="#">toggle map</a>
+            </div>
+        </dialog>
+
+        <script src="./js/app.js"></script>
+    </body>
 </html>
