@@ -16,32 +16,37 @@
 
    <body itemscope itemtype="http://schema.org/WebPage">
       <div id="main-container">
-         <header class="menu-header">
-            <div>
-            <p class="logo">Teachinder</p>
-            <form class="">
-               <input type="text" id="search-info" name="search-info" required minlength="1" maxlength="10" size="10" />
-               <button type="submit">Search</button>
+         <header class="logo-header">
+            <img src="/src/images/teachinder-logo.jpg" alt="Teachinder label" class="logo">
+            <form class="search-form">
+               <input type="text" id="search-info" name="search-info" placeholder="Name, note or age to search" minlength="1" maxlength="10" size="10" />
+               <button type="submit" class="search-button">Search</button>
             </form>
-            </div>
-            <div class="info-panel">
-            <a href="">Teachers</a>
-            <a href="">Statistics</a>
-            <a href="">Favourites</a>
-            <a href="">About</a>
-            <button type="button">Add teacher</button>
-         </div>
          </header>
-         <article class="section-name">Top Teachers</article>
-         <form>
-            <label>Age</label>
+            <div class="info-menu">
+               <div class="info-options">
+            <a href="" class="info-option">Teachers</a>
+            <a href="" class="info-option">Statistics</a>
+            <a href="" class="info-option">Favorites</a>
+            <a href="" class="info-option">About</a>
+         </div>
+            <button type="button" class="add-teacher-btn">Add teacher</button>
+         </div>
+         <div class="section-name-cont">
+         <h3 class="section-name">Top Teachers</h3>
+      </div>
+         <form class="filter-form">
+            <div class="filter-option with-border">
+            <label class="filter-option-label">Age</label>
          <select name="teacher-age">
             <option value="1">18-30</option>
             <option value="2">31-50</option>
             <option value="3">50+</option>
           </select>
-          <label>Region</label>
-          <select name="teacher-region">
+         </div>
+         <div class="filter-option with-border">
+          <label class="filter-option-label">Region</label>
+          <select name="teacher-region" >
             <option value="1">Africa</option>
             <option value="2">Asia</option>
             <option value="3">Central America</option>
@@ -50,15 +55,22 @@
             <option value="6">North America</option>
             <option value="7">South America</option>
           </select>
-          <label>Sex</label>
+         </div>
+         <div class="filter-option with-border">
+          <label class="filter-option-label">Sex</label>
           <select name="teacher-sex">
             <option value="1">Male</option>
             <option value="2">Female</option>
           </select>
-          <input type="checkbox" id="photo-required" name="photo-required" unchecked />
-        <label for="scales">Only with photo</label>
-        <input type="checkbox" id="only-favorites" name="only-favorites" unchecked />
-        <label for="scales">Only favorites</label>
+         </div>
+         <div class="filter-option ">
+          <input type="checkbox" id="photo-required" class="filter-option-label" name="photo-required" unchecked />
+        <label for="scales" class="filter-option-label">Only with photo</label>
+      </div>
+      <div class="filter-option">
+        <input type="checkbox" id="only-favorites" class="filter-option-label" name="only-favorites" unchecked />
+        <label for="scales" class="filter-option-label">Only favorites</label>
+      </div>
       </form>
       <div class="teachers-list">
          <div class="teacher-profile">
@@ -68,7 +80,19 @@
             <label class="country">Ukraine</label>
          </div>
          <div class="teacher-profile">
+            <img src="/src/images/Segin.png" class="teacher-photo fav" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="subject">Ukrainian language</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile">
             <img src="/src/images/Segin.png" class="teacher-photo" alt="Teacher's photo" />
+            <label class="teacher-name">Liubomyr Segin</label>
+            <label class="subject">Ukrainian language</label>
+            <label class="country">Ukraine</label>
+         </div>
+         <div class="teacher-profile">
+            <img src="/src/images/Segin.png" class="teacher-photo fav" alt="Teacher's photo" />
             <label class="teacher-name">Liubomyr Segin</label>
             <label class="subject">Ukrainian language</label>
             <label class="country">Ukraine</label>
@@ -80,7 +104,10 @@
             <label class="country">Ukraine</label>
          </div>
       </div>
-      <article class="section-name">Statistics</article>
+      <div class="section-name-cont">
+         <h3 class="section-name">Statistics</h3>
+      </div>
+      <div class="table-container">
       <table class="teachers-table">
          <tr>
            <th>Name</th>
@@ -110,13 +137,25 @@
             <td>Female</td>
             <td>Ireland</td>
           </tr>
+          <tr>
+            <td>Liubomyr Segin</td>
+            <td>Ukranian language</td>
+            <td>50</td>
+            <td>Male</td>
+            <td>Ukraine</td>
+          </tr>
        </table>
-       <a href="">1</a>
-       <a href="">2</a>
-       <a href="">3</a>
+      </div>
+      <div class="table-pages">
+       <button type="button">1</button>
+       <button type="button">2</button>
+       <button type="button">3</button>
        <label >...</label>
-       <a href="">Last</a>
-       <article class="section-name">Favorites</article>
+       <button type="button">Last</button>
+      </div>
+      <div class="section-name-cont">
+         <h3 class="section-name">Favorites</h3>
+      </div>
        <div class="favorites-carousel">
          <button class="left-arrow-button" type="button"><img src="/src/images/left-arrow.png" class="left-arrow-pic" alt="left arrow picture" /></button>
          <div class="favorites-list">
@@ -143,20 +182,23 @@
       </div>
          <button class="right-arrow-button" type="button"><img src="/src/images/righr-arrow.png" class="right-arrow-pic" alt="right arrow pic"/></button>
        </div>
-       <article class="section-name underline">...</article>
+       <div class="section-name-cont">
+         <h3 class="section-name underline"></h3>
+      </div>
        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit ut dolorem eveniet exercitationem? Corporis rerum quidem voluptatum porro laboriosam, impedit reprehenderit in distinctio facere eos quasi culpa similique doloremque consequatur?</p>
        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit delectus saepe id consectetur adipisci, et quisquam optio. Perspiciatis quibusdam maxime quasi illo quas. Laboriosam quisquam, eum quidem asperiores amet rerum!</p>
        <footer>
-         <div class="info-panel">
-            <a href="">Teachers</a>
-            <a href="">Statistics</a>
-            <a href="">Favourites</a>
-            <a href="">About</a>
-            <button type="button">Add teacher</button>
-         </div>
+         <div class="info-menu">
+            <div class="info-options">
+         <a href="" class="info-option">Teachers</a>
+         <a href="" class="info-option">Statistics</a>
+         <a href="" class="info-option">Favorites</a>
+         <a href="" class="info-option">About</a>
+      </div>
+         <button type="button" class="add-teacher-btn">Add teacher</button>
+      </div>
        </footer>
       </div>
       <script type="text/javascript" src="../build/app.js"></script>
-      
   </body>
 </html>
