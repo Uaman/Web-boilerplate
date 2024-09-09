@@ -19,22 +19,190 @@
 <script type="text/javascript" src="../build/app.js"></script>
 
 <header>
-<div>
-    <h1><b>Teachinder</b></h1>
-</div>
-<input name="search_bar" class="input_search" placeholder="Name, note or age to search" type="search">
-<button class="search_teacher" type="button">Search</button>
+    <div>
+        <h1><b>Teachinder</b></h1>
+    </div>
 
-<div>
-    <nav class="main-navigation">
-        <a class="link-navigation" href="top_teachers.html">Teachers</a>
-        <a class="link-navigation" href="statistics.html">Statistics</a>
-        <a class="link-navigation" href="favorites.html">Favorites</a>
-        <a class="link-navigation" href="about.html">About</a>
-    </nav>
-    <button class="add_teacher" type="button">Add Teacher</button>
-</div>
+    <div>
+        <search>
+            <form>
+                <input name="search_bar" class="input_search" placeholder="Name, note or age to search" type="search">
+                <button class="search_teacher_btn" type="button">Search</button>
+            </form>
+        </search>
+    </div>
+
+    <div>
+        <nav class="main-navigation">
+            <a class="link-navigation" href="#top_teachers">Teachers</a>
+            <a class="link-navigation" href="#statistics">Statistics</a>
+            <a class="link-navigation" href="#favorites">Favorites</a>
+            <a class="link-navigation" href="#about">About</a>
+        </nav>
+        <button class="add_teacher" type="button">Add Teacher</button>
+    </div>
 </header>
+
+<!--TOP TEACHERS-->
+<div id="top_teachers" class="content-block">
+    <h2>Top teachers</h2>
+    <div class="filter-controls">
+        <!--AGE FILTER-->
+        <span class="filter-control">
+            <label for="age_control">Age</label>
+            <select name="filter-age" id="age_control">
+                <option value="1">18-31</option>
+                <option value="2">32-45</option>
+                 <option value="3">46-59</option>
+            </select>
+        </span>
+        <!--REGION FILTER-->
+        <span class="filter-control">
+            <label for="region_control">Region</label>
+            <select name="filter-age" id="region_control">
+                <option value="1">18-31</option>
+                <option value="2">32-45</option>
+                <option value="3">46-59</option>
+            </select>
+        </span>
+        <!--SEX FILTER-->
+        <span class="filter-control">
+               <label for="sex_control">Sex</label>
+               <select name="filter-age" id="sex_control">
+                  <option value="1">18-31</option>
+                  <option value="2">32-45</option>
+                  <option value="3">46-59</option>
+               </select>
+            </span>
+        <!--PHOTO TICK-->
+
+        <!--FAVORITE TICK-->
+
+    </div>
+
+    <!--RESULTING TEACHER LIST-->
+    <div class="searched-teacher-list">
+        <!--EXAMPLE TEACHER-->
+        <!--TODO: figure out how to actually filter teachers. DB??-->
+        <div class="teacher-item favorite" id="teacher_1">
+            <div class="teacher-image"><img alt="I.T." src="images/empty.jpg"/></div>
+            <div class="teacher-name"><p>Ihor Tkachuk</p></div>
+            <div class="teacher-spec"><p>Chemistry</p></div>
+            <div class="teacher-region"><p>Ukraine</p></div>
+        </div>
+    </div>
+</div>
+
+
+<!--STATISTICS-->
+<div id="statistics" class="content-block">
+    <h2>Statistics</h2>
+
+    <div>
+        <table class="statistics-table">
+            <thead class="statistics-table-head">
+            <tr>
+                <th>Name</th>
+                <th>Speciality</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+            </tr>
+            </thead>
+            <tbody class="statistics-table-body">
+            <!--EXAMPLE TABLE CONTENTS-->
+            <!--TODO: figure out how to actually fill the table. DB??-->
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="table-navigation">
+
+            <button class="button-navigation" type="button">1</button>
+            <button class="button-navigation" type="button">2</button>
+            <button class="button-navigation" type="button">3</button>
+            <span class="separator-navigation">...</span>
+            <button class="button-navigation" type="button">Last</button>
+        </div>
+    </div>
+</div>
+
+<!--FAVORITES-->
+<div id="favorites_page" class="content-block">
+    <h2>Favorites</h2>
+    <div class="teacher-favorite-list">
+        <button class="arrow-btn"><img id="favorite-left" src="images/empty.jpg" alt="left_buttonpng" border="0">
+        </button>
+        <!--EXAMPLE TEACHERS IN FAVS LIST-->
+        <!--TEACH1-->
+        <div class="teacher-item" id="fav_teacher_1">
+            <img class="teacher-image" src="images/empty.jpg" alt="Teacher profile picture">
+        </div>
+        <div class="teacher-item-info">
+            <p>Ihor Tkachuk</p>
+            <p>Chemistry</p>
+            <p>Ukraine</p>
+        </div>
+        <!--TEACH2-->
+        <div class="teacher-item" id="fav_teacher_2">
+            <img class="teacher-image" src="images/empty.jpg" alt="Teacher profile picture">
+        </div>
+        <div class="teacher-item-info">
+            <p>Ihor Tkachuk</p>
+            <p>Chemistry</p>
+            <p>Ukraine</p>
+        </div>
+    </div>
+
+<button class="arrow-btn"><img id="favorite-right" src="images/empty.jpg" alt="right_buttonpng" border="0"></button>
+</div>
+
+
+<!--ABOUT-->
+<div id="about_page" class="content-block">
+    <h2></h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ultrices diam, ut tempus erat pellentesque
+        eget. Fusce lobortis leo eget ante dictum varius at nec tortor. Donec laoreet, ipsum in vestibulum fermentum,
+        tortor quam dictum massa, in faucibus nibh lacus quis nisl. Praesent vitae ultricies lacus. Maecenas a lorem nec
+        diam convallis sollicitudin posuere non massa. Proin at odio ac augue maximus semper.</p>
+    <p>Maecenas elit metus, posuere vel egestas eget, efficitur quis lorem. Curabitur commodo auctor justo a
+        lobortis.</p>
+    <p>Ut et nisl ornare, varius magna at, tincidunt nisi. Fusce ultricies orci quis neque scelerisque venenatis.</p>
+</div>
+
+
+<footer>
+    <div>
+        <nav class="footer-navigation">
+            <ul>
+                <a class="link-navigation" href="#top_teachers">Teachers</a>
+                <a class="link-navigation" href="#statistics">Statistics</a>
+                <a class="link-navigation" href="#favorites">Favorites</a>
+                <a class="link-navigation" href="#about">About</a>
+            </ul>
+        </nav>
+        <button class="add-teacher" type="button">Add teacher</button>
+    </div>
+</footer>
 
 </body>
 </html>
