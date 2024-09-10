@@ -1,15 +1,20 @@
 body {
   font: 12pt "Calibri (Body)", sans-serif;
-  margin: 10px;
-  box-sizing: border-box;
+  margin: 0 15% 0 15%;
+  border-right: 0.5px solid grey;
+  border-left: 0.5px solid grey;
+  padding-right: 5%;
+  padding-left: 5%;
 }
 
-.first-layer {
-  display: flex;
-  justify-content: space-between;
+header {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Adjust columns as needed */
+  align-items: center;
 }
 
 .main-header {
+  text-align: left;
   font: 32pt "Times New Roman", serif;
   text-shadow: -1.7px 0 rgb(230, 90, 75), 0 1.2px black, 2.2px 0 black, 0 -1.5px rgb(230, 90, 75);
   color: white;
@@ -30,32 +35,24 @@ body {
   color: white;
 }
 
-.nav-and-add_teacher-div {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 2%;
-  margin-left: 5%;
+.add_teacher {
+  font-size: 14pt;
 }
 
-.main-navigation a {
+.main-navigation li {
   display: inline-block;
-  text-decoration: none;
   margin-right: 50px;
 }
 
 .link-navigation {
   color: rgb(230, 90, 75);
   text-decoration: none;
-  font-size: auto;
+  font-size: 12pt;
+  font-weight: bold;
 }
 
 .link-navigation:hover {
   color: rgb(190, 82, 61);
-}
-
-.nav-and-add_teacher-div {
-  display: flex;
-  justify-content: space-between;
 }
 
 .section-header {
@@ -67,6 +64,11 @@ body {
 .section-header h2 {
   font-size: 26pt;
   display: inline-block;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */
