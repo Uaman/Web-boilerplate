@@ -1,0 +1,131 @@
+//general and main fonts
+$main_header_font: "Times New Roman";
+$main_header_generic_font: serif;
+$main_header_size: 32pt;
+$default_font_size: 12pt;
+$page_font: "Calibri (Body)";
+$generic_font: sans-serif;
+
+//section header
+$section_header_font_size: 26pt;
+$section_header_padding_ver: 30px;
+$section_header_width: 600px;
+
+//navs
+$nav_item_margin: 50px;
+$controls_padding: 20px;
+
+//colors
+$color_main: rgb(230, 90, 75);
+$color_main_dark: rgb(200, 80, 55);
+$color_secondary: white;
+$color_third: black;
+
+//FOR TESTING
+// header {
+// border: 5px solid #000;
+// }
+
+// header div {
+// border: 1px solid #000;
+// }
+//
+// body div {
+// border: 1px solid #000;
+// }
+
+
+body {
+  font: $default_font_size $page_font, $generic_font;
+  margin: 10px; //CREATE LIKE SPACE AROUND THE WHOLE CONTENT. MAYBE USE GRID HERE??
+  box-sizing: border-box;
+}
+
+// header div {
+// display: grid;
+// grid: auto-flow / 1fr 1fr 1fr;
+// }
+
+.first-layer {
+display: flex;
+justify-content: space-between;
+}
+
+// .search-combo {
+// float: inline-end;
+// }
+
+//TITLE
+.main-header {
+// border:  1px solid #000;
+
+// margin: 0 0 0 100px;
+  font: $main_header_size $main_header_font, $main_header_generic_font;
+  //need to somehow merge the shadows so there's 2 instead of 4
+  text-shadow: -1.7px 0 $color_main, 0 1.2px $color_third, 2.2px 0 $color_third, 0 -1.5px $color_main;
+  color: $color_secondary;
+  &:hover {
+    text-shadow: -3px -0.5px $color_main, 3px 0.5px $color_third;
+    color: #EDEFEE;
+  }
+}
+
+
+.search_teacher_btn {
+
+}
+
+.search_teacher_btn, .add_teacher {
+  border: 1px solid $color_main;
+  background-color: $color_secondary;
+  color: $color_main;
+  padding: calc($controls_padding/2) $controls_padding calc($controls_padding/2) $controls_padding;
+  &:hover {
+    background-color: $color_main;
+    color: $color_secondary;
+  }
+}
+
+.nav-and-add_teacher-div {
+display: flex;
+justify-content: space-between;
+margin-top: 2%;
+margin-left: 5%;
+}
+
+.main-navigation a {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: $nav_item_margin;
+}
+
+.link-navigation {
+  color: $color_main;
+  text-decoration: none;
+  font-size: auto;
+}
+  .link-navigation:hover {
+    color: rgb(190, 82, 61);
+  }
+
+// header div, footer div {
+//   display: flex;
+// }
+
+.nav-and-add_teacher-div {
+display: flex;
+justify-content: space-between;
+}
+
+.section-header{
+  h2 {
+    font-size: $section_header_font_size;
+    display: inline-block;
+  }
+  width: $section_header_width;
+  //make constant value for margin for section header
+  margin: 25px auto 15px auto;
+  border-top: 1px solid $color_third;
+  padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
+}
+

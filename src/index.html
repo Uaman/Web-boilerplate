@@ -11,6 +11,7 @@
     <title>Teachinder</title>
 
     <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -19,33 +20,33 @@
 <script type="text/javascript" src="../build/app.js"></script>
 
 <header>
-    <div>
-        <h1><b>Teachinder</b></h1>
-    </div>
+    <div class="first-layer">
+        <h1 class="main-header"><b>Teachinder</b></h1>
 
-    <div>
-        <search>
+        <search class="search-combo">
             <form>
                 <input name="search_bar" class="input_search" placeholder="Name, note or age to search" type="search">
-                <button class="search_teacher_btn" type="button">Search</button>
+                <button class="search_teacher_btn" type="button"><b>Search</b></button>
             </form>
         </search>
     </div>
 
-    <div>
+    <div class="nav-and-add_teacher-div">
         <nav class="main-navigation">
+            <ul>
             <a class="link-navigation" href="#top_teachers">Teachers</a>
             <a class="link-navigation" href="#statistics">Statistics</a>
             <a class="link-navigation" href="#favorites">Favorites</a>
             <a class="link-navigation" href="#about">About</a>
+            </ul>
         </nav>
-        <button class="add_teacher" type="button">Add Teacher</button>
+        <button class="add_teacher" type="button"><b>Add Teacher</b></button>
     </div>
 </header>
 
 <!--TOP TEACHERS-->
 <div id="top_teachers" class="content-block">
-    <h2>Top teachers</h2>
+    <div class="section-header"><h2>Top teachers</h2></div>
     <div class="filter-controls">
         <!--AGE FILTER-->
         <span class="filter-control">
@@ -96,7 +97,7 @@
 
 <!--STATISTICS-->
 <div id="statistics" class="content-block">
-    <h2>Statistics</h2>
+    <div class="section-header"><h2>Statistics</h2></div>
 
     <div>
         <table class="statistics-table">
@@ -148,7 +149,7 @@
 
 <!--FAVORITES-->
 <div id="favorites_page" class="content-block">
-    <h2>Favorites</h2>
+    <div class="section-header"><h2>Favorites</h2></div>
     <div class="teacher-favorite-list">
         <button class="arrow-btn"><img id="favorite-left" src="images/empty.jpg" alt="left_buttonpng" border="0">
         </button>
@@ -179,7 +180,7 @@
 
 <!--ABOUT-->
 <div id="about_page" class="content-block">
-    <h2></h2>
+    <div class="section-header"> <h2></h2></div>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ultrices diam, ut tempus erat pellentesque
         eget. Fusce lobortis leo eget ante dictum varius at nec tortor. Donec laoreet, ipsum in vestibulum fermentum,
         tortor quam dictum massa, in faucibus nibh lacus quis nisl. Praesent vitae ultricies lacus. Maecenas a lorem nec

@@ -1,0 +1,72 @@
+body {
+  font: 12pt "Calibri (Body)", sans-serif;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.first-layer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-header {
+  font: 32pt "Times New Roman", serif;
+  text-shadow: -1.7px 0 rgb(230, 90, 75), 0 1.2px black, 2.2px 0 black, 0 -1.5px rgb(230, 90, 75);
+  color: white;
+}
+.main-header:hover {
+  text-shadow: -3px -0.5px rgb(230, 90, 75), 3px 0.5px black;
+  color: #EDEFEE;
+}
+
+.search_teacher_btn, .add_teacher {
+  border: 1px solid rgb(230, 90, 75);
+  background-color: white;
+  color: rgb(230, 90, 75);
+  padding: 10px 20px 10px 20px;
+}
+.search_teacher_btn:hover, .add_teacher:hover {
+  background-color: rgb(230, 90, 75);
+  color: white;
+}
+
+.nav-and-add_teacher-div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+  margin-left: 5%;
+}
+
+.main-navigation a {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 50px;
+}
+
+.link-navigation {
+  color: rgb(230, 90, 75);
+  text-decoration: none;
+  font-size: auto;
+}
+
+.link-navigation:hover {
+  color: rgb(190, 82, 61);
+}
+
+.nav-and-add_teacher-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.section-header {
+  width: 600px;
+  margin: 25px auto 15px auto;
+  border-top: 1px solid black;
+  padding: 30px 0 30px 0;
+}
+.section-header h2 {
+  font-size: 26pt;
+  display: inline-block;
+}
+
+/*# sourceMappingURL=style.css.map */
