@@ -83,9 +83,17 @@
                </select>
             </span>
         <!--PHOTO TICK-->
-
+        <span class="filter-label">
+        <label class="filter-item"></label>
+            <input type="checkbox" name="checkbox-photo" value="option1">
+            Only with photo
+        </span>
         <!--FAVORITE TICK-->
-
+        <span class="filter-label">
+        <label class="filter-item"></label>
+            <input type="checkbox" name="checkbox-favs" value="option1">
+            Only favorites
+        </span>
     </div>
 
     <!--RESULTING TEACHER LIST-->
@@ -110,11 +118,11 @@
         <table class="statistics-table">
             <thead class="statistics-table-head">
             <tr>
-                <th>Name</th>
-                <th>Speciality</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Nationality</th>
+                <th>Name<button type="button" class="sort-arrow">v</button></th>
+                <th>Speciality<button type="button" class="sort-arrow">v</button></th>
+                <th>Age<button type="button" class="sort-arrow">v</button></th>
+                <th>Gender<button type="button" class="sort-arrow">v</button></th>
+                <th>Nationality<button type="button" class="sort-arrow">v</button></th>
             </tr>
             </thead>
             <tbody class="statistics-table-body">
@@ -141,10 +149,24 @@
                 <td>Female</td>
                 <td>Vietnam</td>
             </tr>
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
             </tbody>
         </table>
-        <div class="table-navigation">
 
+        <div class="table-navigation">
             <button class="button-navigation" type="button">1</button>
             <button class="button-navigation" type="button">2</button>
             <button class="button-navigation" type="button">3</button>

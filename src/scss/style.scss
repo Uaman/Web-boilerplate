@@ -55,6 +55,16 @@ $color_secondary: white;
 $color_third: black;
 $color_controls: darkgrey;
 
+//table colors
+$table_row_even_color: rgb(250, 240, 250);
+$table_header_on_hover_color: rgb(250, 250, 250);
+$table_controls_color: rgb(80, 175, 200);
+$table_controls_on_hover_color: rgb(50, 100, 110);
+$table_sort_offset: 80px;
+
+//table stuff
+$filters_padding: 10px;
+
 
 body {
   font: $default_font_size $page_font, $generic_font;
@@ -64,6 +74,21 @@ body {
   border-left: 0.5px solid grey;
   padding-right: 1%;
   padding-left: 1%;
+}
+
+header div, footer div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  //aligns items vertically along the center of the header
+}
+
+header div, footer div {
+margin: 0 $block_padding_hor 0 $block_padding_hor;
+padding: $block_padding_ver 0 $block_padding_ver/2 0;
+}
+
+.content-block{
+  padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
 }
 
 //TITLE
@@ -146,6 +171,7 @@ font-weight: bold;
   h2 {
     font-size: $section_header_font_size;
     display: inline-block;
+    font-weight: bold;
   }
   width: $section_header_width;
   //make constant value for margin for section header
@@ -154,6 +180,35 @@ font-weight: bold;
   padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
 }
 
+//FAVS
+.filter-controls {
+  &:not(:first-child) {
+    padding-left: $filters_padding;
+  }
+
+  &:not(:last-child) {
+    border-right: 1px dotted $color_controls;
+    padding-right: $filters_padding;
+  }
+
+  &:nth-last-child(-n+2) {
+    padding-top: calc($filters_padding/2);
+    padding-bottom: calc($filters_padding/2);
+  }
+  label {
+    color: $color_controls;
+    font-size: 10pt;
+    &:hover {
+      color: $color_third!important;
+    }
+  }
+  select {
+    padding: calc($filters_padding/2);
+  }
+}
+
+
+
 
 //STATS
 table {
@@ -161,25 +216,70 @@ table {
   width: 100%;
 }
 
+thead {
+    tr {
+      font-weight: lighter;
+
+        th, td {
+                padding: $filters_padding;
+                position: relative;
+                text-align: center;
+                &:first-child {
+                  text-align: center;
+                }
+              }
+              th {
+                border-bottom: 1px solid $color_third;
+                &:hover {
+                  border-bottom: 5px solid $color_third;
+                  background-color: $table_header_on_hover_color;
+                  .sort-arrow {
+                    display: inline;
+                  }
+                }
+              }
+            }
+        }
+
 .statistics-table-head {
   border-bottom: 1px solid $color_third;
   font-size: calc($default_font_size + 2pt);
 }
 
-header div, footer div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;  //aligns items vertically along the center of the header
+.table-navigation {
+  text-align: left;
+  font-weight: lighter;
+  padding: $filters_padding;
+  .hidden {
+    display: none;
+  }
+}
+.sort-arrow {
+  display: none;
+  position: absolute;
+  font-size: $large_font_size;
+  margin: auto;
 }
 
-header div, footer div {
-margin: 0 $block_padding_hor 0 $block_padding_hor;
-padding: $block_padding_ver 0 $block_padding_ver/2 0;
+.button-navigation, .sort-arrow {
+  color: $table_controls_color;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0 $filters_padding 0 $filters_padding;
+  &:hover {
+    color: $table_controls_on_hover_color;
+  }
 }
 
-.content-block{
-  padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
+
+.statistics-table-body td {
+  padding: 10px;
 }
+.statistics-table-body tr:nth-child(even) {
+  background-color: $table_row_even_color;
+}
+
 
 #about p {
 text-align: left;
