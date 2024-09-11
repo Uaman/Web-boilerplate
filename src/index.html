@@ -20,17 +20,18 @@
 <script type="text/javascript" src="../build/app.js"></script>
 
 <header>
-        <h1 class="main-header"><b>Teachinder</b></h1>
 
+    <div>
+        <h1 class="main-header"><b>Teachinder</b></h1>
         <search class="search-combo">
             <form>
                 <input name="search_bar" class="input_search" placeholder="Name, note or age to search" type="search">
                 <button class="search_teacher_btn" type="button"><b>Search</b></button>
             </form>
         </search>
+    </div>
 
-
-
+    <div>
         <nav class="main-navigation">
             <ul>
                 <li><a class="link-navigation" href="#top_teachers">Teachers</a></li>
@@ -40,12 +41,15 @@
             </ul>
         </nav>
         <button class="add_teacher" type="button"><b>Add Teacher</b></button>
-
+    </div>
 </header>
 
 <!--TOP TEACHERS-->
 <div id="top_teachers" class="content-block">
+
     <div class="section-header"><h2>Top teachers</h2></div>
+
+    <!--    TODO: PLACE INTO GRID-->
     <div class="filter-controls">
         <!--AGE FILTER-->
         <span class="filter-control">
@@ -59,19 +63,23 @@
         <!--REGION FILTER-->
         <span class="filter-control">
             <label for="region_control">Region</label>
-            <select name="filter-age" id="region_control">
-                <option value="1">18-31</option>
-                <option value="2">32-45</option>
-                <option value="3">46-59</option>
+            <select name="filter-region" id="region_control">
+               <option value="1">Europe</option>
+                  <option value="2">Asia</option>
+                  <option value="3">North America</option>
+                  <option value="4">South America</option>
+                  <option value="5">Australia</option>
+                  <option value="5">Africa</option>
+                  <option value="7">Other</option>
             </select>
         </span>
         <!--SEX FILTER-->
         <span class="filter-control">
                <label for="sex_control">Sex</label>
-               <select name="filter-age" id="sex_control">
-                  <option value="1">18-31</option>
-                  <option value="2">32-45</option>
-                  <option value="3">46-59</option>
+               <select name="filter-sex" id="sex_control">
+                  <option value="1">Female</option>
+                  <option value="2">Male</option>
+                  <option value="3">N/A</option>
                </select>
             </span>
         <!--PHOTO TICK-->
@@ -200,7 +208,7 @@
                 <li><a class="link-navigation" href="#about">About</a></li>
             </ul>
         </nav>
-        <button class="add-teacher" type="button">Add teacher</button>
+        <button class="add_teacher" type="button"><b>Add teacher</b></button>
     </div>
 </footer>
 

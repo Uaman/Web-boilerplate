@@ -1,8 +1,8 @@
 //screen size
-// $mobile: 480px;
-// $tablet: 768px;
-// $desktop: 1024px;
-// $large-desktop: 1200px;
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+$large-desktop: 1200px;
 //
 // //apply styles based on device width
 // body {
@@ -25,23 +25,25 @@
 //general and main fonts
 $main_header_font: "Times New Roman";
 $main_header_generic_font: serif;
-$main_header_size: 32pt;
+$section_header_font_size: 26pt;
 $default_font_size: 12pt;
 $large_font_size: 14pt;
 $page_font: "Calibri (Body)";
 $generic_font: sans-serif;
 
-
 //section header
-$section_header_font_size: 26pt;
 $section_header_padding_ver: 30px;
-$section_header_width: 600px;
+$section_header_width: 400px;
 
 //navs
 $nav_item_margin: 50px;
 $controls_padding: 20px;
 
 //general sizing
+$search_width: 195px;
+$block_padding_ver: 50px;
+$block_padding_hor: 100px;
+$main_header_size: 32pt;
 
 
 //colors
@@ -49,6 +51,7 @@ $color_main: rgb(230, 90, 75);
 $color_main_dark: rgb(200, 80, 55);
 $color_secondary: white;
 $color_third: black;
+$color_controls: darkgrey;
 
 //FOR TESTING
 // header {
@@ -69,21 +72,16 @@ body {
   margin: 0 15% 0 15%;
   border-right: 0.5px solid grey;
   border-left: 0.5px solid grey;
-  padding-right: 5%;
-  padding-left: 5%;
+  padding-right: 1%;
+  padding-left: 1%;
 
 }
 
-header {
-  //border: 1px solid #000;
-  display: grid;
-  grid-template-columns: 1fr 2fr; /* Adjust columns as needed */
-  align-items: center;
-
-}
-
-// .search-combo {
-// float: inline-end;
+// header {
+//   //border: 1px solid #000;
+// //   display: grid;
+// //   grid-template-columns: 1fr 2fr;
+// //   align-items: center;
 // }
 
 //TITLE
@@ -100,6 +98,24 @@ header {
   }
 }
 
+.search-combo {
+//border: 1px solid #000;
+padding-top: calc($block_padding_ver - 1%); //I dunno, come up with a way to make it proper size
+// font-size: calc($default_font_size);
+ }
+
+.input_search {
+padding: calc($controls_padding/2) calc($controls_padding/4) calc($controls_padding/2) calc($controls_padding/4);
+  width: $search_width;
+  //height: auto;
+  border-width: 1px;
+  border-radius: 2px;
+  color: $color_controls;
+  &:hover {
+    width: $search_width*1.2;
+  }
+}
+
 //BUTTONS
 .search_teacher_btn, .add_teacher {
   border: 1px solid $color_main;
@@ -113,12 +129,20 @@ header {
 }
 
 .add_teacher {
+//border: 1px solid #000;
   font-size: $large_font_size;
+  float: left;
+margin-left: 200px;
 }
 
+.main-navigation, .footer-navigation {
+//border: 1px solid #000;
+display: flex;
+justify-content: space-between;
+}
 
 //NAV LINKS
-.main-navigation li {
+.main-navigation li, .footer-navigation li {
   display: inline-block;
   margin-right: $nav_item_margin;
 }
@@ -154,7 +178,7 @@ header {
   }
   width: $section_header_width;
   //make constant value for margin for section header
-  margin: 25px auto 15px auto;
+  margin: auto;
   border-top: 1px solid $color_third;
   padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
 }
@@ -165,5 +189,16 @@ table {
   table-layout: fixed;
   width: 100%;
 }
+
+header div, footer div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-block, header div, footer div {
+  padding: calc($block_padding_ver/2) $block_padding_hor calc($block_padding_ver/4) $block_padding_hor;
+
+}
+
 
 
