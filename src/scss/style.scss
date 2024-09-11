@@ -27,6 +27,8 @@ $main_header_font: "Times New Roman";
 $main_header_generic_font: serif;
 $section_header_font_size: 26pt;
 $default_font_size: 12pt;
+$small_font_size: 8px;
+$tiny_font_size: 6px;
 $large_font_size: 14pt;
 $page_font: "Calibri (Body)";
 $generic_font: sans-serif;
@@ -41,10 +43,10 @@ $controls_padding: 20px;
 
 //general sizing
 $search_width: 195px;
-$block_padding_ver: 50px;
-$block_padding_hor: 100px;
+$block_padding_ver: 25px;
+$block_padding_hor: 80px;
 $main_header_size: 32pt;
-
+$paragraph_margin: 10px;
 
 //colors
 $color_main: rgb(230, 90, 75);
@@ -53,18 +55,6 @@ $color_secondary: white;
 $color_third: black;
 $color_controls: darkgrey;
 
-//FOR TESTING
-// header {
-// border: 5px solid #000;
-// }
-//
-// header div {
-// border: 1px solid #000;
-// }
-//
-// body div {
-// border: 1px solid #000;
-// }
 
 body {
   font: $default_font_size $page_font, $generic_font;
@@ -74,20 +64,12 @@ body {
   border-left: 0.5px solid grey;
   padding-right: 1%;
   padding-left: 1%;
-
 }
-
-// header {
-//   //border: 1px solid #000;
-// //   display: grid;
-// //   grid-template-columns: 1fr 2fr;
-// //   align-items: center;
-// }
 
 //TITLE
 .main-header {
 //border:  1px solid #000;
-  text-align: left;
+  //text-align: left;
   font: $main_header_size $main_header_font, $main_header_generic_font;
   //need to somehow merge the shadows so there's 2 instead of 4
   text-shadow: -1.7px 0 $color_main, 0 1.2px $color_third, 2.2px 0 $color_third, 0 -1.5px $color_main;
@@ -100,14 +82,12 @@ body {
 
 .search-combo {
 //border: 1px solid #000;
-padding-top: calc($block_padding_ver - 1%); //I dunno, come up with a way to make it proper size
-// font-size: calc($default_font_size);
+//padding-top: calc($block_padding_ver - 1%); //I dunno, come up with a way to make it proper size
  }
 
 .input_search {
-padding: calc($controls_padding/2) calc($controls_padding/4) calc($controls_padding/2) calc($controls_padding/4);
+  padding: calc($controls_padding/2) calc($controls_padding/4) calc($controls_padding/2) calc($controls_padding/4);
   width: $search_width;
-  //height: auto;
   border-width: 1px;
   border-radius: 2px;
   color: $color_controls;
@@ -129,46 +109,37 @@ padding: calc($controls_padding/2) calc($controls_padding/4) calc($controls_padd
 }
 
 .add_teacher {
-//border: 1px solid #000;
+  //border: 1px solid #000;
   font-size: $large_font_size;
-  float: left;
-margin-left: 200px;
+  transform: translateY(-2px);
+
 }
 
+//NAVS
 .main-navigation, .footer-navigation {
-//border: 1px solid #000;
-display: flex;
-justify-content: space-between;
+  //border: 1px solid #000;
+  //display: flex;
+  //justify-content: space-evenly;
 }
 
-//NAV LINKS
 .main-navigation li, .footer-navigation li {
   display: inline-block;
   margin-right: $nav_item_margin;
 }
 
+.main-navigation {
+font-weight: bold;
+}
+
 .link-navigation {
   color: $color_main;
   text-decoration: none;
-  font-size: $default_font_size;
-  font-weight: bold;
+  font-size: $large_font_size;
 }
   .link-navigation:hover {
     color: rgb(190, 82, 61);
   }
 
-
-// .nav-and-add_teacher-div {
-// display: flex;
-// justify-content: space-between;
-// margin-top: 2%;
-// margin-left: 5%;
-// }
-
-// .nav-and-add_teacher-div {
-// display: flex;
-// justify-content: space-between;
-// }
 
 
 .section-header{
@@ -190,15 +161,28 @@ table {
   width: 100%;
 }
 
+.statistics-table-head {
+  border-bottom: 1px solid $color_third;
+  font-size: calc($default_font_size + 2pt);
+}
+
 header div, footer div {
   display: flex;
   justify-content: space-between;
+  align-items: center;  //aligns items vertically along the center of the header
 }
 
-.content-block, header div, footer div {
-  padding: calc($block_padding_ver/2) $block_padding_hor calc($block_padding_ver/4) $block_padding_hor;
-
+header div, footer div {
+margin: 0 $block_padding_hor 0 $block_padding_hor;
+padding: $block_padding_ver 0 $block_padding_ver/2 0;
 }
 
+.content-block{
+  padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
+}
 
-
+#about p {
+text-align: left;
+font-size: $default_font_size;
+margin-top: $paragraph_margin;
+}

@@ -8,7 +8,6 @@ body {
 }
 
 .main-header {
-  text-align: left;
   font: 32pt "Times New Roman", serif;
   text-shadow: -1.7px 0 rgb(230, 90, 75), 0 1.2px black, 2.2px 0 black, 0 -1.5px rgb(230, 90, 75);
   color: white;
@@ -16,10 +15,6 @@ body {
 .main-header:hover {
   text-shadow: -3px -0.5px rgb(230, 90, 75), 3px 0.5px black;
   color: #EDEFEE;
-}
-
-.search-combo {
-  padding-top: calc(50px - 1%);
 }
 
 .input_search {
@@ -46,13 +41,7 @@ body {
 
 .add_teacher {
   font-size: 14pt;
-  float: left;
-  margin-left: 200px;
-}
-
-.main-navigation, .footer-navigation {
-  display: flex;
-  justify-content: space-between;
+  transform: translateY(-2px);
 }
 
 .main-navigation li, .footer-navigation li {
@@ -60,11 +49,14 @@ body {
   margin-right: 50px;
 }
 
+.main-navigation {
+  font-weight: bold;
+}
+
 .link-navigation {
   color: rgb(230, 90, 75);
   text-decoration: none;
-  font-size: 12pt;
-  font-weight: bold;
+  font-size: 14pt;
 }
 
 .link-navigation:hover {
@@ -87,13 +79,30 @@ table {
   width: 100%;
 }
 
+.statistics-table-head {
+  border-bottom: 1px solid black;
+  font-size: 14pt;
+}
+
 header div, footer div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.content-block, header div, footer div {
-  padding: 25px 100px 12.5px 100px;
+header div, footer div {
+  margin: 0 80px 0 80px;
+  padding: 25px 0 12.5px 0;
+}
+
+.content-block {
+  padding: 25px 80px 12.5px 80px;
+}
+
+#about p {
+  text-align: left;
+  font-size: 12pt;
+  margin-top: 10px;
 }
 
 /*# sourceMappingURL=style.css.map */
