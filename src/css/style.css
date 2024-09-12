@@ -1,5 +1,5 @@
 body {
-  font: 12pt "Calibri (Body)", sans-serif;
+  font: 10pt "Calibri (Body)", sans-serif;
   margin: 0 15% 0 15%;
   border-right: 0.5px solid grey;
   border-left: 0.5px solid grey;
@@ -32,6 +32,13 @@ header div, footer div {
   font-size: 26pt;
   display: inline-block;
   font-weight: bold;
+}
+
+.section-header-about {
+  width: 400px;
+  margin: auto;
+  border-top: 1px solid black;
+  padding: 15px 0 15px 0;
 }
 
 .main-header {
@@ -91,19 +98,21 @@ header div, footer div {
 }
 
 .filter-controls {
-  margin: 0 0 40px 0;
   display: flex;
-  justify-content: flex-start;
+  justify-content: start;
 }
 
 .filter-control:not(:first-child) {
-  padding: 0 10px 0 20px;
+  padding: 0 20px 0 20px;
 }
 .filter-control:first-child {
-  padding-right: 10px;
+  padding-right: 20px;
 }
 .filter-control:not(:last-child) {
   border-right: 2px dotted darkgrey;
+}
+.filter-control:nth-last-child(-n+2) {
+  padding-top: 8px;
 }
 .filter-control label {
   color: darkgrey;
@@ -118,23 +127,72 @@ header div, footer div {
 }
 
 .searched-teacher-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  margin: 30px 0 0 0;
 }
 
-.teacher-item-favorite {
+.teacher-item {
+  border: 1px solid #000;
+  display: grid;
   margin: 0 20px 0 20px;
+}
+.teacher-item p {
+  margin: 2px;
+  padding: 3%;
 }
 
 .teacher-image {
-  height: 120px;
-  width: 120px;
+  display: block;
+  margin: 7px;
+  height: 130px;
+  width: 130px;
   border: 4px solid #f99589;
   border-radius: 50%;
   overflow: hidden;
 }
 .teacher-image:hover {
-  border-color: red;
+  border-color: rgb(200, 80, 55);
+}
+
+.teacher-initials {
+  display: none;
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 15pt;
+  color: #f75c49;
+  font-weight: bold;
+}
+.teacher-initials:hover {
+  color: rgb(200, 80, 55);
+}
+
+.teacher-image:not([src]) + .teacher-initials,
+.teacher-image[alt]:not([src]) + .teacher-initials {
+  display: block;
+}
+
+.teacher-item-info {
+  padding: 5px;
+}
+
+.teacher-name {
+  font-size: 14pt;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+}
+
+.teacher-spec {
+  opacity: 60%;
+}
+
+.teacher-region {
+  font-size: 8pt;
 }
 
 table {
@@ -164,9 +222,19 @@ thead tr th:hover .sort-arrow {
   display: inline;
 }
 
+tbody tr {
+  font-weight: lighter;
+}
+tbody tr th, tbody tr td {
+  padding: 10px;
+}
+tbody tr th:first-child, tbody tr td:first-child {
+  text-align: left;
+}
+
 .statistics-table-head {
   border-bottom: 1px solid black;
-  font-size: 14pt;
+  font-size: 12pt;
 }
 
 .table-navigation {
@@ -204,10 +272,55 @@ thead tr th:hover .sort-arrow {
   background-color: rgb(250, 240, 250);
 }
 
+#favorites {
+  position: relative; /* Make this container the reference for the absolute positioning */
+}
+
+.arrow-btn {
+  border: none;
+  background: none;
+  height: fit-content;
+  width: fit-content;
+  opacity: 60%;
+  position: absolute; /* Make the buttons positioned absolutely */
+  top: 55%; /* Align vertically at the center */
+}
+.arrow-btn:hover {
+  opacity: 100%;
+}
+
+.teacher-favorite-list {
+  display: flex;
+  justify-content: center;
+}
+
+#fav-right-btn, #fav-left-btn {
+  height: 50px;
+  width: 30px;
+}
+
+.favorite-right, .favorite-left {
+  height: 100%;
+  width: 100%;
+}
+
+#fav-left-btn {
+  left: 1%; /* Position on the left edge */
+}
+
+#fav-right-btn {
+  right: 1%; /* Position on the right edge */
+}
+
+#about {
+  margin: 0;
+  padding-bottom: 0;
+}
+
 #about p {
   text-align: left;
-  font-size: 12pt;
-  margin-top: 10px;
+  margin-top: 1%;
+  font-size: 10pt;
 }
 
 /*# sourceMappingURL=style.css.map */

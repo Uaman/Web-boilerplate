@@ -65,11 +65,10 @@
             <select name="filter-region" id="region_control">
                <option value="1">Europe</option>
                   <option value="2">Asia</option>
-                  <option value="3">North America</option>
-                  <option value="4">South America</option>
-                  <option value="5">Australia</option>
+                  <option value="3">America</option>
+                  <option value="4">Australia</option>
                   <option value="5">Africa</option>
-                  <option value="7">Other</option>
+                  <option value="6">Other</option>
             </select>
         </span>
         <!--SEX FILTER-->
@@ -83,43 +82,89 @@
             </span>
         <!--PHOTO TICK-->
         <span class="filter-control">
-        <label class="checkbox-item">
-            <input type="checkbox" name="checkbox-photo" value="option1">
-            Only with photo
-        </label>
-        </span>
+               <input type="checkbox" name="photo" id="photo_control"/>
+               <label for="photo_control" id="photo_ctrl_label">Only with photo</label>
+            </span>
         <!--FAVORITE TICK-->
         <span class="filter-control">
-        <label class="checkbox-item">
-            <input type="checkbox" name="checkbox-favs" value="option1">
-            Only favorites
-        </label>
-        </span>
+               <input type="checkbox" name="favorite" id="favorite_control"/>
+               <label for="favorite_control" id="fav_ctrl_label">Only favorites</label>
+            </span>
+
     </div>
 
     <!--RESULTING TEACHER LIST-->
     <div class="searched-teacher-list">
         <!--EXAMPLE TEACHER-->
         <!--TODO: figure out how to actually filter teachers. DB??-->
-        <div class="teacher-item-favorite" id="teacher_1">
+        <div class="teacher-item" id="teacher_1">
             <div>
-               <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
             </div>
-            <div class="teacher-name"><p>Ihor Tkachuk</p></div>
-            <div class="teacher-spec"><p>Chemistry</p></div>
-            <div class="teacher-region"><p>Ukraine</p></div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
         </div>
-        <div class="teacher-item-favorite" id="teacher_2">
+        <div class="teacher-item" id="teacher_2">
             <div>
-                <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
             </div>
-            <div class="teacher-name"><p>Ihor Tkachuk</p></div>
-            <div class="teacher-spec"><p>Chemistry</p></div>
-            <div class="teacher-region"><p>Ukraine</p></div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+        <div class="teacher-item" id="teacher_3">
+            <div>
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+        <div class="teacher-item" id="teacher_4">
+            <div>
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+        <div class="teacher-item" id="teacher_5">
+            <div>
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+        <div class="teacher-item" id="teacher_6">
+            <div>
+                <img class="teacher-image" src="images/dog.jpg">
+                <span class="teacher-initials">I.T</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-spec">Chemistry</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
         </div>
     </div>
 </div>
-
 
 <!--STATISTICS-->
 <div id="statistics" class="content-block">
@@ -129,11 +174,21 @@
         <table class="statistics-table">
             <thead class="statistics-table-head">
             <tr>
-                <th>Name<button type="button" class="sort-arrow">v</button></th>
-                <th>Speciality<button type="button" class="sort-arrow">v</button></th>
-                <th>Age<button type="button" class="sort-arrow">v</button></th>
-                <th>Gender<button type="button" class="sort-arrow">v</button></th>
-                <th>Nationality<button type="button" class="sort-arrow">v</button></th>
+                <th>Name
+                    <button type="button" class="sort-arrow">v</button>
+                </th>
+                <th>Speciality
+                    <button type="button" class="sort-arrow">v</button>
+                </th>
+                <th>Age
+                    <button type="button" class="sort-arrow">v</button>
+                </th>
+                <th>Gender
+                    <button type="button" class="sort-arrow">v</button>
+                </th>
+                <th>Nationality
+                    <button type="button" class="sort-arrow">v</button>
+                </th>
             </tr>
             </thead>
             <tbody class="statistics-table-body">
@@ -147,18 +202,18 @@
                 <td>Vietnam</td>
             </tr>
             <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
+                <td>Julia Bradley</td>
+                <td>Math</td>
+                <td>26</td>
                 <td>Female</td>
-                <td>Vietnam</td>
+                <td>USA</td>
             </tr>
             <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
-                <td>Female</td>
-                <td>Vietnam</td>
+                <td>Jonathan Jacobs</td>
+                <td>Math</td>
+                <td>32</td>
+                <td>Male</td>
+                <td>Enland</td>
             </tr>
             <tr>
                 <td>Daisy Alexander</td>
@@ -197,44 +252,88 @@
 <!--FAVORITES-->
 <div id="favorites" class="content-block">
     <div class="section-header"><h2>Favorites</h2></div>
+
+
+    <button class="arrow-btn" id="fav-left-btn"><img class="favorite-left" src="images/lft_arrw.png"
+                                                     alt="left_buttonpng" border="0">
+    </button>
     <div class="teacher-favorite-list">
-        <button class="arrow-btn"><img id="favorite-left" src="images/empty.jpg" alt="left_buttonpng" border="0">
-        </button>
         <!--EXAMPLE TEACHERS IN FAVS LIST-->
         <!--TEACH1-->
         <div class="teacher-item" id="fav_teacher_1">
-            <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+            <img class="teacher-image" src="images/dog.jpg">
+            <span class="teacher-initials">I.T</span>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
         </div>
-        <div class="teacher-item-info">
-            <p>Ihor Tkachuk</p>
-            <p>Chemistry</p>
-            <p>Ukraine</p>
-        </div>
+
         <!--TEACH2-->
         <div class="teacher-item" id="fav_teacher_2">
-            <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+            <div class="teacher-image-container">
+                <img class="teacher-image" src="">
+                <span class="teacher-initials">A.M</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Anna<br>Markevich</p>
+                <p class="teacher-region">Belarus</p>
+            </div>
         </div>
-        <div class="teacher-item-info">
-            <p>Ihor Tkachuk</p>
-            <p>Chemistry</p>
-            <p>Ukraine</p>
-        </div>
-    </div>
 
-    <button class="arrow-btn"><img id="favorite-right" src="images/empty.jpg" alt="right_buttonpng" border="0"></button>
+        <!--TEACH3-->
+        <div class="teacher-item" id="fav_teacher_3">
+            <img class="teacher-image" src="images/dog.jpg">
+            <span class="teacher-initials">I.T</span>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+
+        <!--TEACH4-->
+        <div class="teacher-item" id="fav_teacher_4">
+            <img class="teacher-image" src="images/dog.jpg">
+            <span class="teacher-initials">I.T</span>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+
+        <!--TEACH5-->
+        <div class="teacher-item" id="fav_teacher_5">
+            <img class="teacher-image" src="images/dog.jpg">
+            <span class="teacher-initials">I.T</span>
+            <div class="teacher-item-info">
+                <p class="teacher-name">Ihor<br>Tkachuk</p>
+                <p class="teacher-region">Ukraine</p>
+            </div>
+        </div>
+
+    </div>
+    <button class="arrow-btn" id="fav-right-btn"><img class="favorite-right" src="images/rght_arrw.png"
+                                                      alt="right_buttonpng" border="0">
+    </button>
 </div>
 
 
 <!--ABOUT-->
 <div id="about" class="content-block">
-    <div class="section-header"></div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ultrices diam, ut tempus erat pellentesque
-        eget. Fusce lobortis leo eget ante dictum varius at nec tortor. Donec laoreet, ipsum in vestibulum fermentum,
-        tortor quam dictum massa, in faucibus nibh lacus quis nisl. Praesent vitae ultricies lacus. Maecenas a lorem nec
-        diam convallis sollicitudin posuere non massa. Proin at odio ac augue maximus semper.</p>
-    <p>Maecenas elit metus, posuere vel egestas eget, efficitur quis lorem. Curabitur commodo auctor justo a
-        lobortis?</p>
-    <p>Ut et nisl ornare, varius magna at, tincidunt nisi. Fusce ultricies orci quis neque scelerisque venenatis?</p>
+    <div class="section-header-about"></div>
+    <div class="about-text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet ultrices diam, ut tempus erat
+            pellentesque
+            eget. Fusce lobortis leo eget ante dictum varius at nec tortor. Donec laoreet, ipsum in vestibulum
+            fermentum,
+            tortor quam dictum massa, in faucibus nibh lacus quis nisl. Praesent vitae ultricies lacus. Maecenas a lorem
+            nec
+            diam convallis sollicitudin posuere non massa. Proin at odio ac augue maximus semper.</p>
+        <p>Maecenas elit metus, posuere vel egestas eget, efficitur quis lorem. Curabitur commodo auctor justo a
+            lobortis?</p>
+        <p>Ut et nisl ornare, varius magna at, tincidunt nisi. Fusce ultricies orci quis neque scelerisque
+            venenatis?</p>
+    </div>
 </div>
 
 

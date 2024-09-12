@@ -26,9 +26,9 @@ $large-desktop: 1200px;
 $main_header_font: "Times New Roman";
 $main_header_generic_font: serif;
 $section_header_font_size: 26pt;
-$default_font_size: 12pt;
-$small_font_size: 8px;
-$tiny_font_size: 6px;
+$default_font_size: 10pt;
+$small_font_size: 8pt;
+$tiny_font_size: 6pt;
 $large_font_size: 14pt;
 $page_font: "Calibri (Body)";
 $generic_font: sans-serif;
@@ -89,23 +89,33 @@ margin: 0 $block_padding_hor 0 $block_padding_hor;
 padding: $block_padding_ver 0 $block_padding_ver/2 0;
 }
 
-.content-block{
+.content-block {
   padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
 }
 
 
 .section-header{
   h2 {
+    //border: 1px solid #000;
     font-size: $section_header_font_size;
     display: inline-block;
     font-weight: bold;
   }
   width: $section_header_width;
-  //make constant value for margin for section header
+  //make constant value for margin for section header?
   margin: auto;
   border-top: 1px solid $color_third;
-  padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
+  padding: $section_header_padding_ver  0 $section_header_padding_ver 0;
 }
+
+.section-header-about {
+width: $section_header_width;
+  //make constant value for margin for section header?
+  margin: auto;
+  border-top: 1px solid $color_third;
+  padding: $section_header_padding_ver / 2  0 $section_header_padding_ver / 2 0;
+}
+
 
 
 //TITLE
@@ -133,7 +143,7 @@ padding: $block_padding_ver 0 $block_padding_ver/2 0;
   border-radius: 2px;
   color: $color_controls;
   &:hover {
-    width: $search_width*1.2;
+    width: $search_width * 1.2;
   }
 }
 
@@ -142,7 +152,7 @@ padding: $block_padding_ver 0 $block_padding_ver/2 0;
   border: 1px solid $color_main;
   background-color: $color_secondary;
   color: $color_main;
-  padding: calc($controls_padding/2) $controls_padding calc($controls_padding/2) $controls_padding;
+  padding: calc($controls_padding / 2) $controls_padding calc($controls_padding / 2) $controls_padding;
   &:hover {
     background-color: $color_main;
     color: $color_secondary;
@@ -155,6 +165,8 @@ padding: $block_padding_ver 0 $block_padding_ver/2 0;
   transform: translateY(-2px);
 
 }
+
+
 
 //NAVS
 .main-navigation, .footer-navigation {
@@ -180,27 +192,32 @@ font-weight: bold;
   }
 
 
+
 //TOP TEACHERS
 .filter-controls {
-//border: 1px solid #000;
-margin: 0 0 $filters_margin 0;
+//border: 1px solid red;
   display: flex;
-  justify-content: flex-start;
+  justify-content: start;
 }
 
 .filter-control {
 //border: 1px solid #000;
 
-&:not(:first-child) {
- padding: 0 $filters_padding 0 $filters_padding*2;
- }
+  &:not(:first-child) {
+    padding: 0 $filters_padding*2 0 $filters_padding*2;
+  }
 
-&:first-child {
- padding-right: $filters_padding;
- }
+  &:first-child {
+   padding-right: $filters_padding*2;
+  }
 
   &:not(:last-child) {
-     border-right: 2px dotted $color_controls;
+    border-right: 2px dotted $color_controls;
+  }
+
+   &:nth-last-child(-n+2) {
+     padding-top: calc($filters_padding - 2px);
+     //padding-bottom: calc($filters_padding/2);
    }
 
   label {
@@ -214,28 +231,99 @@ margin: 0 0 $filters_margin 0;
       padding: calc($filters_padding/2);
       margin: $filters_margin/10;
     }
-
 }
+
 
 .searched-teacher-list {
-display: flex;
-flex-wrap: wrap;
+//border: 1px solid #000;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  margin: calc($filters_margin - 10px) 0 0 0;
 }
 
-.teacher-item-favorite {
-margin: 0 20px 0 20px;
+.teacher-item {
+ border: 1px solid #000;
+ display: grid;
+  margin: 0 20px 0 20px;
+    p {
+      margin: 2px;
+      padding: 3%;
+      //border: 1px solid #000;
+    }
 }
+
+// .teacher-image-container {
+// position: relative;
+//    display: inline-block;
+// }
+
 
 .teacher-image {
-  height: 120px;
-  width: 120px;
+  display: block;
+  margin: 7px;
+  height: 130px;
+  width: 130px;
   border: 4px solid $color_teacher_avatar;
   border-radius: 50%;
   overflow: hidden;
   &:hover {
-    border-color: red;
+    border-color: $color_main_dark;
   }
+//   &:not([src]) + .alt-text, [alt]:not([src]) + .alt-text {
+//    display: block;
+//   }
 }
+
+.teacher-initials {
+//border: 1px solid #000;
+    display: none;
+      position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+font-size: $large_font_size + 1pt;
+color: $color_main;
+font-weight: bold;
+    &:hover {
+    color: $color_main_dark;
+    }
+}
+
+.teacher-image:not([src]) + .teacher-initials,
+.teacher-image[alt]:not([src]) + .teacher-initials {
+  display: block;
+}
+
+// .teacher-initials {
+//
+// }
+
+
+.teacher-item-info {
+ // border: 1px solid #000;
+  padding: 5px;
+}
+
+
+.teacher-name {
+  font-size: $large_font_size;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+
+}
+
+.teacher-spec {
+  opacity: 60%;
+}
+
+.teacher-region {
+font-size: $small_font_size;
+}
+
 
 //STATS
 table {
@@ -267,6 +355,19 @@ thead {
               }
             }
         }
+
+ tbody {
+    tr {
+      font-weight: lighter;
+      th, td {
+        padding: $filters_padding;
+
+        &:first-child {
+          text-align: left;
+        }
+      }
+    }
+  }
 
 
 .statistics-table-head {
@@ -310,10 +411,66 @@ thead {
 
 //FAVS
 
+#favorites {
+  position: relative; /* Make this container the reference for the absolute positioning */
+}
+
+.arrow-btn {
+  border: none;
+  background: none;
+  height: fit-content;
+  width: fit-content;
+  opacity: 60%;
+  position: absolute; /* Make the buttons positioned absolutely */
+  top: 55%; /* Align vertically at the center */
+  //transform: translateY(-50%); /* Adjust for centering exactly in the middle */
+  &:hover {
+    opacity: 100%;
+  }
+}
+
+
+.teacher-favorite-list {
+//border: 1px solid #000;
+display: flex;
+justify-content: center;
+}
+
+
+#fav-right-btn, #fav-left-btn {
+//border: 1px solid #000;
+height: 50px;
+width: 30px;
+}
+
+.favorite-right, .favorite-left {
+height: 100%;
+width: 100%;
+}
+
+
+#fav-left-btn {
+  left: 1%; /* Position on the left edge */
+}
+
+#fav-right-btn {
+  right: 1%; /* Position on the right edge */
+}
 
 //ABOUT
+#about {
+//border: 1px solid #000;
+margin: 0;
+padding-bottom: 0;
+}
+
+.about-text {
+//border: 1px solid #000;
+}
+
 #about p {
+//border: 1px solid #000;
 text-align: left;
+margin-top: 1%;
 font-size: $default_font_size;
-margin-top: $paragraph_margin;
 }
