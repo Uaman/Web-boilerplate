@@ -38,7 +38,7 @@ $section_header_padding_ver: 30px;
 $section_header_width: 400px;
 
 //navs
-$nav_item_margin: 50px;
+$nav_item_margin: 30px;
 $controls_padding: 20px;
 
 //general sizing
@@ -49,7 +49,8 @@ $main_header_size: 32pt;
 $paragraph_margin: 10px;
 
 //colors
-$color_main: rgb(230, 90, 75);
+$color_main: #f75c49;
+$color_teacher_avatar: #f99589;
 $color_main_dark: rgb(200, 80, 55);
 $color_secondary: white;
 $color_third: black;
@@ -62,8 +63,9 @@ $table_controls_color: rgb(80, 175, 200);
 $table_controls_on_hover_color: rgb(50, 100, 110);
 $table_sort_offset: 80px;
 
-//table stuff
+//filter stuff
 $filters_padding: 10px;
+$filters_margin: 40px;
 
 
 body {
@@ -91,10 +93,24 @@ padding: $block_padding_ver 0 $block_padding_ver/2 0;
   padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
 }
 
+
+.section-header{
+  h2 {
+    font-size: $section_header_font_size;
+    display: inline-block;
+    font-weight: bold;
+  }
+  width: $section_header_width;
+  //make constant value for margin for section header
+  margin: auto;
+  border-top: 1px solid $color_third;
+  padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
+}
+
+
 //TITLE
 .main-header {
 //border:  1px solid #000;
-  //text-align: left;
   font: $main_header_size $main_header_font, $main_header_generic_font;
   //need to somehow merge the shadows so there's 2 instead of 4
   text-shadow: -1.7px 0 $color_main, 0 1.2px $color_third, 2.2px 0 $color_third, 0 -1.5px $color_main;
@@ -143,8 +159,6 @@ padding: $block_padding_ver 0 $block_padding_ver/2 0;
 //NAVS
 .main-navigation, .footer-navigation {
   //border: 1px solid #000;
-  //display: flex;
-  //justify-content: space-evenly;
 }
 
 .main-navigation li, .footer-navigation li {
@@ -166,35 +180,29 @@ font-weight: bold;
   }
 
 
-
-.section-header{
-  h2 {
-    font-size: $section_header_font_size;
-    display: inline-block;
-    font-weight: bold;
-  }
-  width: $section_header_width;
-  //make constant value for margin for section header
-  margin: auto;
-  border-top: 1px solid $color_third;
-  padding: $section_header_padding_ver 0 $section_header_padding_ver 0;
+//TOP TEACHERS
+.filter-controls {
+//border: 1px solid #000;
+margin: 0 0 $filters_margin 0;
+  display: flex;
+  justify-content: flex-start;
 }
 
-//FAVS
-.filter-controls {
-  &:not(:first-child) {
-    padding-left: $filters_padding;
-  }
+.filter-control {
+//border: 1px solid #000;
+
+&:not(:first-child) {
+ padding: 0 $filters_padding 0 $filters_padding*2;
+ }
+
+&:first-child {
+ padding-right: $filters_padding;
+ }
 
   &:not(:last-child) {
-    border-right: 1px dotted $color_controls;
-    padding-right: $filters_padding;
-  }
+     border-right: 2px dotted $color_controls;
+   }
 
-  &:nth-last-child(-n+2) {
-    padding-top: calc($filters_padding/2);
-    padding-bottom: calc($filters_padding/2);
-  }
   label {
     color: $color_controls;
     font-size: 10pt;
@@ -203,12 +211,31 @@ font-weight: bold;
     }
   }
   select {
-    padding: calc($filters_padding/2);
-  }
+      padding: calc($filters_padding/2);
+      margin: $filters_margin/10;
+    }
+
 }
 
+.searched-teacher-list {
+display: flex;
+flex-wrap: wrap;
+}
 
+.teacher-item-favorite {
+margin: 0 20px 0 20px;
+}
 
+.teacher-image {
+  height: 120px;
+  width: 120px;
+  border: 4px solid $color_teacher_avatar;
+  border-radius: 50%;
+  overflow: hidden;
+  &:hover {
+    border-color: red;
+  }
+}
 
 //STATS
 table {
@@ -241,6 +268,7 @@ thead {
             }
         }
 
+
 .statistics-table-head {
   border-bottom: 1px solid $color_third;
   font-size: calc($default_font_size + 2pt);
@@ -249,7 +277,7 @@ thead {
 .table-navigation {
   text-align: left;
   font-weight: lighter;
-  padding: $filters_padding;
+  padding-top: $filters_padding*2;
   .hidden {
     display: none;
   }
@@ -280,7 +308,10 @@ thead {
   background-color: $table_row_even_color;
 }
 
+//FAVS
 
+
+//ABOUT
 #about p {
 text-align: left;
 font-size: $default_font_size;

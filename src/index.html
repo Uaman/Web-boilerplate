@@ -49,7 +49,6 @@
 
     <div class="section-header"><h2>Top teachers</h2></div>
 
-    <!--    TODO: PLACE INTO GRID-->
     <div class="filter-controls">
         <!--AGE FILTER-->
         <span class="filter-control">
@@ -83,16 +82,18 @@
                </select>
             </span>
         <!--PHOTO TICK-->
-        <span class="filter-label">
-        <label class="filter-item"></label>
+        <span class="filter-control">
+        <label class="checkbox-item">
             <input type="checkbox" name="checkbox-photo" value="option1">
             Only with photo
+        </label>
         </span>
         <!--FAVORITE TICK-->
-        <span class="filter-label">
-        <label class="filter-item"></label>
+        <span class="filter-control">
+        <label class="checkbox-item">
             <input type="checkbox" name="checkbox-favs" value="option1">
             Only favorites
+        </label>
         </span>
     </div>
 
@@ -100,8 +101,18 @@
     <div class="searched-teacher-list">
         <!--EXAMPLE TEACHER-->
         <!--TODO: figure out how to actually filter teachers. DB??-->
-        <div class="teacher-item favorite" id="teacher_1">
-            <div class="teacher-image"><img alt="I.T." src="images/empty.jpg"/></div>
+        <div class="teacher-item-favorite" id="teacher_1">
+            <div>
+               <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+            </div>
+            <div class="teacher-name"><p>Ihor Tkachuk</p></div>
+            <div class="teacher-spec"><p>Chemistry</p></div>
+            <div class="teacher-region"><p>Ukraine</p></div>
+        </div>
+        <div class="teacher-item-favorite" id="teacher_2">
+            <div>
+                <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
+            </div>
             <div class="teacher-name"><p>Ihor Tkachuk</p></div>
             <div class="teacher-spec"><p>Chemistry</p></div>
             <div class="teacher-region"><p>Ukraine</p></div>
@@ -163,6 +174,13 @@
                 <td>Female</td>
                 <td>Vietnam</td>
             </tr>
+            <tr>
+                <td>Daisy Alexander</td>
+                <td>Chemistry</td>
+                <td>28</td>
+                <td>Female</td>
+                <td>Vietnam</td>
+            </tr>
             </tbody>
         </table>
 
@@ -185,7 +203,7 @@
         <!--EXAMPLE TEACHERS IN FAVS LIST-->
         <!--TEACH1-->
         <div class="teacher-item" id="fav_teacher_1">
-            <img class="teacher-image" src="images/empty.jpg" alt="Teacher profile picture">
+            <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
         </div>
         <div class="teacher-item-info">
             <p>Ihor Tkachuk</p>
@@ -194,7 +212,7 @@
         </div>
         <!--TEACH2-->
         <div class="teacher-item" id="fav_teacher_2">
-            <img class="teacher-image" src="images/empty.jpg" alt="Teacher profile picture">
+            <img class="teacher-image" src="images/dog.jpg" alt="Teacher profile picture">
         </div>
         <div class="teacher-item-info">
             <p>Ihor Tkachuk</p>
