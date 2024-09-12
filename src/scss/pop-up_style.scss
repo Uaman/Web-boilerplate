@@ -1,0 +1,64 @@
+$popup_header_color: rgb(70, 70, 70);
+$popup_border_radius: 2px;
+$popup_width_high: 560px;
+$popup_width_wide: calc($popup_width_high + 400px);
+$popup_wrapper_color: rgba(0, 0, 0, 0.5);
+
+//filter stuff
+$filters_padding: 10px;
+$filters_margin: 40px;
+
+//colors
+$color_secondary: white;
+
+$default_font_size: 10pt;
+$page_font: "Calibri (Body)";
+$generic_font: sans-serif;
+
+body {
+  font: $default_font_size $page_font, $generic_font;
+  //attempts at making the gaps at sides
+  margin: 0 15% 0 15%;
+}
+
+.popup-wrapper {
+  width: 100%;
+  //height: 100%;
+  background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
+  //display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+
+    height: 100%;
+}
+.popup-window-high {
+  width: $popup_width_high;
+}
+.popup-window-wide {
+  width: $popup_width_wide;
+}
+.popup-header {
+  background-color: $popup_header_color;
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: $popup_border_radius;
+  border-top-left-radius: $popup_border_radius;
+  padding: $filters_padding;
+  button {
+    padding: 0;
+    background: none;
+    border: none;
+    color: $color_secondary;
+  }
+  h2 {
+    color: $color_secondary;
+  }
+}
+
+.popup-content {
+  background-color: $color_secondary;
+  border-bottom-right-radius: $popup_border_radius;
+  border-bottom-left-radius: $popup_border_radius;
+}

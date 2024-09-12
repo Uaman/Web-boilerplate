@@ -67,6 +67,14 @@ $table_sort_offset: 80px;
 $filters_padding: 10px;
 $filters_margin: 40px;
 
+//pop-ups
+// $popup_header_color: rgb(70, 70, 70);
+// $popup_border_radius: 2px;
+// $popup_width_high: 560px;
+// $popup_width_wide: calc($popup_width_high + 400px);
+// $popup_wrapper_color: rgba(0, 0, 0, 0.5);
+
+
 
 body {
   font: $default_font_size $page_font, $generic_font;
@@ -233,7 +241,6 @@ font-weight: bold;
     }
 }
 
-
 .searched-teacher-list {
 //border: 1px solid #000;
   display: grid;
@@ -243,7 +250,7 @@ font-weight: bold;
 }
 
 .teacher-item {
- border: 1px solid #000;
+ //border: 1px solid #000;
  display: grid;
   margin: 0 20px 0 20px;
     p {
@@ -474,3 +481,44 @@ text-align: left;
 margin-top: 1%;
 font-size: $default_font_size;
 }
+
+//POP-UPS
+
+//ADD TEACHER
+// .popup-wrapper {
+//
+//   width: 100%;
+//   //height: 100%;
+//   background-color: $popup_wrapper_color;
+// }
+//
+// .popup-window-high {
+//   width: $popup_width_high;
+// }
+// .popup-window-wide {
+//   width: $popup_width_wide;
+// }
+//
+// .popup-header {
+//   background-color: $popup_header_color;
+//   display: flex;
+//   justify-content: space-between;
+//   border-top-right-radius: $popup_border_radius;
+//   border-top-left-radius: $popup_border_radius;
+//   padding: $filters_padding;
+//   button {
+//     padding: 0;
+//     background: none;
+//     border: none;
+//     color: $color_secondary;
+//   }
+//   h2 {
+//     color: $color_secondary;
+//   }
+// }
+//
+// .popup-content {
+//   background-color: $color_secondary;
+//   border-bottom-right-radius: $popup_border_radius;
+//   border-bottom-left-radius: $popup_border_radius;
+// }

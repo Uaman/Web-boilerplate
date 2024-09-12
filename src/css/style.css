@@ -134,7 +134,6 @@ header div, footer div {
 }
 
 .teacher-item {
-  border: 1px solid #000;
   display: grid;
   margin: 0 20px 0 20px;
 }
@@ -321,6 +320,43 @@ tbody tr th:first-child, tbody tr td:first-child {
   text-align: left;
   margin-top: 1%;
   font-size: 10pt;
+}
+
+.popup-wrapper {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-window-high {
+  width: 560px;
+}
+
+.popup-window-wide {
+  width: 960px;
+}
+
+.popup-header {
+  background-color: rgb(70, 70, 70);
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+  padding: 10px;
+}
+.popup-header button {
+  padding: 0;
+  background: none;
+  border: none;
+  color: white;
+}
+.popup-header h2 {
+  color: white;
+}
+
+.popup-content {
+  background-color: white;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 /*# sourceMappingURL=style.css.map */
