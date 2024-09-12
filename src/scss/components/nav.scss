@@ -1,0 +1,53 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  @media screen and (max-width: 660px) {
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.nav__list {
+  list-style: none;
+
+  display: flex;
+  gap: 40px;
+
+  @media screen and (max-width: 660px) {
+    gap: 20px;
+    justify-content: center;
+  }
+}
+
+.nav__item {
+  font-size: 20px;
+  font-weight: bold;
+
+  a {
+    text-decoration: none;
+    color: $color-orange;
+    transition: .1s ease-in-out all;
+
+    &:hover {
+      color: $color-orange-3;
+    }
+  }
+
+  @media screen and (max-width: 490px) {
+    font-size: 15px;
+  }
+}
+
+.nav__add-teacher-button {
+  font-size: 18px;
+}
+
+.header__bottom .nav__add-teacher-button {
+  @media screen and (max-width: 660px) {
+    display: none;
+  }
+}
