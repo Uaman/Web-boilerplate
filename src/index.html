@@ -1,22 +1,457 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachinder</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+    <!-- <link rel="stylesheet" href="css/app.css"> -->
+</head>
+<body>
+    <div class="pop-up__bg" id="pop-up__bg"></div>
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <div class="pop-up" id="add-teacher-pop-up" style="display: none;">
+        <div class="add-teacher">
+            <div class="pop-up__header">
+                <h1 class="pop-up__header__title">Add Teacher</h1>
+                <span class="pop-up__header__close-btn">×</span>
+            </div>
+            <div class="add-teacher__content">
+                <div class="content__row">
+                    <div class="content__row__block">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" placeholder="Enter name">
+                    </div>
+                </div>
 
-      <title>Project</title>
+                <div class="content__row">
+                    <div class="content__row__block">
+                        <label for="speciality">Speciality</label>
+                        <select name="speciality">
+                            <option value="Mathematics" selected>Mathematics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="art">Art</option>
+                            <option value="biology">Biology</option>
+                            <option value="statistics">Statistics</option>
+                        </select>
+                    </div>
+                </div>
 
-      <link rel="stylesheet" href="./css/app.css">
+                <div class="content__row">
+                    <div class="content__row__block">
+                        <label for="country">Country</label>
+                        <select name="country">
+                            <option value="ukraine">Ukraine</option>
+                            <option value="polish">Polish</option>
+                            <option value="great-britain">Great Britain</option>
+                            <option value="usa">USA</option>
+                        </select>
+                    </div>
 
-   </head>
+                    <div class="content__row__block">
+                        <div class="content__row__block">
+                            <label for="city">City</label>
+                            <input type="text" name="city">
+                        </div>
+                    </div>
+                </div>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
+                <div class="content__row">
+                    <div class="content__row__block">
+                        <label for="email">Email</label>
+                        <input type="text" name="email">
+                    </div>
 
-      <script type="text/javascript" src="../build/app.js"></script>
-      
-  </body>
+                    <div class="content__row__block">
+                        <label for="phone">Phone</label>
+                        <input type="text" name="phone">
+                    </div>
+                </div>
+
+                <div class="content__row">
+                    <div class="content__row__block">
+                        <label for="Date-of-birth">Date of birth</label>
+                        <input type="date" name="Date-of-birth" class="date-of-birth-pop-up">
+                    </div>
+                </div>
+
+                <div class="content__row content__row-left">
+                    <label class="content__row__sex-label">Sex</label>
+                    <div class="content__row">
+                        <label for="male" class="no-margin">Male</label>
+                        <input type="radio" id="male" name="sex" value="male">
+                    </div>
+                    <div class="content__row">
+                        <label for="female" class="no-margin">Female</label>
+                        <input type="radio" id="female" name="sex" value="female">
+                    </div>
+                </div>
+
+                <div class="content__row content__row-left">
+                    <label for="bg-color">Background color</label>
+                    <input type="color" name="bg-color" class="teacher-bg-color-inp">
+                </div>
+
+                <label for="notes">Notes (optional)</label>
+                <textarea name="notes" class="notes-textarea"></textarea>
+
+                <a href="#" class="button">Add</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pop-up" id="teacher-info-pop-up" style="display: none;">
+        <div class="teacher-info">
+            <div class="pop-up__header">
+                <h1 class="pop-up__header__title">Teacher Info</h1>
+                <span class="pop-up__header__close-btn">×</span>
+            </div>
+            <div class="teacher-info__content">
+                <div class="row">
+                    <div class="row__left">
+                        <img src="././images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <div class="row__right">
+                        <h1 class="teacher-info__name">Ihor Tkachuk</h1>
+                        <h3 class="teacher-info__subject">Chemistry</h3>
+
+                        <p class="teacher-info__country">Kyiv, Ukraine</p>
+
+                        <p class="teacher-info__age-sex">35, male</p>
+
+                        <a href="#" class="teacher-info__email">Ihor_tkachuk@domain.com</a>
+
+                        <p class="teacher-info__phone">+380964993252</p>
+                    </div>
+                </div>
+                <p class="teacher-info-paragraph">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore reprehenderit perspiciatis modi illum hic, praesentium soluta sit neque recusandae animi, maxime eveniet assumenda accusantium quidem, consectetur cupiditate. Aliquam, eum magnam!</p>
+
+                <a href="#" class="toggle-map-btn">toggle map</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header id="header">
+            <div class="row">
+                <a href="/"><img src="././images/logo.png" alt="logo"></a>
+
+                <div class="search-block">
+                    <input type="text" class="input" placeholder="Name, note or age to search">
+                    <a href="#" class="button">Search</a>
+                </div>
+            </div>
+
+            <div class="row page-navigation">
+                <ul class="navigation">
+                    <li><a href="#">Teacher</a></li>
+                    <li><a href="#">Statistics</a></li>
+                    <li><a href="#">Favorites</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+
+                <a href="#" class="button add-teacher-button">Add teacher</a>
+            </div>
+
+            <div class="hr"></div>
+        </header>
+
+        <section class="teachers">
+            <h1 class="block-title">Top Teachers</h1>
+            <div class="teachers__header">
+                <ul class="teachers__header__items">
+                        <li class="teachers__header__item">
+                            <span>Age</span>
+                            <select name="age">
+                                <option value="18-31" selected>18-31</option>
+                                <option value="31-50">31-50</option>
+                                <option value="50-65">50-65</option>
+                            </select>
+                        </li>
+                        <li class="teachers__header__margin"></li>
+                        <li class="teachers__header__item">
+                            <span>Region</span>
+                            <select name="region">
+                                <option value="europe" selected>Europe</option>
+                                <option value="africa">Africa</option>
+                                <option value="asia">Asia</option>
+                                <option value="north-america">North America</option>
+                                <option value="south-america">South America</option>
+                                <option value="oceania">Oceania</option>
+                            </select>
+                        </li>
+                        <li class="teachers__header__margin"></li>
+                        <li class="teachers__header__item">
+                            <span>Sex</span>
+                            <select name="sex">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                                <option value="another">another=)</option>
+                            </select>
+                        </li>
+                        <li class="teachers__header__margin"></li>
+                        <li class="teachers__header__item">
+                            <input type="checkbox" name="has-photo" id="isTeacherHasPhoto">
+                            <span>Only with photo</span>
+                        </li>
+                        <li class="teachers__header__margin"></li>
+                        <li class="teachers__header__item">
+                            <input type="checkbox" name="is-favorite" id="isTeacherFavorite">
+                            <span>Only favorites</span>
+                        </li>
+                </ul>
+            </div>
+            <div class="teachers__persons">
+                <div class="circle-person circle-person-favorite">
+                    <div class="circle-person__photo">
+                        I.T
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person circle-person-favorite">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person circle-person-favorite">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+                <div class="circle-person">
+                    <div class="circle-person__photo">
+                        <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                    </div>
+                    <h1 class="circle-person__name">
+                        <p class="circle-person__name__first-name">Ihor</p>
+                        <p class="circle-person__name__last-name">Tkachuk</p>
+                    </h1>
+                    <h3 class="circle-person__subject">Chemistry</h3>
+                    <p class="circle-person__country">Ukrainer</p>
+                </div>
+            </div>
+
+            <div class="hr"></div>
+        </section>
+
+        <section class="statistics">
+            <h1 class="block-title">Statistics</h1>
+                <table class="statistics__table">
+                    <thead>
+                        <td><a href="#">name</a></td>
+                        <td><a href="#">speciality</a></td>
+                        <td><a href="#">age</a></td>
+                        <td><a href="#">gender</a></td>
+                        <td><a href="#">nationality</a></td>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Daisy Alexander</td>
+                            <td>Chemistry</td>
+                            <td>28</td>
+                            <td>female</td>
+                            <td>Vietnam</td>
+                        </tr>
+                        <tr>
+                            <td>Daisy Alexander</td>
+                            <td>Chemistry</td>
+                            <td>28</td>
+                            <td>female</td>
+                            <td>Vietnam</td>
+                        </tr>
+                        <tr>
+                            <td>Daisy Alexander</td>
+                            <td>Chemistry</td>
+                            <td>28</td>
+                            <td>female</td>
+                            <td>Vietnam</td>
+                        </tr>
+                        <tr>
+                            <td>Daisy Alexander</td>
+                            <td>Chemistry</td>
+                            <td>28</td>
+                            <td>female</td>
+                            <td>Vietnam</td>
+                        </tr>
+                        <tr>
+                            <td>Daisy Alexander</td>
+                            <td>Chemistry</td>
+                            <td>28</td>
+                            <td>female</td>
+                            <td>Vietnam</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pages">
+                    <ul>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><span>...</span></li>
+                        <li><a href="#">Last</a></li>
+                    </ul>
+                </div>
+                <div class="hr"></div>
+        </section>
+
+        <section class="favorites">
+            <h1 class="block-title">Favorites</h1>
+            <div class="carousel">
+                <button class="carousel__prev" aria-label="Previous Slide">&#10094;</button>
+                <div class="carousel__track-container">
+                    <ul class="carousel__track">
+                        <li class="carousel__slide">
+                            <div class="circle-person">
+                                <div class="circle-person__photo">
+                                    <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                                </div>
+                                <h1 class="circle-person__name">
+                                    <p class="circle-person__name__first-name">Ihor</p>
+                                    <p class="circle-person__name__last-name">Tkachuk</p>
+                                </h1>
+                                <p class="circle-person__country">Ukraine</p>
+                            </div>
+                        </li>
+                        <li class="carousel__slide">
+                            <div class="circle-person">
+                                <div class="circle-person__photo">
+                                    <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                                </div>
+                                <h1 class="circle-person__name">
+                                    <p class="circle-person__name__first-name">Ihor</p>
+                                    <p class="circle-person__name__last-name">Tkachuk</p>
+                                </h1>
+                                <p class="circle-person__country">Ukraine</p>
+                            </div>
+                        </li>
+                        <li class="carousel__slide">
+                            <div class="circle-person">
+                                <div class="circle-person__photo">
+                                    <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                                </div>
+                                <h1 class="circle-person__name">
+                                    <p class="circle-person__name__first-name">Ihor</p>
+                                    <p class="circle-person__name__last-name">Tkachuk</p>
+                                </h1>
+                                <p class="circle-person__country">Ukraine</p>
+                            </div>
+                        </li>
+                        <li class="carousel__slide">
+                            <div class="circle-person">
+                                <div class="circle-person__photo">
+                                    <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                                </div>
+                                <h1 class="circle-person__name">
+                                    <p class="circle-person__name__first-name">Ihor</p>
+                                    <p class="circle-person__name__last-name">Tkachuk</p>
+                                </h1>
+                                <p class="circle-person__country">Ukraine</p>
+                            </div>
+                        </li>
+                        <li class="carousel__slide">
+                            <div class="circle-person">
+                                <div class="circle-person__photo">
+                                    <img src="./images/teacherPhoto.jpg" alt="teacher-photo">
+                                </div>
+                                <h1 class="circle-person__name">
+                                    <p class="circle-person__name__first-name">Ihor</p>
+                                    <p class="circle-person__name__last-name">Tkachuk</p>
+                                </h1>
+                                <p class="circle-person__country">Ukraine</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <button class="carousel__next" aria-label="Next Slide">&#10095;</button>
+            </div>
+            <div class="hr"></div>
+        </section>
+
+        <footer id="footer">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Distinctio, maiores vel illo cumque quos ad quisquam quasi suscipit eum esse iusto, fugit facilis asperiores sint accusamus nesciunt ipsa sapiente itaque.</p>
+
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, officiis? Aut hic ut molestiae eum, totam distinctio temporibus suscipit aperiam adipisci libero commodi quo officia veritatis tenetur, repellat, laboriosam a!</p>
+
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit ratione facere excepturi fugiat? Iusto necessitatibus dignissimos quibusdam nostrum, ad, aperiam molestiae optio placeat iste magnam cupiditate. Iusto rerum porro ad?</p>
+
+                <div class="page-navigation">
+                    <ul class="navigation">
+                        <li><a href="#">Teacher</a></li>
+                        <li><a href="#">Statistics</a></li>
+                        <li><a href="#">Favorites</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+    
+                    <a href="#" class="button add-teacher-button">Add teacher</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- <script></script> -->
+</body>
 </html>

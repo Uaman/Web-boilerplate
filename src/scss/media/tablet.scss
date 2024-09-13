@@ -1,0 +1,68 @@
+@media only screen and (max-width: 768px) {
+    .container{
+        padding: 0;
+    }
+
+    #header .row{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    #header, #footer{
+
+        .search-block{
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+
+            input:focus{
+                width: 250px
+            }
+        }
+        .page-navigation{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .navigation{
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    .teachers__header{
+        .teachers__header__items{
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    }
+
+    .statistics__table{
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .carousel__slide {
+        max-width: 50%;
+    }
+
+    .teacher-info__content{
+        .row{
+            flex-direction: column;
+            align-items: center;
+
+        }
+    }
+
+    .add-teacher{
+        .content__row{
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+}

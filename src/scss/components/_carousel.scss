@@ -1,0 +1,52 @@
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel__track-container {
+    overflow: hidden;
+}
+
+.carousel__track {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel__slide {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 auto;
+    max-width: 15%;
+    box-sizing: border-box;
+}
+
+.carousel__prev,
+.carousel__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: black;
+    border: none;
+    font-size: 3rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+    opacity: 0.5;
+}
+
+.carousel__prev {
+    left: 10px;
+}
+
+.carousel__next {
+    right: 10px;
+}
+
+.carousel__prev:hover,
+.carousel__next:hover {
+    opacity: 1;
+}

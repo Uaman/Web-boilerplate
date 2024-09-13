@@ -1,6 +1,6 @@
-const testModules = require('./test-module');
+const myModule = require('./popupModule');
 require('../css/app.css');
 
 /** ******** Your code here! *********** */
 
-console.log(testModules.hello);
+myModule.popUpHandler();

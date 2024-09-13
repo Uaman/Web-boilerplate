@@ -1,0 +1,35 @@
+.pop-up{
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    max-width: 100%;
+    overflow: scroll;
+
+    .pop-up__header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #464547;
+        color: white;
+        font-size: 1em;
+        padding: 5px 10px;
+
+        .pop-up__header__close-btn{
+            font-size: 28px;
+            cursor: pointer;
+        }
+    }
+}
+
+.pop-up__bg{
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+}

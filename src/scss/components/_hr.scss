@@ -1,0 +1,9 @@
+.hr{
+    margin: 0 auto;
+    max-width: 60vw;
+    width: 600px;
+    height: 1px;
+    background-color: #222222;
+    margin: $section-margin auto;
+    margin-bottom: calc($section-margin / 1.5);
+}
