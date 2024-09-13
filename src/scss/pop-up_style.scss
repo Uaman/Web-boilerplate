@@ -1,7 +1,7 @@
 $popup_header_color: rgb(70, 70, 70);
-$popup_border_radius: 2px;
-$popup_width_high: 560px;
-$popup_width_wide: calc($popup_width_high + 400px);
+$popup_border_radius: 3px;
+$popup_width_height: 50%;
+$popup_width_width: 25%;
 $popup_wrapper_color: rgba(0, 0, 0, 0.5);
 
 //filter stuff
@@ -10,35 +10,48 @@ $filters_margin: 40px;
 
 //colors
 $color_secondary: white;
+$color_bg: #2b2b2b;
+$color_controls: #898989;
+$color_main: #f75c49;
 
+$large_font_size: 14pt;
 $default_font_size: 10pt;
 $page_font: "Calibri (Body)";
 $generic_font: sans-serif;
 
 body {
   font: $default_font_size $page_font, $generic_font;
+
   //attempts at making the gaps at sides
-  margin: 0 15% 0 15%;
+  //margin: 0 15% 0 15%;
 }
+
+// .bg {
+// color: $color_bg;
+//   opacity: 30%;
+// }
 
 .popup-wrapper {
+//border: 1px solid #000;
+display: grid;
   width: 100%;
-  //height: 100%;
+  height: 100%;
   background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
-  //display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-
-    height: 100%;
+  //display: none; //hidden by default (when i actually ake it work from button press)
+  position: fixed;
 }
+
 .popup-window-high {
-  width: $popup_width_high;
+//border: 1px solid #000;
+  width: $popup_width_width;
+  height: auto;
+  margin: auto;
+
 }
 .popup-window-wide {
-  width: $popup_width_wide;
+  //width: $popup_width_wide;
 }
+
 .popup-header {
   background-color: $popup_header_color;
   display: flex;
@@ -54,11 +67,93 @@ body {
   }
   h2 {
     color: $color_secondary;
+    font-size: $large_font_size;
   }
 }
 
 .popup-content {
+//height: 100%;
   background-color: $color_secondary;
   border-bottom-right-radius: $popup_border_radius;
   border-bottom-left-radius: $popup_border_radius;
+  padding: $filters_padding * 2 $filters_padding * 3 $filters_padding $filters_padding * 3;
+
+ div {
+ //border: 1px solid #000;
+ //width: 80%;
+ //margin-left: 10%;
+ position: relative;
+   margin-bottom: 10px;
+}
+}
+
+.popup-item-full, .popup-item-half {
+//border: 1px solid #000;
+  label {
+  //border: 1px solid #000;
+   display: block;
+   text-align: left;
+   color: $color_controls;
+    background-color: $color_secondary;
+      }
+     input,
+          select,
+          textarea {
+         //border: 1px solid #000;
+            width: 100%;
+            padding: $filters_padding 0 0 0;
+            border: 1px solid #000;//NOT DEBUG, ACTUALLY IMPORTANT
+            box-sizing: border-box;
+            border-radius: $popup_border_radius;
+      }
+  }
+
+.popup-item-half {
+//border: 1px solid #000;
+}
+
+.popup-item {
+text-align: left;
+margin: 0;
+//border: 1px solid #000;
+
+}
+
+.input-grid {
+//border: 1px solid #000;
+display: grid;
+justify-content: space-between;
+grid-template-columns: 1fr 1fr;
+column-gap: 20px;
+}
+
+#add_teacher_birthday {
+margin-bottom: 0;
+padding-bottom: 0;
+}
+
+#sex_label {
+ // border: 1px solid #000;
+  color: $color_controls;
+  background-color: $color_secondary;
+  padding-right: $filters_padding * 2;
+ }
+
+ #add_teacher_notes {
+height: $filters_padding * 5;
+ }
+
+.large-button {
+//border: 1px solid #000;
+width: 100%;
+height: $filters_padding * 4;
+ border: 1px solid $color_main;
+  background-color: $color_secondary;
+  color: $color_main;
+  font-size: $large_font_size;
+  font-weight: bold;
+ &:hover {
+     background-color: $color_main;
+     color: $color_secondary;
+   }
 }
