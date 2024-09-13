@@ -1,0 +1,76 @@
+.add-teacher{
+    position: fixed;
+    width: 600px;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+
+    .add-teacher__content{
+        background-color: white;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+
+        input, select, textarea{
+            display: block;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            padding: 5px 10px;
+            height: 32px;
+            color: rgba(0, 0, 0, 0.7);
+        }
+
+        input::placeholder{
+            color: gray;
+        }
+
+        label{
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: gray;
+        }
+
+        .no-margin{
+            margin: 0;
+        }
+
+        .content__row{
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            gap: 15px;
+        }
+
+        .content__row-left{
+            justify-content: start;
+        }
+
+        .content__row__block{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .content__row__sex-label{
+            margin-right: 20px;
+        }
+
+        .notes-textarea{
+            height: 150px;
+            margin-bottom: 50px;
+        }
+        
+        .button{
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .date-of-birth-pop-up{
+            width: calc(50% - 15px/2);
+        }
+        
+        .teacher-bg-color-inp{
+            margin-left: 35px;
+        }
+    }
+}

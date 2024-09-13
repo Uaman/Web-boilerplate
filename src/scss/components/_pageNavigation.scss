@@ -1,0 +1,18 @@
+.page-navigation{
+    font-size: $large-font-size;
+    align-items: center;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+
+    .navigation{
+        display: flex;
+        gap: 25px;
+        color: $base-color;
+        font-weight: $bold-font;
+
+        a:hover{
+            filter: brightness(75%);
+        }
+    }
+}

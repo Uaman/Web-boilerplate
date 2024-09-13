@@ -1,0 +1,54 @@
+.teacher-info{
+    position: fixed;
+    width: 600px;
+    font-size: $small-font-size;
+    max-width: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+
+    .teacher-info__content{
+        background-color: white;
+        padding: 15px;
+
+        .row{
+            display: flex;
+            gap: 20px;
+
+            .row__left img{
+                width: 250px;
+            }
+        }
+
+        .teacher-info-paragraph{
+            margin: 25px 0;
+            text-align: justify;
+            font-weight: 100;
+        }
+
+        .toggle-map-btn{
+            color: $font-url-color;
+            border-bottom: 2px dotted $font-url-color;
+        }
+
+        .teacher-info__name{
+            font-size: 2.5em;
+        }
+        .teacher-info__subject{
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: $bold-font;
+        }
+        .teacher-info__age-sex, .teacher-info__country, .teacher-info__email, .teacher-info__phone{
+            font-weight: 100;
+            margin: 10px 0;
+        }
+        .teacher-info__country{
+            margin-top: 15px;
+        }
+
+        .teacher-info__email{
+            color: $font-url-color;
+
+        }
+    }   
+}
