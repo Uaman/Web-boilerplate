@@ -1,7 +1,7 @@
 $popup_header_color: rgb(70, 70, 70);
 $popup_border_radius: 3px;
-$popup_width_height: 50%;
-$popup_width_width: 25%;
+$popup_height: 50%;
+$popup_width: 25%;
 $popup_wrapper_color: rgba(0, 0, 0, 0.5);
 
 //filter stuff
@@ -16,7 +16,7 @@ $color_main: #f75c49;
 
 $large_font_size: 14pt;
 $default_font_size: 10pt;
-$page_font: "Calibri (Body)";
+$page_font: "Roboto";
 $generic_font: sans-serif;
 
 body {
@@ -43,7 +43,7 @@ display: grid;
 
 .popup-window-high {
 //border: 1px solid #000;
-  width: $popup_width_width;
+  width: $popup_width;
   height: auto;
   margin: auto;
 

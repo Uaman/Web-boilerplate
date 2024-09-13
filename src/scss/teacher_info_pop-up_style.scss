@@ -1,0 +1,139 @@
+$popup_header_color: rgb(70, 70, 70);
+$popup_border_radius: 3px;
+$popup_height: 50%;
+$popup_width: 60%;
+$popup_wrapper_color: rgba(0, 0, 0, 0.5);
+
+//filter stuff
+$filters_padding: 10px;
+$filters_margin: 40px;
+
+//colors
+$color_secondary: white;
+$color_bg: #2b2b2b;
+$color_controls: #898989;
+$color_main: #f75c49;
+
+$large_font_size: 14pt;
+$default_font_size: 10pt;
+$page_font: "Roboto";
+$generic_font: sans-serif;
+
+
+
+body {
+  font: $default_font_size $page_font, $generic_font;
+}
+
+.popup-header {
+  background-color: $popup_header_color;
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: $popup_border_radius;
+  border-top-left-radius: $popup_border_radius;
+  padding: $filters_padding;
+  button {
+    padding: 0;
+    background: none;
+    border: none;
+    color: $color_secondary;
+  }
+  h2 {
+    color: $color_secondary;
+    font-size: $large_font_size;
+  }
+}
+
+.popup-wrapper {
+//border: 1px solid #000;
+display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
+  //display: none; //hidden by default (when i actually ake it work from button press)
+  position: fixed;
+}
+
+
+.popup-window-wide {
+   width: $popup_width;
+    height: auto;
+    margin: auto;
+}
+
+.popup-content {
+//height: 100%;
+  background-color: $color_secondary;
+  border-bottom-right-radius: $popup_border_radius;
+  border-bottom-left-radius: $popup_border_radius;
+  padding: $filters_padding * 2 $filters_padding * 3 $filters_padding $filters_padding * 3;
+
+//  div {
+//  border: 1px solid #000;
+//  //width: 80%;
+//  //margin-left: 10%;
+// //  position: relative;
+//    margin-bottom: 10px;
+// }
+}
+
+.teacher-info-card {
+
+  display: flex;
+  width: 100%;
+  float: left;
+margin: 0 0 $filters_margin / 2 $filters_margin / 2;
+  #teacher_fav {
+  top: 10px;
+  left: calc($popup_width - 10px);
+  }
+}
+
+.popup-item-third {
+//border: 1px solid #000;
+padding: 0;
+}
+
+h1 {
+margin-top: 0;
+font-size: calc($large_font_size + 8pt);
+}
+
+h3 {
+font-size: $large_font_size;
+font-weight: bold;
+margin: calc($filters_margin / 2) 0 calc($filters_margin / 2) 0;
+}
+
+h4 {
+margin: $filters_margin * 0.3 0 $filters_margin * 0.3 0;
+}
+
+.teacher-image-full {
+height: 100%;
+width: $filters_margin * 5;
+float: inline-start;
+}
+
+#teacher_info {
+//border: 1px solid #000;
+text-align: left;
+padding: 0 calc($popup_width * 0.6) 0 $filters_padding;
+margin: 0 $filters_margin / 2 0 $filters_margin / 2;
+}
+
+
+#teacher_favorite_star {
+height: 30%;
+width: 60%;
+float: inline-end;
+}
+
+#teacher_description_full {
+text-align: left;
+}
+
+.popup-item-full {
+margin: $filters_margin / 2;
+text-align: left;
+}

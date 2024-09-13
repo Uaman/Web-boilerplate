@@ -30,7 +30,7 @@ $default_font_size: 10pt;
 $small_font_size: 8pt;
 $tiny_font_size: 6pt;
 $large_font_size: 14pt;
-$page_font: "Calibri (Body)";
+$page_font: "Roboto";
 $generic_font: sans-serif;
 
 //section header
@@ -481,44 +481,3 @@ text-align: left;
 margin-top: 1%;
 font-size: $default_font_size;
 }
-
-//POP-UPS
-
-//ADD TEACHER
-// .popup-wrapper {
-//
-//   width: 100%;
-//   //height: 100%;
-//   background-color: $popup_wrapper_color;
-// }
-//
-// .popup-window-high {
-//   width: $popup_width_high;
-// }
-// .popup-window-wide {
-//   width: $popup_width_wide;
-// }
-//
-// .popup-header {
-//   background-color: $popup_header_color;
-//   display: flex;
-//   justify-content: space-between;
-//   border-top-right-radius: $popup_border_radius;
-//   border-top-left-radius: $popup_border_radius;
-//   padding: $filters_padding;
-//   button {
-//     padding: 0;
-//     background: none;
-//     border: none;
-//     color: $color_secondary;
-//   }
-//   h2 {
-//     color: $color_secondary;
-//   }
-// }
-//
-// .popup-content {
-//   background-color: $color_secondary;
-//   border-bottom-right-radius: $popup_border_radius;
-//   border-bottom-left-radius: $popup_border_radius;
-// }

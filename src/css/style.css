@@ -1,5 +1,5 @@
 body {
-  font: 10pt "Calibri (Body)", sans-serif;
+  font: 10pt "Roboto", sans-serif;
   margin: 0 15% 0 15%;
   border-right: 0.5px solid grey;
   border-left: 0.5px solid grey;
@@ -320,43 +320,6 @@ tbody tr th:first-child, tbody tr td:first-child {
   text-align: left;
   margin-top: 1%;
   font-size: 10pt;
-}
-
-.popup-wrapper {
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.popup-window-high {
-  width: 560px;
-}
-
-.popup-window-wide {
-  width: 960px;
-}
-
-.popup-header {
-  background-color: rgb(70, 70, 70);
-  display: flex;
-  justify-content: space-between;
-  border-top-right-radius: 2px;
-  border-top-left-radius: 2px;
-  padding: 10px;
-}
-.popup-header button {
-  padding: 0;
-  background: none;
-  border: none;
-  color: white;
-}
-.popup-header h2 {
-  color: white;
-}
-
-.popup-content {
-  background-color: white;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
 }
 
 /*# sourceMappingURL=style.css.map */
