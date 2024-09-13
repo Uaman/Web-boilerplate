@@ -1,0 +1,325 @@
+body {
+  font: 10pt "Roboto", sans-serif;
+  margin: 0 15% 0 15%;
+  border-right: 0.5px solid grey;
+  border-left: 0.5px solid grey;
+  padding-right: 1%;
+  padding-left: 1%;
+}
+
+header div, footer div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header div, footer div {
+  margin: 0 80px 0 80px;
+  padding: 25px 0 12.5px 0;
+}
+
+.content-block {
+  padding: 25px 80px 12.5px 80px;
+}
+
+.section-header {
+  width: 400px;
+  margin: auto;
+  border-top: 1px solid black;
+  padding: 30px 0 30px 0;
+}
+.section-header h2 {
+  font-size: 26pt;
+  display: inline-block;
+  font-weight: bold;
+}
+
+.section-header-about {
+  width: 400px;
+  margin: auto;
+  border-top: 1px solid black;
+  padding: 15px 0 15px 0;
+}
+
+.main-header {
+  font: 32pt "Times New Roman", serif;
+  text-shadow: -1.7px 0 #f75c49, 0 1.2px black, 2.2px 0 black, 0 -1.5px #f75c49;
+  color: white;
+}
+.main-header:hover {
+  text-shadow: -3px -0.5px #f75c49, 3px 0.5px black;
+  color: #EDEFEE;
+}
+
+.input_search {
+  padding: 10px 5px 10px 5px;
+  width: 195px;
+  border-width: 1px;
+  border-radius: 2px;
+  color: darkgrey;
+}
+.input_search:hover {
+  width: 234px;
+}
+
+.search_teacher_btn, .add_teacher {
+  border: 1px solid #f75c49;
+  background-color: white;
+  color: #f75c49;
+  padding: 10px 20px 10px 20px;
+}
+.search_teacher_btn:hover, .add_teacher:hover {
+  background-color: #f75c49;
+  color: white;
+}
+
+.add_teacher {
+  font-size: 14pt;
+  transform: translateY(-2px);
+}
+
+.main-navigation li, .footer-navigation li {
+  display: inline-block;
+  margin-right: 30px;
+}
+
+.main-navigation {
+  font-weight: bold;
+}
+
+.link-navigation {
+  color: #f75c49;
+  text-decoration: none;
+  font-size: 14pt;
+}
+
+.link-navigation:hover {
+  color: rgb(190, 82, 61);
+}
+
+.filter-controls {
+  display: flex;
+  justify-content: start;
+}
+
+.filter-control:not(:first-child) {
+  padding: 0 20px 0 20px;
+}
+.filter-control:first-child {
+  padding-right: 20px;
+}
+.filter-control:not(:last-child) {
+  border-right: 2px dotted darkgrey;
+}
+.filter-control:nth-last-child(-n+2) {
+  padding-top: 8px;
+}
+.filter-control label {
+  color: darkgrey;
+  font-size: 10pt;
+}
+.filter-control label:hover {
+  color: black !important;
+}
+.filter-control select {
+  padding: 5px;
+  margin: 4px;
+}
+
+.searched-teacher-list {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  margin: 30px 0 0 0;
+}
+
+.teacher-item {
+  display: grid;
+  margin: 0 20px 0 20px;
+}
+.teacher-item p {
+  margin: 2px;
+  padding: 3%;
+}
+
+.teacher-image {
+  display: block;
+  margin: 7px;
+  height: 130px;
+  width: 130px;
+  border: 4px solid #f99589;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.teacher-image:hover {
+  border-color: rgb(200, 80, 55);
+}
+
+.teacher-initials {
+  display: none;
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 15pt;
+  color: #f75c49;
+  font-weight: bold;
+}
+.teacher-initials:hover {
+  color: rgb(200, 80, 55);
+}
+
+.teacher-image:not([src]) + .teacher-initials,
+.teacher-image[alt]:not([src]) + .teacher-initials {
+  display: block;
+}
+
+.teacher-item-info {
+  padding: 5px;
+}
+
+.teacher-name {
+  font-size: 14pt;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+}
+
+.teacher-spec {
+  opacity: 60%;
+}
+
+.teacher-region {
+  font-size: 8pt;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+thead tr {
+  font-weight: lighter;
+}
+thead tr th, thead tr td {
+  padding: 10px;
+  position: relative;
+  text-align: center;
+}
+thead tr th:first-child, thead tr td:first-child {
+  text-align: center;
+}
+thead tr th {
+  border-bottom: 1px solid black;
+}
+thead tr th:hover {
+  border-bottom: 5px solid black;
+  background-color: rgb(250, 250, 250);
+}
+thead tr th:hover .sort-arrow {
+  display: inline;
+}
+
+tbody tr {
+  font-weight: lighter;
+}
+tbody tr th, tbody tr td {
+  padding: 10px;
+}
+tbody tr th:first-child, tbody tr td:first-child {
+  text-align: left;
+}
+
+.statistics-table-head {
+  border-bottom: 1px solid black;
+  font-size: 12pt;
+}
+
+.table-navigation {
+  text-align: left;
+  font-weight: lighter;
+  padding-top: 20px;
+}
+.table-navigation .hidden {
+  display: none;
+}
+
+.sort-arrow {
+  display: none;
+  position: absolute;
+  font-size: 14pt;
+  margin: auto;
+}
+
+.button-navigation, .sort-arrow {
+  color: rgb(80, 175, 200);
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0 10px 0 10px;
+}
+.button-navigation:hover, .sort-arrow:hover {
+  color: rgb(50, 100, 110);
+}
+
+.statistics-table-body td {
+  padding: 10px;
+}
+
+.statistics-table-body tr:nth-child(even) {
+  background-color: rgb(250, 240, 250);
+}
+
+#favorites {
+  position: relative; /* Make this container the reference for the absolute positioning */
+}
+
+.arrow-btn {
+  border: none;
+  background: none;
+  height: fit-content;
+  width: fit-content;
+  opacity: 60%;
+  position: absolute; /* Make the buttons positioned absolutely */
+  top: 55%; /* Align vertically at the center */
+}
+.arrow-btn:hover {
+  opacity: 100%;
+}
+
+.teacher-favorite-list {
+  display: flex;
+  justify-content: center;
+}
+
+#fav-right-btn, #fav-left-btn {
+  height: 50px;
+  width: 30px;
+}
+
+.favorite-right, .favorite-left {
+  height: 100%;
+  width: 100%;
+}
+
+#fav-left-btn {
+  left: 1%; /* Position on the left edge */
+}
+
+#fav-right-btn {
+  right: 1%; /* Position on the right edge */
+}
+
+#about {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+#about p {
+  text-align: left;
+  margin-top: 1%;
+  font-size: 10pt;
+}
+
+/*# sourceMappingURL=style.css.map */

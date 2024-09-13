@@ -1,0 +1,483 @@
+//screen size
+$mobile: 480px;
+$tablet: 768px;
+$desktop: 1024px;
+$large-desktop: 1200px;
+//
+// //apply styles based on device width
+// body {
+//   width: 100%;
+//   padding: 20px;
+//
+//   @media (max-width: $mobile) {
+//     padding: 10px; // Mobile-specific padding
+//   }
+//
+//   @media (min-width: $tablet) and (max-width: $desktop) {
+//     padding: 15px; // Tablet and small desktop-specific padding
+//   }
+//
+//   @media (min-width: $large-desktop) {
+//     padding: 30px; // Large desktop-specific padding
+//   }
+// }
+
+//general and main fonts
+$main_header_font: "Times New Roman";
+$main_header_generic_font: serif;
+$section_header_font_size: 26pt;
+$default_font_size: 10pt;
+$small_font_size: 8pt;
+$tiny_font_size: 6pt;
+$large_font_size: 14pt;
+$page_font: "Roboto";
+$generic_font: sans-serif;
+
+//section header
+$section_header_padding_ver: 30px;
+$section_header_width: 400px;
+
+//navs
+$nav_item_margin: 30px;
+$controls_padding: 20px;
+
+//general sizing
+$search_width: 195px;
+$block_padding_ver: 25px;
+$block_padding_hor: 80px;
+$main_header_size: 32pt;
+$paragraph_margin: 10px;
+
+//colors
+$color_main: #f75c49;
+$color_teacher_avatar: #f99589;
+$color_main_dark: rgb(200, 80, 55);
+$color_secondary: white;
+$color_third: black;
+$color_controls: darkgrey;
+
+//table colors
+$table_row_even_color: rgb(250, 240, 250);
+$table_header_on_hover_color: rgb(250, 250, 250);
+$table_controls_color: rgb(80, 175, 200);
+$table_controls_on_hover_color: rgb(50, 100, 110);
+$table_sort_offset: 80px;
+
+//filter stuff
+$filters_padding: 10px;
+$filters_margin: 40px;
+
+//pop-ups
+// $popup_header_color: rgb(70, 70, 70);
+// $popup_border_radius: 2px;
+// $popup_width_high: 560px;
+// $popup_width_wide: calc($popup_width_high + 400px);
+// $popup_wrapper_color: rgba(0, 0, 0, 0.5);
+
+
+
+body {
+  font: $default_font_size $page_font, $generic_font;
+  //attempts at making the gaps at sides
+  margin: 0 15% 0 15%;
+  border-right: 0.5px solid grey;
+  border-left: 0.5px solid grey;
+  padding-right: 1%;
+  padding-left: 1%;
+}
+
+header div, footer div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  //aligns items vertically along the center of the header
+}
+
+header div, footer div {
+margin: 0 $block_padding_hor 0 $block_padding_hor;
+padding: $block_padding_ver 0 $block_padding_ver/2 0;
+}
+
+.content-block {
+  padding: $block_padding_ver $block_padding_hor calc($block_padding_ver/2) $block_padding_hor;
+}
+
+
+.section-header{
+  h2 {
+    //border: 1px solid #000;
+    font-size: $section_header_font_size;
+    display: inline-block;
+    font-weight: bold;
+  }
+  width: $section_header_width;
+  //make constant value for margin for section header?
+  margin: auto;
+  border-top: 1px solid $color_third;
+  padding: $section_header_padding_ver  0 $section_header_padding_ver 0;
+}
+
+.section-header-about {
+width: $section_header_width;
+  //make constant value for margin for section header?
+  margin: auto;
+  border-top: 1px solid $color_third;
+  padding: $section_header_padding_ver / 2  0 $section_header_padding_ver / 2 0;
+}
+
+
+
+//TITLE
+.main-header {
+//border:  1px solid #000;
+  font: $main_header_size $main_header_font, $main_header_generic_font;
+  //need to somehow merge the shadows so there's 2 instead of 4
+  text-shadow: -1.7px 0 $color_main, 0 1.2px $color_third, 2.2px 0 $color_third, 0 -1.5px $color_main;
+  color: $color_secondary;
+  &:hover {
+    text-shadow: -3px -0.5px $color_main, 3px 0.5px $color_third;
+    color: #EDEFEE;
+  }
+}
+
+.search-combo {
+//border: 1px solid #000;
+//padding-top: calc($block_padding_ver - 1%); //I dunno, come up with a way to make it proper size
+ }
+
+.input_search {
+  padding: calc($controls_padding/2) calc($controls_padding/4) calc($controls_padding/2) calc($controls_padding/4);
+  width: $search_width;
+  border-width: 1px;
+  border-radius: 2px;
+  color: $color_controls;
+  &:hover {
+    width: $search_width * 1.2;
+  }
+}
+
+//BUTTONS
+.search_teacher_btn, .add_teacher {
+  border: 1px solid $color_main;
+  background-color: $color_secondary;
+  color: $color_main;
+  padding: calc($controls_padding / 2) $controls_padding calc($controls_padding / 2) $controls_padding;
+  &:hover {
+    background-color: $color_main;
+    color: $color_secondary;
+  }
+}
+
+.add_teacher {
+  //border: 1px solid #000;
+  font-size: $large_font_size;
+  transform: translateY(-2px);
+
+}
+
+
+
+//NAVS
+.main-navigation, .footer-navigation {
+  //border: 1px solid #000;
+}
+
+.main-navigation li, .footer-navigation li {
+  display: inline-block;
+  margin-right: $nav_item_margin;
+}
+
+.main-navigation {
+font-weight: bold;
+}
+
+.link-navigation {
+  color: $color_main;
+  text-decoration: none;
+  font-size: $large_font_size;
+}
+  .link-navigation:hover {
+    color: rgb(190, 82, 61);
+  }
+
+
+
+//TOP TEACHERS
+.filter-controls {
+//border: 1px solid red;
+  display: flex;
+  justify-content: start;
+}
+
+.filter-control {
+//border: 1px solid #000;
+
+  &:not(:first-child) {
+    padding: 0 $filters_padding*2 0 $filters_padding*2;
+  }
+
+  &:first-child {
+   padding-right: $filters_padding*2;
+  }
+
+  &:not(:last-child) {
+    border-right: 2px dotted $color_controls;
+  }
+
+   &:nth-last-child(-n+2) {
+     padding-top: calc($filters_padding - 2px);
+     //padding-bottom: calc($filters_padding/2);
+   }
+
+  label {
+    color: $color_controls;
+    font-size: 10pt;
+    &:hover {
+      color: $color_third!important;
+    }
+  }
+  select {
+      padding: calc($filters_padding/2);
+      margin: $filters_margin/10;
+    }
+}
+
+.searched-teacher-list {
+//border: 1px solid #000;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr); /* 5 equal columns */
+  margin: calc($filters_margin - 10px) 0 0 0;
+}
+
+.teacher-item {
+ //border: 1px solid #000;
+ display: grid;
+  margin: 0 20px 0 20px;
+    p {
+      margin: 2px;
+      padding: 3%;
+      //border: 1px solid #000;
+    }
+}
+
+// .teacher-image-container {
+// position: relative;
+//    display: inline-block;
+// }
+
+
+.teacher-image {
+  display: block;
+  margin: 7px;
+  height: 130px;
+  width: 130px;
+  border: 4px solid $color_teacher_avatar;
+  border-radius: 50%;
+  overflow: hidden;
+  &:hover {
+    border-color: $color_main_dark;
+  }
+//   &:not([src]) + .alt-text, [alt]:not([src]) + .alt-text {
+//    display: block;
+//   }
+}
+
+.teacher-initials {
+//border: 1px solid #000;
+    display: none;
+      position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+font-size: $large_font_size + 1pt;
+color: $color_main;
+font-weight: bold;
+    &:hover {
+    color: $color_main_dark;
+    }
+}
+
+.teacher-image:not([src]) + .teacher-initials,
+.teacher-image[alt]:not([src]) + .teacher-initials {
+  display: block;
+}
+
+// .teacher-initials {
+//
+// }
+
+
+.teacher-item-info {
+ // border: 1px solid #000;
+  padding: 5px;
+}
+
+
+.teacher-name {
+  font-size: $large_font_size;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+
+}
+
+.teacher-spec {
+  opacity: 60%;
+}
+
+.teacher-region {
+font-size: $small_font_size;
+}
+
+
+//STATS
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+thead {
+    tr {
+      font-weight: lighter;
+
+        th, td {
+                padding: $filters_padding;
+                position: relative;
+                text-align: center;
+                &:first-child {
+                  text-align: center;
+                }
+              }
+              th {
+                border-bottom: 1px solid $color_third;
+                &:hover {
+                  border-bottom: 5px solid $color_third;
+                  background-color: $table_header_on_hover_color;
+                  .sort-arrow {
+                    display: inline;
+                  }
+                }
+              }
+            }
+        }
+
+ tbody {
+    tr {
+      font-weight: lighter;
+      th, td {
+        padding: $filters_padding;
+
+        &:first-child {
+          text-align: left;
+        }
+      }
+    }
+  }
+
+
+.statistics-table-head {
+  border-bottom: 1px solid $color_third;
+  font-size: calc($default_font_size + 2pt);
+}
+
+.table-navigation {
+  text-align: left;
+  font-weight: lighter;
+  padding-top: $filters_padding*2;
+  .hidden {
+    display: none;
+  }
+}
+.sort-arrow {
+  display: none;
+  position: absolute;
+  font-size: $large_font_size;
+  margin: auto;
+}
+
+.button-navigation, .sort-arrow {
+  color: $table_controls_color;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0 $filters_padding 0 $filters_padding;
+  &:hover {
+    color: $table_controls_on_hover_color;
+  }
+}
+
+
+.statistics-table-body td {
+  padding: 10px;
+}
+.statistics-table-body tr:nth-child(even) {
+  background-color: $table_row_even_color;
+}
+
+//FAVS
+
+#favorites {
+  position: relative; /* Make this container the reference for the absolute positioning */
+}
+
+.arrow-btn {
+  border: none;
+  background: none;
+  height: fit-content;
+  width: fit-content;
+  opacity: 60%;
+  position: absolute; /* Make the buttons positioned absolutely */
+  top: 55%; /* Align vertically at the center */
+  //transform: translateY(-50%); /* Adjust for centering exactly in the middle */
+  &:hover {
+    opacity: 100%;
+  }
+}
+
+
+.teacher-favorite-list {
+//border: 1px solid #000;
+display: flex;
+justify-content: center;
+}
+
+
+#fav-right-btn, #fav-left-btn {
+//border: 1px solid #000;
+height: 50px;
+width: 30px;
+}
+
+.favorite-right, .favorite-left {
+height: 100%;
+width: 100%;
+}
+
+
+#fav-left-btn {
+  left: 1%; /* Position on the left edge */
+}
+
+#fav-right-btn {
+  right: 1%; /* Position on the right edge */
+}
+
+//ABOUT
+#about {
+//border: 1px solid #000;
+margin: 0;
+padding-bottom: 0;
+}
+
+.about-text {
+//border: 1px solid #000;
+}
+
+#about p {
+//border: 1px solid #000;
+text-align: left;
+margin-top: 1%;
+font-size: $default_font_size;
+}

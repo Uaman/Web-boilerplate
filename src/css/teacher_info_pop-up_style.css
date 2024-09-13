@@ -1,0 +1,102 @@
+body {
+  font: 10pt "Roboto", sans-serif;
+}
+
+.popup-header {
+  background-color: rgb(70, 70, 70);
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  padding: 10px;
+}
+.popup-header button {
+  padding: 0;
+  background: none;
+  border: none;
+  color: white;
+}
+.popup-header h2 {
+  color: white;
+  font-size: 14pt;
+}
+
+.popup-wrapper {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+}
+
+.popup-window-wide {
+  width: 60%;
+  height: auto;
+  margin: auto;
+}
+
+.popup-content {
+  background-color: white;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  padding: 20px 30px 10px 30px;
+}
+
+.teacher-info-card {
+  display: flex;
+  width: 100%;
+  float: left;
+  margin: 0 0 20px 20px;
+}
+.teacher-info-card #teacher_fav {
+  top: 10px;
+  left: calc(60% - 10px);
+}
+
+.popup-item-third {
+  padding: 0;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22pt;
+}
+
+h3 {
+  font-size: 14pt;
+  font-weight: bold;
+  margin: 20px 0 20px 0;
+}
+
+h4 {
+  margin: 12px 0 12px 0;
+}
+
+.teacher-image-full {
+  height: 100%;
+  width: 200px;
+  float: inline-start;
+}
+
+#teacher_info {
+  text-align: left;
+  padding: 0 36% 0 10px;
+  margin: 0 20px 0 20px;
+}
+
+#teacher_favorite_star {
+  height: 30%;
+  width: 60%;
+  float: inline-end;
+}
+
+#teacher_description_full {
+  text-align: left;
+}
+
+.popup-item-full {
+  margin: 20px;
+  text-align: left;
+}
+
+/*# sourceMappingURL=teacher_info_pop-up_style.css.map */

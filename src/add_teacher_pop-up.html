@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head itemscope itemtype="http://schema.org/WebSite">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+
+    <title>Add Teacher</title>
+</head>
+
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/add_teacher_pop-up_style.css">
+
+<body>
+<div class="bg">
+    <div class="popup-wrapper">
+        <div id="add_teacher_window" class="popup-window-high">
+            <div class="popup-header"><h2>Add a teacher</h2>
+                <button type="button">X</button>
+            </div>
+            <div class="popup-content">
+                <form>
+                    <div class="popup-item-full">
+                        <label for="add_teacher_name">Name</label>
+                        <input name="teacher-name" type="text" id="add_teacher_name"/>
+                    </div>
+
+                    <div class="popup-item-full">
+                        <label for="add_teacher_spec">Speciality</label>
+                        <select name="teacher-speciality" id="add_teacher_spec">
+                            <option value="mathematics">Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="input-grid">
+                        <div class="popup-item-half">
+                            <label for="add_teacher_country">Country</label>
+                            <select name="teacher-country" id="add_teacher_country">
+                                <option value="ukraine">Ukraine</option>
+                            </select>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_city">City</label>
+                            <input name="teacher-city" type="text" id="add_teacher_city"/>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_email">Email</label>
+                            <input name="teacher-email" type="email" id="add_teacher_email"/>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_phone">Phone</label>
+                            <input name="teacher-phone" type="tel" id="add_teacher_phone"/>
+                        </div>
+                        <div class="popup-item-half">
+                            <label for="add_teacher_birthday">Date of birth</label>
+                            <input name="teacher-birthday" type="date" id="add_teacher_birthday"/>
+                        </div>
+                    </div>
+                    <div class="popup-item" id="sex-checkbox">
+                        <label id="sex_label">Sex</label>
+                            <label for="add_teacher_male">Male</label>
+                            <input name="teacher-male" type="radio" id="add_teacher_male"/>
+                            <label for="add_teacher_female">Female</label>
+                            <input name="teacher-female" type="radio" id="add_teacher_female"/>
+                    </div>
+                    <div class="popup-item" id="bg-slider">
+                        <label for="add_teacher_color">Background color</label>
+                        <input name="teacher-color" type="color" id="add_teacher_color"/>
+                    </div>
+                    <div class="popup-item-full">
+                        <label for="add_teacher_notes">Notes (optional)</label>
+                        <textarea name="teacher-notes" id="add_teacher_notes"></textarea>
+                    </div>
+                    <div>
+                        <button class="large-button" type="submit">
+                        Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

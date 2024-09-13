@@ -1,0 +1,108 @@
+body {
+  font: 10pt "Roboto", sans-serif;
+}
+
+.popup-wrapper {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+}
+
+.popup-window-high {
+  width: 25%;
+  height: auto;
+  margin: auto;
+}
+
+.popup-header {
+  background-color: rgb(70, 70, 70);
+  display: flex;
+  justify-content: space-between;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  padding: 10px;
+}
+.popup-header button {
+  padding: 0;
+  background: none;
+  border: none;
+  color: white;
+}
+.popup-header h2 {
+  color: white;
+  font-size: 14pt;
+}
+
+.popup-content {
+  background-color: white;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  padding: 20px 30px 10px 30px;
+}
+.popup-content div {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.popup-item-full label, .popup-item-half label {
+  display: block;
+  text-align: left;
+  color: #898989;
+  background-color: white;
+}
+.popup-item-full input,
+.popup-item-full select,
+.popup-item-full textarea, .popup-item-half input,
+.popup-item-half select,
+.popup-item-half textarea {
+  width: 100%;
+  padding: 10px 0 0 0;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.popup-item {
+  text-align: left;
+  margin: 0;
+}
+
+.input-grid {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+
+#add_teacher_birthday {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+#sex_label {
+  color: #898989;
+  background-color: white;
+  padding-right: 20px;
+}
+
+#add_teacher_notes {
+  height: 50px;
+}
+
+.large-button {
+  width: 100%;
+  height: 40px;
+  border: 1px solid #f75c49;
+  background-color: white;
+  color: #f75c49;
+  font-size: 14pt;
+  font-weight: bold;
+}
+.large-button:hover {
+  background-color: #f75c49;
+  color: white;
+}
+
+/*# sourceMappingURL=add_teacher_pop-up_style.css.map */
