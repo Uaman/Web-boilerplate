@@ -25,6 +25,8 @@ const formattedUserFile = require('./formatted-user-mock.js');
 function format_data(random, additional) {
 //console.log(rawData.name);
 const userArray = [];
+
+//random formatting
 random.forEach(user => {
  formattedUser = {};
 
@@ -49,12 +51,57 @@ formattedUser.phone = user.phone;
 formattedUser.picture_large = user.picture.large;
 formattedUser.picture_thumbnail = user.picture.thumbnail;
 
- userArray.push(formattedUser);
+//additional fields
+formattedUser.id = user.id;
+formattedUser.favorite = user.favorite;
+formattedUser.course = user.course;
+formattedUser.bg_color = user.bg_color;
+formattedUser.note = user.note;
+
+userArray.push(formattedUser);
 });
 
+//additinal formatting
+additional.forEach(user => {
+ formattedUser = {};
+
+formattedUser.gender = define(user.gender);
+formattedUser.title = define(user.title);
+formattedUser.full_name = define(user.full_name);
+
+formattedUser.city = define(user.city);
+formattedUser.state = define(user.state);
+formattedUser.country = define(user.country);
+formattedUser.postcode = define(user.postcode);
+formattedUser.coordinates = define(user.coordinates);
+formattedUser.timezone = define(user.timezone);
+
+formattedUser.email = define(user.email);
+
+formattedUser.b_date = define(user.b_date);
+formattedUser.age = define(user.age);
+
+formattedUser.phone = define(user.phone);
+
+formattedUser.picture_large = define(user.picture_large);
+formattedUser.picture_thumbnail = define(user.picture_thumbnail);
+
+//additional fields
+formattedUser.id = user.id;
+formattedUser.favorite = user.favorite;
+formattedUser.course = user.course;
+formattedUser.bg_color = user.bg_color;
+formattedUser.note = user.note;
+
+ userArray.push(formattedUser);
+});
 //userArray.push(...);//writing data into array
 
 return userArray;//returns the final array
+}
+
+function define(data) {
+return typeof data === "undefined" ? null : data;
 }
 
 //userFile.randomUserMock.forEach(user => {
