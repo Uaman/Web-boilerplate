@@ -52,11 +52,11 @@ formattedUser.picture_large = user.picture.large;
 formattedUser.picture_thumbnail = user.picture.thumbnail;
 
 //additional fields
-formattedUser.id = user.id;
-formattedUser.favorite = user.favorite;
-formattedUser.course = user.course;
-formattedUser.bg_color = user.bg_color;
-formattedUser.note = user.note;
+formattedUser.id = create_id(user.id.name, user.id.value);
+formattedUser.favorite = create_favorite(user.favorite);
+formattedUser.course = create_course(user.course);
+formattedUser.bg_color = create_bg_color(user.bg_color);
+formattedUser.note = create_note(user.note);
 
 userArray.push(formattedUser);
 });
@@ -88,10 +88,10 @@ formattedUser.picture_thumbnail = define(user.picture_thumbnail);
 
 //additional fields
 formattedUser.id = user.id;
-formattedUser.favorite = user.favorite;
-formattedUser.course = user.course;
-formattedUser.bg_color = user.bg_color;
-formattedUser.note = user.note;
+formattedUser.favorite = create_favorite(user.favorite);
+formattedUser.course = create_course(user.course);
+formattedUser.bg_color = create_bg_color(user.bg_color);
+formattedUser.note = create_note(user.note);
 
  userArray.push(formattedUser);
 });
@@ -104,9 +104,79 @@ function define(data) {
 return typeof data === "undefined" ? null : data;
 }
 
-//userFile.randomUserMock.forEach(user => {
-//    format_data(user);
-//  });
+function create_id(name, value) {
+
+if(value === null) {//generate id value
+name = 'TFN';
+value = generate_tfn();
+}
+return name + '' + value;
+}
+
+function generate_tfn() {
+  /* Create vars */
+  var tfn = Math.floor(100000000 + Math.random() * 900000000);
+  var sum;
+  var zero = 13;
+  var weights = [10, 7, 8, 4, 6, 3, 5, 2, 1];
+
+  /* Loop through each */
+  while (zero != 0) {
+    /* Reset vars */
+    sum = 0;
+    tfn = parseInt(tfn) + 1;
+    product = 0;
+
+    /* Loop through each number */
+    for (var i = 0; i < String(tfn).length; i++) {
+      /* Check digit */
+      sum = sum + (String(tfn).substr(i, 1) * weights[i]);
+    }
+
+    /* Check if valid */
+    zero = sum % 11;
+  }
+
+ return tfn;
+}
+
+function create_favorite(data){
+favorite = define(data);//check if field exists
+if(favorite === null) {
+favorite = Math.random()>=0.5;
+}
+
+return favorite;
+}
+
+let courses = ["Mathematics", "Physics", "English", "Computer Science", "Dancing", "Chess", "Biology", "Chemistry",
+               "Law", "Art", "Medicine", "Statistics"];
+function create_course(data){
+course = define(data);//check if field exists
+if(course === null) {
+course = courses[(Math.floor(Math.random() * courses.length))];
+}
+
+return course;
+}
+
+function create_bg_color(data) {
+bg_color = define(data);//check if field exists
+if(bg_color === null) {
+bg_color = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+}
+
+return bg_color;
+}
+
+function create_note(data) {
+default_note = define(data);
+if(default_note === null) {
+default_note = 'User is shy~';
+}
+
+return default_note;
+}
 
 //call function
 
