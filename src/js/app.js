@@ -2,29 +2,15 @@ const testModules = require('./test-module');
 require('../css/app.css');
 
 const userFile = require('./random-user-mock.js');
-const formattedUserFile = require('./formatted-user-mock.js');
+//formattedUserFile = require('./formatted-user-mock.js');
 
-/*"gender":"male",
-  "title": "Mr",
-  "full_name": "Norbert Weishaupt",
-  "city":"Rhön-Grabfeld",
-  "state":"Mecklenburg-Vorpommern",
-  "country":"Germany",
-  "postcode":52640,
-  "coordinates":{"latitude":"-42.1817","longitude":"-152.1685"},
-  "timezone":{"offset":"+9:30","description":"Adelaide,Darwin"},
-  "email":"norbert.weishaupt@example.com",
-  "b_date":"1956-12-23T19:09:19.602Z",
-  "age":65,
-  "phone":"0079-8291509",
-  "picture_large":"https://randomuser.me/api/portraits/men/28.jpg",
-  "picture_thumbnail":"https://randomuser.me/api/portraits/thumb/men/28.jpg"
-*/
+
+user_array = [];
+processed_user_array = [];
 
 //Reformats data from random-user-mock.js into needed format
 function format_data(random, additional) {
 //console.log(rawData.name);
-const userArray = [];
 
 //random formatting
 random.forEach(user => {
@@ -58,7 +44,7 @@ formattedUser.course = create_course(user.course);
 formattedUser.bg_color = create_bg_color(user.bg_color);
 formattedUser.note = create_note(user.note);
 
-userArray.push(formattedUser);
+user_array.push(formattedUser);
 });
 
 //additinal formatting
@@ -93,11 +79,14 @@ formattedUser.course = create_course(user.course);
 formattedUser.bg_color = create_bg_color(user.bg_color);
 formattedUser.note = create_note(user.note);
 
- userArray.push(formattedUser);
+ user_array.push(formattedUser);
 });
-//userArray.push(...);//writing data into array
 
-return userArray;//returns the final array
+//process users so no duplicates are kept
+processed_user_array = check_for_duplicates(user_array);
+
+//return the final array
+return processed_user_array
 }
 
 function define(data) {
@@ -114,26 +103,26 @@ return name + '' + value;
 }
 
 function generate_tfn() {
-  /* Create vars */
+  //create vars
   var tfn = Math.floor(100000000 + Math.random() * 900000000);
   var sum;
   var zero = 13;
   var weights = [10, 7, 8, 4, 6, 3, 5, 2, 1];
 
-  /* Loop through each */
+  //loop through each
   while (zero != 0) {
-    /* Reset vars */
+    //reset vars
     sum = 0;
     tfn = parseInt(tfn) + 1;
     product = 0;
 
-    /* Loop through each number */
+    //Loop through each number
     for (var i = 0; i < String(tfn).length; i++) {
-      /* Check digit */
+      //Check digit
       sum = sum + (String(tfn).substr(i, 1) * weights[i]);
     }
 
-    /* Check if valid */
+    //check if valid
     zero = sum % 11;
   }
 
@@ -178,8 +167,20 @@ default_note = 'User is shy~';
 return default_note;
 }
 
-//call function
+function check_for_duplicates(array) {
 
+filtered_array = array.reduce((temp_list, this_user) => {
+if(!temp_list.find((user) => user.full_name === this_user.full_name)) {
+    temp_list.push(this_user);
+}
+return temp_list;
+}, []);
+
+return filtered_array;
+}
+
+
+//call function
 console.log(format_data(userFile.randomUserMock, userFile.additionalUsers));
 
 console.log(testModules.hello);
