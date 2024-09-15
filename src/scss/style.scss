@@ -395,6 +395,8 @@ thead {
   position: absolute;
   font-size: $large_font_size;
   margin: auto;
+//   position: relative; /* or absolute */
+//     top: -0.5px;
 }
 
 .button-navigation, .sort-arrow {
