@@ -1,6 +1,6 @@
-const testModules = require('./test-module');
-require('../css/app.css');
+const carousel = require("./carousel");
+require("../css/app.css");
 
 /** ******** Your code here! *********** */
 
-console.log(testModules.hello);
+document.addEventListener("DOMContentLoaded", carousel);

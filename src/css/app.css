@@ -1,5 +1,291 @@
 /* Import fonts */
-@import url('../fonts/Roboto.css');
+@import url("../fonts/Roboto.css");
 
 /* Reset and normalize */
-@import url('./normalize.css');
+@import url("./normalize.css");
+
+$ident-mini: 8px;
+$ident-midi: 16px;
+
+$orange: #f75c49;
+
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+.wrapper {
+    width: 70%;
+    margin: $ident-midi auto;
+}
+
+button.primary {
+    padding: $ident-mini $ident-midi;
+    border-radius: 0;
+    border: 1px solid $orange;
+    background-color: white;
+    color: $orange;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+
+    .logo {
+        font-size: 24px;
+        font-family: "Roboto";
+    }
+
+    .search {
+        min-height: 16px;
+
+        &-input {
+            min-width: 200px;
+            height: 100%;
+
+            padding: 4px;
+        }
+
+        &-button {
+            height: 100%;
+            margin-left: $ident-mini;
+        }
+    }
+}
+
+.nav-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: $ident-midi;
+
+    span {
+        font-size: 20px;
+        padding: 0 $ident-midi;
+        color: $orange;
+
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+
+    button.add-teacher {
+        font-size: 20px;
+    }
+}
+
+.content {
+    width: 100%
+
+    &-divider {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    &-header {
+        margin: $ident-mini auto;
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: $ident-midi;
+    }
+}
+
+.top-teachers {
+    .teacher-filters {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: $ident-midi;
+    }
+
+    .teacher-filter {
+        height: 100%;
+
+        .filter-criterion {
+            color: grey;
+            margin: 0 $ident-mini;
+        }
+
+        &:not(:last-child) {
+            border-right: 1px dotted #333;
+            padding-right: $ident-midi;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+    }
+
+    select.filter-control {
+        padding: $ident-mini;
+    }
+
+    .teachers {
+        display: grid;
+        margin-top: $ident-midi;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+.teacher-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+
+    .photo {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 2px solid $orange;
+        object-fit: cover;
+    }
+
+    .first-name,
+    .last-name {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 3px 0;
+    }
+
+    .last-name {
+        margin-bottom: $ident-mini;
+    }
+
+    .speciality {
+        font-size: 14px;
+        color: #888;
+        margin: 5px 0;
+    }
+
+    .location {
+        font-size: 12px;
+        margin: 5px 0;
+    }
+}
+
+.statistics {
+    &-table {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            thead {
+                th {
+                    font-size: 20px;
+                    padding-bottom: 15px;
+                    text-align: center;
+                    border-bottom: 2px solid #333;
+                    color: #333;
+                }
+            }
+
+            tbody {
+                td {
+                    text-align: center;
+                    padding: 10px 0;
+                }
+
+                tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+            }
+
+            th,
+            td {
+                border-right: none;
+            }
+        }
+
+        &-pagination {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 20px;
+            margin-left: 0;
+
+            a {
+                display: inline-block;
+                padding: 10px 15px;
+                margin: 0 5px;
+                text-decoration: none;
+                color: #007bff;
+                font-size: 16px;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: #0056b3;
+                }
+
+                &.active {
+                    color: black;
+                    font-weight: bold;
+                }
+
+                &:first-child,
+                &:last-child {
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+}
+
+.carousel {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    overflow: hidden;
+    position: relative; /* To position buttons inside the carousel */
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    flex-grow: 1;
+}
+
+.carousel-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+}
+
+.carousel-button.prev {
+    left: 10px;
+}
+
+.carousel-button.next {
+    right: 10px;
+}
+
+footer {
+    padding: 20px;
+}
+
+footer p {
+    text-align: left;
+    color: #6c757d;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
