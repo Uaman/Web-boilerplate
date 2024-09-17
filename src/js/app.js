@@ -330,7 +330,7 @@ console.log(/*JSON.stringify(*/format_data(userFile.randomUserMock, userFile.add
 validate_users(processed_user_array);
 parameter_filter(processed_user_array, 'Switzerland', 39, 'female', false);//since favorite is randomly generated it can appear or not appear
 console.log(/*JSON.stringify(*/parameter_sort(processed_user_array, false, true, false, true, true)/*)*/);//name age b_date country ascending(t/f)
-console.log(/*JSON.stringify*/(find_user(processed_user_array, 'User is shy~')/*)*/);//name note age
-console.log(calculate_statistics(processed_user_array, 'old lady with a cats'));//get percentage from total
+console.log(/*JSON.stringify(*/find_user(processed_user_array, 'User is shy~')/*)*/);//name note age
+console.log(calculate_statistics(processed_user_array, 'old lady with a cats') + "%");//get percentage from total
 
 console.log(testModules.hello);
