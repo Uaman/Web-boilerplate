@@ -302,7 +302,6 @@ return user_array;
 
 
 //TASK 5: find object by parameter
-//name, note, age
 function find_user(user_array, field){
 
 const filtered_users = user_array.filter(user => user.name === field
@@ -312,14 +311,26 @@ if(filtered_users.length == 0) {
 console.log('No users found');
 return null;
 }
-return filtered_users[0];
+return filtered_users;
 }
 
+
+//TASK 6: statistics
+function calculate_statistics(user_array, field){
+
+let temp = find_user(user_array, field);
+let percentage = Math.round(((temp.length / user_array.length) * 100) * 100) / 100;
+
+return percentage;
+}
+
+
 //call functions
-console.log(format_data(userFile.randomUserMock, userFile.additionalUsers));
+console.log(/*JSON.stringify(*/format_data(userFile.randomUserMock, userFile.additionalUsers)/*)*/);
 validate_users(processed_user_array);
 parameter_filter(processed_user_array, 'Switzerland', 39, 'female', false);//since favorite is randomly generated it can appear or not appear
-console.log(parameter_sort(processed_user_array, true, false, false, false, true));
-console.log(find_user(processed_user_array, 'User is shy~'));
+console.log(/*JSON.stringify(*/parameter_sort(processed_user_array, false, true, false, true, true)/*)*/);//name age b_date country ascending(t/f)
+console.log(/*JSON.stringify*/(find_user(processed_user_array, 'User is shy~')/*)*/);//name note age
+console.log(calculate_statistics(processed_user_array, 'old lady with a cats'));//get percentage from total
 
 console.log(testModules.hello);
