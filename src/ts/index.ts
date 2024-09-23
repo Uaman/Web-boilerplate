@@ -1984,9 +1984,6 @@ function validateData(user: FormattedUser): boolean {
 
   return true;
 }
-
-
-
 function sortUsers(
 users: FormattedUser[],
 sortBy: 'full_name' | 'age' | 'b_date' | 'country' | undefined,
@@ -2323,12 +2320,18 @@ document.addEventListener("DOMContentLoaded", () => {
     icon?.classList.toggle("open");
   }
 
+  
+  //functionality on the page (clcick, drop etc)
   addTeacherForm();
   createTeachersList(mergeUsersResult);
   addTeacherCartInfo(mergeUsersResult);
   addFavouriteTeacher(mergeUsersResult);
   populateStatistics(mergeUsersResult);
   dropdownOptions();
+
+  //functionality on sorting, fi;tating etc
+
+
 
   window.addEventListener('click', function () {
     const dropdowns: NodeListOf<Element> = document.querySelectorAll('.dropdown-content');
