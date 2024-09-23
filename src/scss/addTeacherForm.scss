@@ -1,0 +1,135 @@
+$color-white: #fff;
+$color-primary: #007bff;
+$color-grey: rgb(167, 159, 159);
+$color-red: rgb(234, 87, 53);
+
+$box-shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+$box-shadow-dark: 0 0 5px rgba(0, 0, 0, 0.608);
+
+@mixin button-style() {
+    background-color: $color-white;
+    color: $color-red;
+    border: 1px solid $color-red;
+    font-weight: bold;
+}
+
+/* Main container adjustments */
+.add-teacher-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  gap: 1em;
+  z-index: 100;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: $box-shadow-light;
+  color: $color-grey;
+}
+
+/* Form adjustments for compact design */
+.add-teacher-form {
+  margin-top: 5%;  
+  max-width: fit-content;
+  min-width: 20vw;
+  height: fit-content;
+  box-shadow: $box-shadow-dark;
+  background-color: $color-white;
+  border-radius: 8px; 
+}
+
+.add-teacher-form-main-container {
+  padding: 1.5em; 
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.params-container {
+  border: none;
+  margin-top: 0.5em;  
+  margin-bottom: 0.5em;
+}
+
+/* Styling Form */
+.add-teacher-form-element-container {
+  display: flex;
+  flex-direction: column;  
+  gap: 0.5em;
+  padding-bottom: 0.5em;  
+}
+
+.add-teacher-form-location-container,
+.add-teacher-form-contacts-container {
+  display: flex;
+  gap: 2em;  
+}
+
+input {
+  height: 3.3em;  
+  margin: 0;
+  margin-right: 1em; 
+}
+.add-teacher-form-location-container input,
+.add-teacher-form-contacts-container input {
+  max-width: 30em;  
+  margin-bottom: 1em;  
+}
+
+.add-teacher-form-element-container .dropdown {
+  min-width: 12em;  
+  margin-bottom: 0.5em; 
+}
+
+input[type="date"] {
+  max-width: 12em; 
+}
+
+.add-teacher-form-sex-container {
+  display: flex;
+  gap: 1em; 
+}
+
+.add-teacher-form-sex-container p,
+.sex-container li {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.sex-container {
+  display: flex;
+  gap: 0.5em; 
+}
+
+input[type="color"] {
+  border: 1px solid $color-grey; 
+  background-color: $color-grey;
+  height: 1.5em;  
+}
+
+#favcolor {
+  margin: 1.5em 0;  
+  margin-right: 1em;
+}
+
+.add-teacher-form-button {
+  @include button-style;
+  width: 100%;
+  height: 3em;  
+  font-size: 14px; 
+}
+label[for="notes"] {
+    margin-top: 1em;  
+}
+.add-teacher-form-button:hover {
+  background-color: $color-red;
+  color: $color-white;
+  cursor: pointer;
+}

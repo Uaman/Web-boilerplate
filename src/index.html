@@ -1,21 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/mediaQueries.css">
+    <link rel="stylesheet" href="./css/teacherInfoStyle.css">
+    <link rel="stylesheet" href="./css/addTeacherForm.css">
+    <title>Teachinder</title>
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+ 
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./js/index.js" type="module"></script>
 
-      <title>Project</title>
+</head>
+<body>
+  
 
-      <link rel="stylesheet" href="./css/app.css">
+    <section class="body">
+        <header>   
+            <div class="header-container">
+                <div class="teachinder-font">
+                    <h1 class="teachinder-font-bottom">Teachinder</h1>
+                    <h1 class="teachinder-font-top">Teachinder</h1>
+                </div>
+        
+                <div class="search">
+                    <input type="text" placeholder="Name, note or age to search" class="input-look-for-teacher">
+                    <button class="search-btn">Search</button>
+                </div>
+            </div>
+        
+            <nav class="navigation-and-button">
+            <nav id="desktop-nav">
+                <ul>
+                    <li><a href="#teachers">Teachers</a></li>
+                    <li><a href="#statistics">Statistics</a></li>
+                    <li><a href="#favourites">Favourites</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+               
+            </nav>
+            
+         
+                <section id="hamburger-nav"> 
+                
+                    <section class="hamburger-menu">
+                        <section class="hamburger-icon"  onclick='toggleMenu()'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </section>  
+            
+                        <ul class="menu-links">
+                            <li><a href="#teachers" onclick="toggleMenu()">Teachers</a></li>
+                            <li><a href="#statistics"   onclick="toggleMenu()" >Statistics</a></li>
+                            <li><a href="#favourites"  onclick="toggleMenu()" >Favourites</a></li>
+                            <li><a href="#"  onclick="toggleMenu()" >About</a></li>
+                        </ul>
+                    </section>
+                </section>
+                <button id="add-teacher-btn">Add Teacher</button>
+            </nav>
+        </header>
+        
 
-   </head>
+    <main>
+      <section class="teachers-container" id="teachers"> 
+        <div class="header-section-container">
+            <h1>Top Teachers</h1>
+        </div>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+        <div class="teacher-parametrs-container">
+            <div class="params-container">
+                <p>Age</p>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        18-25 <span class="arrow-down">&#9662;</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <ul>
+                            <li>18-25</li>
+                            <li>26-31</li>
+                            <li>32-40</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="params-container">
+                <p>Region</p>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        Europe <span class="arrow-down">&#9662;</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <ul>
+                            <li>Europe</li>
+                            <li>USA</li>
+                            <li>Other</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="params-container">
+                <p>Sex</p>
+                <div class="dropdown">
+                    <button class="dropbtn">
+                        Male <span class="arrow-down">&#9662;</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <ul>
+                            <li>Male</li>
+                            <li>Female</li>
+                            <li>Other</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+                <div class="checkbox-container">
+                    <input type="checkbox" class="input-checkbox"> 
+                    <label for="checkbox1">Only with photo</label>
+                </div>
+                <div class="checkbox-container">
+                    <input type="checkbox" class="input-checkbox">
+                    <label for="checkbox2">Only favourites</label>
+                </div>
+            
+            
+          
+        </div>
+
+        <div class="teachers-list-container"> </div>
+    </section> 
+
+    <section class="statistics-container">
+        <div class="header-section-container">
+            <h1>Statistics</h1>
+        </div>
+
+<div class="statistics-table-container" id="statistics">
+
+    <table>
+        <tr class="table-header">
+            <th>Name <span class="arrow">↓</span></th>
+            <th>Speciality  <span class="arrow">↓</span></th>
+            <th>Age  <span class="arrow">↓</span></th>
+            <th>Gender  <span class="arrow">↓</span></th>
+            <th>Nationality  <span class="arrow">↓</span></th>
+     
+        </tr>
+       
+    </table>
+        </div>
+
+        <div class="pagination">
+            <a href="#"  class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a class="dots">...</a> 
+            <a href="#">Last</a> 
+          </div>
+    </section>
+
+    <section class="favourites-container">
+        <div class="header-section-container">
+            <h1>Favourites</h1>
+        </div>
+        <div class="fav-teachers-list-container" id="favourites"> </div>
+    </section>
+    </main>
+
+
+    <footer>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia tempora id eligendi at aut impedit numquam, vitae nihil facilis veritatis cupiditate earum beatae aliquam temporibus. Accusantium minus perferendis voluptatem eius.</p>
+       
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventore ipsum odio officiis omnis quisquam sed tempora? </p>
+  
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedita id iusto mollitia, odit sint ullam veritatis</p>
+        <nav id="dekstop-nav">
+            <ul>
+                <li><a href="#teachers">Teachers</a></li>
+                <li><a href="#statistics">Statistics</a></li>
+                <li><a href="#favourites">Favourites</a></li>
+                <li><a>About</a></li>
+            </ul>
+            <button id="add-teacher-btn"> Add Teacher</button>
+        </nav>
+    </footer>
+    <div class="overlay hidden"></div>
+</section>
+<section class="teacher-info-card-container hidden">
+    <section class="teacher-info-card">
+        <div class="teacher-info-card-header-container">
+            <div class="teacher-info-card-header">
+                <div class="teacher-info-card-header-text">
+                    Teacher Info
+                </div>
+                <div class="teacher-info-card-header-close-btn">
+                    <button class="close-btn">X</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="teacher-info-card-main-container"> </div>
+    </section>
+</section>
+
+<div class="overlay"></div> 
+
+<section class="add-teacher-form-container hidden">
+    <section class="add-teacher-form">
+      <div class="teacher-info-card-header-container">
+        <div class="teacher-info-card-header">
+          <div class="teacher-info-card-header-text">
+            Add Teacher
+          </div>
+          <div class="teacher-info-card-header-close-btn">
+            <button class="close-btn close-form-btn">X</button>
+          </div>
+        </div>
+      </div>
+  
+      <section class="add-teacher-form-main-container">
+        <div class="add-teacher-form-element-container">
+          <label for="name">Name:</label>
+          <input type="text" id="name" placeholder="Enter name">
+        </div>
+  
+        <div class="add-form-speciality-and-country-container">
+          <div class="add-teacher-form-speciality-container">
+            <p>Speciality</p>
+            <div class="params-container">
+              <div class="dropdown">
+                <button class="dropbtn">
+                  Mathematics <span class="arrow-down">&#9662;</span>
+                </button>
+                <div class="dropdown-content">
+                  <ul>
+                    <li>Physics</li>
+                    <li>English</li>
+                    <li>Geography</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="add-teacher-form-location-container">
+            <div class="add-teacher-form-country">
+              <p>Country</p>
+              <div class="params-container">
+                <div class="dropdown">
+                  <button class="dropbtn">
+                    Ukraine <span class="arrow-down">&#9662;</span>
+                  </button>
+                  <div class="dropdown-content">
+                    <ul>
+                      <li>England</li>
+                      <li>USA</li>
+                      <li>Sweden</li>
+                      <li>France</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="add-teacher-form-element-container">
+              <label for="city">City:</label>
+              <input type="text" id="city" placeholder="">
+            </div>
+          </div>
+        </div>
+  
+        <div class="add-teacher-form-contacts-container">
+          <div class="add-teacher-form-element-container">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="">
+          </div>
+          <div class="add-teacher-form-element-container">
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" placeholder="">
+          </div>
+        </div>
+  
+        <div class="add-teacher-form-date-of-birth-container">
+          <div class="add-teacher-form-element-container">
+            <label for="date">Date of birth:</label>
+            <input type="date" id="date">
+          </div>
+        </div>
+  
+        <div class="add-teacher-form-sex-container">
+          <p>Sex</p>
+          <ul class="sex-container">
+            <li>
+              <input type="radio" id="male" name="sex-answer">
+              <label for="male" class="sex-label">Male</label>
+            </li>
+            <li>
+              <input type="radio" id="female" name="sex-answer">
+              <label for="female" class="sex-label">Female</label>
+            </li>
+            <li>
+              <input type="radio" id="other" name="sex-answer">
+              <label for="other" class="sex-label">Other</label>
+            </li>
+          </ul>
+        </div>
+  
+        <div class="add-teacher-form-background-color-container">
+          <div class="background-color-chooser">
+            <label for="favcolor" id="favcolor">Background color:</label>
+            <span>🎨</span>
+            <input type="color" id="favcolor" value="#ff0000">
+          </div>
+        </div>
+  
+        <div class="add-teacher-form-element-container">
+          <label for="notes">Notes (optional):</label>
+          <textarea name="notes" id="notes" cols="30" rows="10" placeholder=""></textarea>
+        </div>
+  
+        <div class="add-teacher-form-button-container">
+          <button class="add-teacher-form-button">Add</button>
+        </div>
+      </section>
+    </section>
+  </section>
+  
+
+
+
+</body>
 </html>

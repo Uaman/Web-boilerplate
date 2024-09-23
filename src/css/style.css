@@ -1,0 +1,517 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+* {
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(250, 247, 247);
+  margin: 0;
+  padding: 2.5em;
+}
+
+p {
+  color: rgb(167, 159, 159);
+}
+
+/*HEADER*/
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.teachinder-font {
+  position: relative;
+  letter-spacing: 0.1em;
+  margin: 3em;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.teachinder-font-bottom {
+  position: absolute;
+  top: 0;
+  color: rgb(234, 87, 53);
+  letter-spacing: 0.1em;
+}
+
+.teachinder-font-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 0.1em;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgb(54, 53, 53);
+  letter-spacing: 0.1em;
+}
+
+.teachinder-font-top:hover {
+  color: rgb(224, 224, 224);
+  cursor: pointer;
+}
+
+.teachers-list-container {
+  margin: 2em;
+  margin-top: 0;
+}
+
+.teachers-list {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.teacher-image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.teacher-image {
+  width: 8em;
+  height: 8em;
+  border-radius: 50%;
+  border: 3px solid rgb(234, 87, 53);
+  object-fit: cover;
+}
+
+.star-icon {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+  font-size: 24px;
+  color: gold;
+}
+
+.star-icon.visible {
+  display: block;
+}
+
+.star-icon.hidden {
+  display: none;
+}
+
+.teacher-info-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  margin-top: 1em;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.input-look-for-teacher {
+  padding: 1em 1em;
+  width: 30vw;
+  border: 1px solid rgb(167, 159, 159);
+  color: rgb(167, 159, 159);
+  margin-right: 1em;
+}
+
+.search-btn {
+  background-color: rgb(250, 247, 247);
+  color: rgb(234, 87, 53);
+  border: 1px solid rgb(234, 87, 53);
+  padding: 1em 1.5em;
+  font-weight: bold;
+  height: 4vh;
+  width: max-content;
+}
+
+.search-btn:hover {
+  background-color: rgb(234, 87, 53);
+  color: rgb(250, 247, 247);
+  cursor: pointer;
+}
+
+/*TOP AND BOTTOM NAVIGATION*/
+nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2em;
+  color: rgb(234, 87, 53);
+  margin-top: 0.5em;
+}
+
+nav ul li:hover {
+  color: rgb(165, 26, 21);
+  cursor: pointer;
+}
+
+nav ul li.active {
+  color: rgb(165, 26, 21);
+}
+
+#add-teacher-btn {
+  background-color: rgb(250, 247, 247);
+  color: rgb(234, 87, 53);
+  border: 1px solid rgb(234, 87, 53);
+  padding: 1em 1.5em;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+#add-teacher-btn:hover {
+  background-color: rgb(234, 87, 53);
+  color: rgb(250, 247, 247);
+  cursor: pointer;
+}
+
+/*TEACHERS SECTION*/
+.header-section-container {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  font-weight: lighter;
+}
+
+.header-section-container h1 {
+  border-top: 1px solid rgb(167, 159, 159);
+  padding: 1em;
+  width: 70%;
+}
+
+.teacher-parametrs-container {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  margin-left: 0;
+  margin-top: 0;
+  gap: 2em;
+}
+
+.params-container {
+  height: 2.2em;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  margin-right: 2em;
+}
+
+.params-container p,
+.checkbox-container {
+  padding-top: 0.5em;
+}
+
+.params-container,
+.checkbox-container {
+  padding-right: 2em;
+  border-right: 1.5px dotted rgb(167, 159, 159);
+}
+
+.checkbox-container {
+  height: 2em;
+  color: rgb(167, 159, 159);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.checkbox-container input {
+  margin-top: 0.4em;
+}
+
+.checkbox-container:nth-child(1) {
+  margin-right: 1em;
+}
+
+.input-checkbox:hover {
+  cursor: pointer;
+}
+
+/*DROPDOWN LIST*/
+.age-params-container {
+  margin-bottom: 10px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: rgb(250, 247, 247);
+  color: rgb(167, 159, 159);
+  border: 1px solid rgb(167, 159, 159);
+  padding: 8px;
+  font-size: 16px;
+  color: rgb(108, 103, 103);
+  cursor: pointer;
+}
+
+.dropbtn .arrow-down {
+  margin-left: 5px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  color: rgb(108, 103, 103);
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-content li {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdown-content li:hover {
+  background-color: #ddd;
+}
+
+/* Show dropdown when clicked */
+.show {
+  display: block;
+}
+
+/*TABLE*/
+table {
+  font-family: arial, sans-serif;
+  font-size: 14px;
+  border-collapse: collapse;
+  width: 100%;
+  color: rgb(108, 103, 103);
+}
+
+td, th {
+  border: 0;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(odd) {
+  background-color: rgba(248, 228, 246, 0.768627451);
+}
+
+.table-header th {
+  font-size: 18px;
+  font-weight: lighter;
+  border-bottom: 1px solid #5e5858;
+  margin-bottom: 1px;
+  background-color: rgb(250, 247, 247);
+}
+
+/*PAGINATION*/
+.pagination {
+  display: inline-block;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.pagination a {
+  color: rgb(107, 164, 218);
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination a.active {
+  color: rgb(14, 100, 181);
+  border-radius: 5px;
+}
+
+.pagination a:hover:not(.active) {
+  color: rgb(14, 100, 181);
+  border-radius: 5px;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 6px 6px 0;
+  display: inline-block;
+  padding: 10px;
+  position: absolute;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.right {
+  transform: rotate(-45deg) translateY(-50%);
+  right: 3em;
+}
+
+.left {
+  transform: rotate(135deg) translateY(-50%);
+  left: 3em;
+}
+
+footer {
+  bottom: 0;
+  border-top: 1px solid rgb(167, 159, 159);
+  padding-top: 2em;
+}
+
+footer p {
+  width: 100%;
+  color: rgb(108, 103, 103);
+  margin-top: 2em;
+}
+
+footer p:nth-child(1) {
+  width: 100%;
+  color: rgb(108, 103, 103);
+  margin-top: 0;
+}
+
+.teacher-name {
+  width: 50%;
+  text-align: center;
+}
+
+.teacher-country {
+  font-size: 12px;
+  color: rgb(108, 103, 103);
+}
+
+.teacher-subject {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+footer .teachers-list {
+  padding: 0;
+}
+
+.teacher-item:hover {
+  cursor: pointer;
+}
+
+.teacher-name:hover {
+  color: rgb(108, 103, 103);
+}
+
+.teacher-image:hover {
+  border-color: rgb(254, 182, 49);
+}
+
+.table-header th:hover {
+  border-bottom: 4px solid rgb(167, 159, 159);
+  background-color: rgb(241, 239, 239);
+  cursor: pointer;
+}
+
+.arrow {
+  border: none;
+  margin-top: 0.6em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.table-header th:hover .arrow {
+  opacity: 1;
+}
+
+.body {
+  position: absolute;
+  padding-right: 2.5em;
+}
+
+/* HAMBURGER MENU */
+#hamburger-nav {
+  display: none;
+}
+
+.hamburger-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 24px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.hamburger-icon span {
+  width: 100%;
+  height: 2px;
+  background-color: rgb(234, 87, 53);
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-links {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  width: fit-content;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.menu-links a {
+  display: block;
+  padding: 8px;
+  text-align: left;
+  font-size: 1rem;
+  color: rgb(234, 87, 53);
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.menu-links a:hover {
+  background-color: rgb(234, 87, 53);
+  color: white;
+}
+
+.menu-links li {
+  list-style: none;
+}
+
+.menu-links.open {
+  max-height: 300px;
+}
+
+.hamburger-icon.open span:first-child {
+  transform: rotate(45deg) translate(10px, 5px);
+}
+
+.hamburger-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-icon.open span:last-child {
+  transform: rotate(-45deg) translate(10px, -5px);
+}
+
+.hamb-menu-and-button {
+  display: none;
+}
+
+/*# sourceMappingURL=style.css.map */
