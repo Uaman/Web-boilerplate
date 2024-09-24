@@ -46,7 +46,7 @@ function validateUser(user) {
     const errors = [];
 
     function validateStringField(field, fieldName) {
-        if (typeof field !== 'string' || field.charAt(0) !== field.charAt(0).toUpperCase()) {
+        if (typeof field !== 'string' || field.charAt(0) !== field.charAt(0).toLocaleUpperCase()) {
             errors.push(`${fieldName} повинно бути рядком і починатися з великої літери.`);
         }
     }
@@ -137,7 +137,7 @@ const filters3 = {
 
 function sortUsers(users, sortBy, ascending = true) {
 
-    const usersCopy = JSON.parse(JSON.stringify(users));
+    const usersCopy = JSON.parse(JSON.stringify(users)); // splice
 
     return usersCopy.sort((a, b) => {
         let comparison = 0;
