@@ -21,6 +21,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mergeUsersResult = void 0;
+exports.default = {
+    teachers: getTeachersList(),
+};
 var data_1 = require("./data");
 var Courses_1 = require("./types/Courses");
 function formatUser(users) {
@@ -61,7 +64,7 @@ function mergeUsers(users, additionalUsers) {
     });
     return uniqueUsers.map(function (user) { return (__assign(__assign({}, user), { course: getRandomCourse(), note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' })); });
 }
-function validateData(user) {
+function validateTeachersData(user) {
     console.log("Validating user ".concat(user.full_name, ", ID: ").concat(user.id));
     var startsWithUpperCase = function (str) { return /^[A-Z]/.test(str); };
     var validatePhoneNumber = function (phone) { return /^\d{10}$/.test(phone); }; // Adjust regex if needed
@@ -173,20 +176,22 @@ function calculataeMatchPercentage(users, matchedUsers) {
     return Math.round((matchedUsers.length / users.length) * 100);
 }
 var formattedUsers = formatUser(__spreadArray([], data_1.randomUserMock, true));
-var mergeUsersResult = mergeUsers(formattedUsers, data_1.additionalUsers);
-exports.mergeUsersResult = mergeUsersResult;
-console.log('Formatted and merged users:', mergeUsersResult);
+exports.mergeUsersResult = mergeUsers(formattedUsers, data_1.additionalUsers);
+console.log('Formatted and merged users:', exports.mergeUsersResult);
 console.log('Validation Results:');
-formattedUsers.forEach(function (user) { return console.log(validateData(user)); });
-var filteredUsers = filterUsers(mergeUsersResult, {
+formattedUsers.forEach(function (user) { return console.log(validateTeachersData(user)); });
+var filteredUsers = filterUsers(exports.mergeUsersResult, {
     course: 'Computer Science',
     favorite: true,
-    age: 62 - 49,
+    age: 49 - 62,
 });
 console.log('Filtered users:', filteredUsers);
-var sortedUsers = sortUsers(mergeUsersResult, 'full_name', 'asc');
+var sortedUsers = sortUsers(exports.mergeUsersResult, 'full_name', 'asc');
 console.log('Sorted users:', sortedUsers);
-var searchResults = searchForUser(mergeUsersResult, { age: ">30" });
-var matchPercentage = calculataeMatchPercentage(mergeUsersResult, searchResults);
+var searchResults = searchForUser(exports.mergeUsersResult, { age: ">30" });
+var matchPercentage = calculataeMatchPercentage(exports.mergeUsersResult, searchResults);
 console.log('Search Results:', searchResults);
 console.log('Match percentage:', matchPercentage);
+function getTeachersList() {
+    return exports.mergeUsersResult;
+}

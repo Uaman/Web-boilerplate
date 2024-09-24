@@ -3,3 +3,8 @@
 
 /* Reset and normalize */
 @import url('./normalize.css');
+
+@import url('./mediaQueries.css');
+@import url('./style.css');
+@import url('./teacherInfoStyle.css');
+@import url('./addTeacherForm.css');

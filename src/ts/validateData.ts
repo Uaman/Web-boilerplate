@@ -1,3 +1,7 @@
+export default {
+  teachers: getTeachersList(),
+}
+
 import { randomUserMock, additionalUsers } from './data';
 import { FormattedUser } from './types/FormattedUser';
 import { courses } from './types/Courses';
@@ -46,7 +50,7 @@ function mergeUsers(users: FormattedUser[], additionalUsers): FormattedUser[] {
   note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'  
 }));
 }
-function validateData(user: FormattedUser): boolean {
+function validateTeachersData(user: FormattedUser): boolean {
     console.log(`Validating user ${user.full_name}, ID: ${user.id}`);
     
     const startsWithUpperCase = (str: string): boolean => /^[A-Z]/.test(str);
@@ -184,11 +188,12 @@ function calculataeMatchPercentage(users: FormattedUser[], matchedUsers: Formatt
 }
 
   const formattedUsers = formatUser([...randomUserMock]);
-  const mergeUsersResult = mergeUsers(formattedUsers, additionalUsers);
+export const mergeUsersResult = mergeUsers(formattedUsers, additionalUsers);
   console.log('Formatted and merged users:', mergeUsersResult);
 
   console.log('Validation Results:');
-  formattedUsers.forEach(user => console.log(validateData(user)));
+  formattedUsers.forEach(user => console.log(validateTeachersData
+  (user)));
 
   const filteredUsers = filterUsers(mergeUsersResult, { 
       course: 'Computer Science', 
@@ -205,6 +210,6 @@ function calculataeMatchPercentage(users: FormattedUser[], matchedUsers: Formatt
   const matchPercentage = calculataeMatchPercentage(mergeUsersResult, searchResults); 
   console.log('Search Results:', searchResults);
   console.log('Match percentage:', matchPercentage); 
-
-  export {mergeUsersResult};
-
+  function getTeachersList(): FormattedUser[] {
+    return mergeUsersResult;
+  }

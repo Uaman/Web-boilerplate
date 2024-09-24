@@ -32,6 +32,7 @@ $darker-grey: rgb(108, 103, 103);
     z-index: 100; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-top: 5em;
+    text-align:left;
 
 }
 .teacher-info-card {
@@ -154,4 +155,12 @@ $darker-grey: rgb(108, 103, 103);
   .with-star {
     display: flex;
     justify-content: space-between;
+  }
+  .teacher-info-card-details,
+  .teacher-name {
+    text-align: left;
+  }
+  .teacher-name {
+    font-style: bold;
+    font-size: 1.5em;
   }
