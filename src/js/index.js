@@ -1967,7 +1967,7 @@ function sortUsers(users, sortBy, direction) {
         var comparison = 0;
         // Ensure properties exist before comparing
         if (a[sortBy] !== undefined && b[sortBy] !== undefined) {
-            if (sortBy === 'full_name' || sortBy === 'country') {
+            if (sortBy === 'full_name' || sortBy === 'country' || sortBy === 'gender' || sortBy === 'course') {
                 comparison = a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase());
             }
             else if (sortBy === 'age') {
@@ -2181,11 +2181,38 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+    function sortUsersByAttribute(users) {
+        var data_sort_elements = document.querySelectorAll('th[data-sort]');
+        // Store sorting directions for each column
+        var sortDirections = {};
+        data_sort_elements.forEach(function (element) {
+            element.addEventListener('click', function () {
+                var data_sort_value = element.getAttribute('data-sort');
+                var arrow = element.querySelector('.arrow');
+                if (data_sort_value) {
+                    var currentDirection = sortDirections[data_sort_value] || 'asc';
+                    var newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+                    sortDirections[data_sort_value] = newDirection;
+                    if (arrow) {
+                        arrow.textContent = newDirection === 'asc' ? '↑' : '↓';
+                    }
+                    var sortedUsers_1 = sortUsers(users, data_sort_value, newDirection);
+                    populateStatistics(sortedUsers_1);
+                }
+            });
+        });
+    }
     function populateStatistics(teachers) {
         var table = document.querySelector('table');
         if (!table)
             return;
         var tbody = table.querySelector('tbody');
+        var td = table.querySelector('td');
+        // Очищаємо попередній вміст таблиці перед новим заповненням
+        if (tbody) {
+            tbody.innerHTML = '';
+        }
+        // Заповнюємо таблицю відсортованими даними
         teachers.forEach(function (teacher) {
             var tr = document.createElement('tr');
             tr.innerHTML = "\n        <td>".concat(teacher.full_name, "</td>\n        <td>").concat(teacher.course, "</td>\n        <td>").concat(teacher.age, "</td>\n        <td>").concat(teacher.gender, "</td>\n        <td>").concat(teacher.country, "</td>\n        <td>").concat(teacher.b_date, "</td>\n      ");
@@ -2219,7 +2246,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //functionality on the page (clcick, drop etc)
     addTeacherForm();
     addFavouriteTeacher(mergeUsersResult);
-    populateStatistics(mergeUsersResult);
+    sortUsersByAttribute(mergeUsersResult);
     createTeachersList(mergeUsersResult);
     addTeacherCartInfo(mergeUsersResult);
     dropdownOptions();

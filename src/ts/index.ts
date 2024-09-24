@@ -1986,7 +1986,7 @@ function validateData(user: FormattedUser): boolean {
 }
 function sortUsers(
 users: FormattedUser[],
-sortBy: 'full_name' | 'age' | 'b_date' | 'country' | undefined,
+sortBy: 'full_name' | 'age' | 'b_date' | 'country' | 'gender' | 'course' | undefined,
 direction: 'asc' | 'desc' = 'asc'
 ): FormattedUser[] {
 
@@ -1997,7 +1997,7 @@ return users.sort((a, b) => {
 
   // Ensure properties exist before comparing
   if (a[sortBy] !== undefined && b[sortBy] !== undefined) {
-    if (sortBy === 'full_name' || sortBy === 'country') {
+    if (sortBy === 'full_name' || sortBy === 'country' || sortBy === 'gender' || sortBy==='course') {
       comparison = a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase());
     } else if (sortBy === 'age') {
       comparison = a.age - b.age;
@@ -2315,12 +2315,46 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-
+  function sortUsersByAttribute(users: FormattedUser[]): void {
+    const data_sort_elements: NodeListOf<HTMLElement> = document.querySelectorAll('th[data-sort]');
+    
+    // Store sorting directions for each column
+    const sortDirections: Record<string, 'asc' | 'desc'> = {};
+    
+    data_sort_elements.forEach((element) => {
+      element.addEventListener('click', function () {
+        const data_sort_value = element.getAttribute('data-sort');
+        const arrow: HTMLElement | null = element.querySelector('.arrow');
+        
+        if (data_sort_value) {
+          const currentDirection = sortDirections[data_sort_value] || 'asc';
+          const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+          sortDirections[data_sort_value] = newDirection;
+          if (arrow) {
+            arrow.textContent = newDirection === 'asc' ? '↑' : '↓'; 
+          }
+          const sortedUsers: FormattedUser[] = sortUsers(users, data_sort_value as 'full_name' | 'age' | 'b_date' | 'country' | 'gender' | 'course', newDirection);
+          populateStatistics(sortedUsers);
+        }
+      });
+    });
+  }
+  
+  
   function populateStatistics(teachers: Array<FormattedUser>): void {
     const table: HTMLTableElement | null = document.querySelector('table');
     if (!table) return;
-
+  
     const tbody: HTMLTableSectionElement | null = table.querySelector('tbody');
+    const td: HTMLElement | null = table.querySelector('td');
+    
+    // Очищаємо попередній вміст таблиці перед новим заповненням
+    if (tbody) {
+      tbody.innerHTML = '';
+  
+    }
+  
+    // Заповнюємо таблицю відсортованими даними
     teachers.forEach(teacher => {
       const tr: HTMLTableRowElement = document.createElement('tr');
       tr.innerHTML = `
@@ -2334,6 +2368,7 @@ document.addEventListener("DOMContentLoaded", () => {
       tbody?.appendChild(tr);
     });
   }
+  
 
   function addTeacherForm(): void {
     const addTeacherButton: Element | null = document.querySelector('#add-teacher-btn'); 
@@ -2364,11 +2399,12 @@ document.addEventListener("DOMContentLoaded", () => {
     icon?.classList.toggle("open");
   }
 
+
   
   //functionality on the page (clcick, drop etc)
   addTeacherForm();
   addFavouriteTeacher(mergeUsersResult);
-  populateStatistics(mergeUsersResult);
+  sortUsersByAttribute(mergeUsersResult);
   createTeachersList(mergeUsersResult);
   addTeacherCartInfo(mergeUsersResult);
  
