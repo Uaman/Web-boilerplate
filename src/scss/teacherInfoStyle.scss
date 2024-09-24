@@ -145,14 +145,13 @@ $darker-grey: rgb(108, 103, 103);
     color: #0056b3;
     border-bottom: 0.5px solid #0056b3;
   }
-  .add-to-fav {
-    @include button-style;
-    margin-left: 1em;
-    margin-top: 1em;
-    border-radius: 3px;
-    
 
-  }
+  
   .add-to-fav:hover {
-@include hover-btn;
+
+    cursor: pointer;
+  }
+  .with-star {
+    display: flex;
+    justify-content: space-between;
   }

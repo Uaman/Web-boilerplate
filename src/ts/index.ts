@@ -1,4 +1,4 @@
- const randomUserMock = [
+const randomUserMock = [
   {
     gender: "male",
     name: { title: "Mr", first: "Norbert", last: "Weishaupt" },
@@ -2180,11 +2180,17 @@ document.addEventListener("DOMContentLoaded", () => {
   
     teacherInfoCard.innerHTML = `
       <div class="teacher-info-card-main">
+
         <div class="teacher-info-card-image-container">
           <img src="./images/teacher.webp" alt="${teacher.full_name}" class="teacher-info-card-image" />
         </div>
         <div class="teacher-info-card-details">
+        <div class="with-star">
           <h2 class="teacher-name">${teacher.full_name}</h2>
+             <div class="add-fav-button-container">
+          <p class="add-to-fav">${teacher.favorite ? '⚝' : '⭐️'}</p>
+          </div>
+        </div>
           <h3 class="teacher-info-card-subject">${teacher.course}</h3>
           <p>${teacher.city}, ${teacher.country}</p>
           <p>${teacher.age}, ${teacher.gender}</p>
@@ -2201,9 +2207,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="teacher-info-card-map">
           <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
         </div>
-        <div class="add-fav-button-container">
-          <button class="add-to-fav">${teacher.favorite ? 'Remove from favourites' : 'Add to favourites'}</button>
-        </div>
+        
+     
+     
       </div>
     `;
   
@@ -2211,7 +2217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (addToFavButton) {
       addToFavButton.addEventListener("click", function () {
         teacher.favorite = !teacher.favorite; 
-        addToFavButton.textContent = teacher.favorite ? 'Remove from favourites' : 'Add to favourites';
+        addToFavButton.textContent = teacher.favorite ? '⚝' : '⭐️';
       
         //Star
         const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
