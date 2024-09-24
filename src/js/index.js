@@ -1912,7 +1912,7 @@ function formatUser(users) {
         picture_large: user.picture.large,
         picture_thumbnail: user.picture.thumbnail,
         course: getRandomCourse(),
-        favorite: Math.random() < 0.5,
+        favorite: false,
         img: user.picture.large,
         bg_color: '#FFFFFF',
         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -1941,7 +1941,6 @@ function validateData(user) {
         console.log('Invalid phone number');
         return false;
     }
-    // Check string fields
     var stringFields = ['full_name', 'gender', 'note', 'state', 'city', 'country'];
     for (var _i = 0, stringFields_1 = stringFields; _i < stringFields_1.length; _i++) {
         var field = stringFields_1[_i];
@@ -1950,12 +1949,10 @@ function validateData(user) {
             return false;
         }
     }
-    // Check age
     if (typeof user.age !== 'number' || user.age < 0) {
         console.log('Invalid age');
         return false;
     }
-    // Check email
     if (typeof user.email !== 'string' || !user.email.includes('@')) {
         console.log('Invalid email');
         return false;
@@ -2075,23 +2072,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     function addTeacherCartInfo(teachers) {
-        var teacherListContainer = document.querySelector(".teachers-list");
+        var teacherListContainers = document.querySelectorAll(".teachers-list");
         var teacherInfoCardContainer = document.querySelector(".teacher-info-card-container");
         var closeBtn = document.querySelector(".close-btn");
         var overlay = document.querySelector(".overlay");
-        if (!teacherListContainer || !teacherInfoCardContainer || !overlay || !closeBtn)
+        if (!teacherListContainers.length || !teacherInfoCardContainer || !overlay || !closeBtn)
             return;
-        teacherListContainer.addEventListener("click", function (event) {
-            var mouseEvent = event;
-            var clickedItem = event.target.closest(".teacher-item");
-            if (clickedItem) {
-                var teacherIndex = clickedItem.dataset.index;
-                var teacher = teachers[parseInt(teacherIndex)];
-                teacherInfoCardContainer.classList.remove("hidden");
-                overlay.classList.remove("hidden");
-                overlay.style.display = "block";
-                addTeacherInfoToCard(teacher);
-            }
+        teacherListContainers.forEach(function (teacherListContainer) {
+            teacherListContainer.addEventListener("click", function (event) {
+                var mouseEvent = event;
+                var clickedItem = mouseEvent.target.closest(".teacher-item");
+                if (clickedItem) {
+                    var teacherIndex = clickedItem.dataset.index;
+                    var teacher = teachers[parseInt(teacherIndex)];
+                    teacherInfoCardContainer.classList.remove("hidden");
+                    overlay.classList.remove("hidden");
+                    overlay.style.display = "block";
+                    // Pass the full teacher list to update favorites dynamically
+                    addTeacherInfoToCard(teacher, teachers);
+                }
+            });
         });
         closeBtn.addEventListener("click", function () {
             teacherInfoCardContainer.classList.add("hidden");
@@ -2099,19 +2099,38 @@ document.addEventListener("DOMContentLoaded", function () {
             overlay.style.display = "none";
         });
     }
-    function addTeacherInfoToCard(teacher) {
+    function addTeacherInfoToCard(teacher, teachers) {
         var teacherInfoCard = document.querySelector(".teacher-info-card-main-container");
         if (!teacherInfoCard)
             return;
-        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n        <div class=\"teacher-info-card-image-container\">\n          <img src=\"./images/teacher.webp\" alt=\"".concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n\n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n\n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n        </div>\n      </div>\n    ");
+        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n        <div class=\"teacher-info-card-image-container\">\n          <img src=\"./images/teacher.webp\" alt=\"".concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n        </div>\n        <div class=\"add-fav-button-container\">\n          <button class=\"add-to-fav\">").concat(teacher.favorite ? 'Remove from favourites' : 'Add to favourites', "</button>\n        </div>\n      </div>\n    ");
+        var addToFavButton = document.querySelector(".add-to-fav");
+        if (addToFavButton) {
+            addToFavButton.addEventListener("click", function () {
+                teacher.favorite = !teacher.favorite;
+                addToFavButton.textContent = teacher.favorite ? 'Remove from favourites' : 'Add to favourites';
+                //Star
+                var teacherItem = document.querySelector(".teacher-item[data-index=\"".concat(teachers.indexOf(teacher), "\"]"));
+                var starIcon = teacherItem === null || teacherItem === void 0 ? void 0 : teacherItem.querySelector('.star-icon');
+                if (starIcon) {
+                    starIcon.classList.toggle('visible', teacher.favorite);
+                    starIcon.classList.toggle('hidden', !teacher.favorite);
+                }
+                addFavouriteTeacher(teachers);
+            });
+        }
     }
     function addFavouriteTeacher(teachers) {
         var favTeachersContainer = document.querySelector('.fav-teachers-list-container');
         if (!favTeachersContainer)
             return;
+        // Clear previous favorite teachers list
+        favTeachersContainer.innerHTML = '';
         var teachersList = document.createElement("ul");
         teachersList.classList.add("teachers-list");
-        teachersList.innerHTML = "<span class=\"arrow left\"></span>";
+        var leftArrow = document.createElement("span");
+        leftArrow.classList.add("arrow", "left");
+        teachersList.appendChild(leftArrow);
         var favTeachers = teachers
             .filter(function (teacher) { return teacher.favorite; })
             .map(function (teacher) {
@@ -2121,9 +2140,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return listItem;
         });
         favTeachers.forEach(function (listItem) {
+            var _a;
             teachersList.appendChild(listItem);
+            (_a = document.querySelector('.star-icon')) === null || _a === void 0 ? void 0 : _a.classList.add('visible');
         });
-        teachersList.innerHTML += "<span class=\"arrow right\"></span>";
+        var rightArrow = document.createElement("span");
+        rightArrow.classList.add("arrow", "right");
+        teachersList.appendChild(rightArrow);
         favTeachersContainer.appendChild(teachersList);
     }
     function dropdownOptions() {
@@ -2165,7 +2188,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var tbody = table.querySelector('tbody');
         teachers.forEach(function (teacher) {
             var tr = document.createElement('tr');
-            tr.innerHTML = "\n        <td>".concat(teacher.full_name, "</td>\n        <td>").concat(teacher.course, "</td>\n        <td>").concat(teacher.age, "</td>\n        <td>").concat(teacher.gender, "</td>\n        <td>").concat(teacher.country, "</td>\n      ");
+            tr.innerHTML = "\n        <td>".concat(teacher.full_name, "</td>\n        <td>").concat(teacher.course, "</td>\n        <td>").concat(teacher.age, "</td>\n        <td>").concat(teacher.gender, "</td>\n        <td>").concat(teacher.country, "</td>\n        <td>").concat(teacher.b_date, "</td>\n      ");
             tbody === null || tbody === void 0 ? void 0 : tbody.appendChild(tr);
         });
     }
@@ -2193,12 +2216,14 @@ document.addEventListener("DOMContentLoaded", function () {
         menu === null || menu === void 0 ? void 0 : menu.classList.toggle("open");
         icon === null || icon === void 0 ? void 0 : icon.classList.toggle("open");
     }
+    //functionality on the page (clcick, drop etc)
     addTeacherForm();
-    createTeachersList(mergeUsersResult);
-    addTeacherCartInfo(mergeUsersResult);
     addFavouriteTeacher(mergeUsersResult);
     populateStatistics(mergeUsersResult);
+    createTeachersList(mergeUsersResult);
+    addTeacherCartInfo(mergeUsersResult);
     dropdownOptions();
+    //functionality on sorting, fi;tating etc
     window.addEventListener('click', function () {
         var dropdowns = document.querySelectorAll('.dropdown-content');
         dropdowns.forEach(function (dropdown) {

@@ -1923,7 +1923,7 @@ function formatUser(users: any[]): FormattedUser[] {
       picture_large: user.picture.large,
       picture_thumbnail: user.picture.thumbnail,
       course: getRandomCourse(),
-      favorite: Math.random() < 0.5,
+      favorite: false,
       img: user.picture.large,
       bg_color: '#FFFFFF',
       note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -2139,40 +2139,45 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function addTeacherCartInfo(teachers: Array<FormattedUser >): void {
-    const teacherListContainer: Element | null = document.querySelector(".teachers-list");
+  function addTeacherCartInfo(teachers: Array<FormattedUser>): void {
+    const teacherListContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list");
     const teacherInfoCardContainer: Element | null = document.querySelector(".teacher-info-card-container");
     const closeBtn: Element | null = document.querySelector(".close-btn");
     const overlay: Element | null = document.querySelector(".overlay");
-
-    if (!teacherListContainer || !teacherInfoCardContainer || !overlay || !closeBtn) return;
-
-    teacherListContainer.addEventListener("click", function (event) {
-      const mouseEvent = event as MouseEvent;
-      const clickedItem: Element | null = (event.target as HTMLElement).closest(".teacher-item");
-      if (clickedItem) {
-        const teacherIndex: string = (clickedItem as HTMLElement).dataset.index!;
-        const teacher = teachers[parseInt(teacherIndex)]; 
-
-        teacherInfoCardContainer.classList.remove("hidden");
-        overlay.classList.remove("hidden");
-        (overlay as HTMLElement).style.display = "block";
-
-        addTeacherInfoToCard(teacher);
-      }
+  
+    if (!teacherListContainers.length || !teacherInfoCardContainer || !overlay || !closeBtn) return;
+  
+    teacherListContainers.forEach(teacherListContainer => {
+      teacherListContainer.addEventListener("click", function (event) {
+        const mouseEvent = event as MouseEvent;
+        const clickedItem: Element | null = (mouseEvent.target as HTMLElement).closest(".teacher-item");
+  
+        if (clickedItem) {
+          const teacherIndex: string = (clickedItem as HTMLElement).dataset.index!;
+          const teacher = teachers[parseInt(teacherIndex)]; 
+  
+          teacherInfoCardContainer.classList.remove("hidden");
+          overlay.classList.remove("hidden");
+          (overlay as HTMLElement).style.display = "block";
+  
+          // Pass the full teacher list to update favorites dynamically
+          addTeacherInfoToCard(teacher, teachers);
+        }
+      });
     });
-
+  
     closeBtn.addEventListener("click", function () {
       teacherInfoCardContainer.classList.add("hidden");
       overlay.classList.add("hidden");
       (overlay as HTMLElement).style.display = "none";
     });
   }
-
-  function addTeacherInfoToCard(teacher:FormattedUser): void {
+  
+  
+  function addTeacherInfoToCard(teacher: FormattedUser, teachers: Array<FormattedUser>): void {
     const teacherInfoCard: Element | null = document.querySelector(".teacher-info-card-main-container");
     if (!teacherInfoCard) return;
-
+  
     teacherInfoCard.innerHTML = `
       <div class="teacher-info-card-main">
         <div class="teacher-info-card-image-container">
@@ -2187,34 +2192,62 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${teacher.phone}</p>
         </div>
       </div>
-
+  
       <div class="teacher-info-card-footer-container">
         <div class="description-container">
           <p>${teacher.note}</p>
         </div>
-
+  
         <div class="teacher-info-card-map">
           <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
         </div>
+        <div class="add-fav-button-container">
+          <button class="add-to-fav">${teacher.favorite ? 'Remove from favourites' : 'Add to favourites'}</button>
+        </div>
       </div>
     `;
+  
+    const addToFavButton = document.querySelector(".add-to-fav") as HTMLButtonElement | null;
+    if (addToFavButton) {
+      addToFavButton.addEventListener("click", function () {
+        teacher.favorite = !teacher.favorite; 
+        addToFavButton.textContent = teacher.favorite ? 'Remove from favourites' : 'Add to favourites';
+      
+        //Star
+        const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
+        const starIcon = teacherItem?.querySelector('.star-icon');
+        if (starIcon) {
+          starIcon.classList.toggle('visible', teacher.favorite);
+          starIcon.classList.toggle('hidden', !teacher.favorite);
+        }
+  
+        addFavouriteTeacher(teachers);
+      });
+    }
   }
-
+  
+  
+  
   function addFavouriteTeacher(teachers: Array<FormattedUser>): void {
     const favTeachersContainer: Element | null = document.querySelector('.fav-teachers-list-container');
-    if (!favTeachersContainer) return; 
-
+    if (!favTeachersContainer) return;
+  
+    // Clear previous favorite teachers list
+    favTeachersContainer.innerHTML = '';
+  
     const teachersList: HTMLUListElement = document.createElement("ul");
     teachersList.classList.add("teachers-list");
-
-    teachersList.innerHTML = `<span class="arrow left"></span>`;
-
+  
+    const leftArrow: HTMLSpanElement = document.createElement("span");
+    leftArrow.classList.add("arrow", "left");
+    teachersList.appendChild(leftArrow);
+  
     const favTeachers: Array<HTMLLIElement> = teachers
       .filter(teacher => teacher.favorite)
       .map((teacher) => {
         const listItem: HTMLLIElement = document.createElement("li");
         listItem.classList.add("teacher-item");
-
+  
         listItem.innerHTML = `
           <div class="teacher-image-container">
             <img src="./images/teacher.webp" alt="${teacher.full_name}" class="teacher-image" />
@@ -2226,16 +2259,20 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         return listItem;
       });
-
+  
     favTeachers.forEach((listItem) => {
       teachersList.appendChild(listItem);
+      document.querySelector('.star-icon')?.classList.add('visible');
     });
-
-    teachersList.innerHTML += `<span class="arrow right"></span>`;
-
+  
+    const rightArrow: HTMLSpanElement = document.createElement("span");
+    rightArrow.classList.add("arrow", "right");
+    teachersList.appendChild(rightArrow);
+  
     favTeachersContainer.appendChild(teachersList);
   }
-
+  
+  
   function dropdownOptions(): void {
     const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
     dropdownButtons.forEach(button => {
@@ -2286,6 +2323,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td>${teacher.age}</td>
         <td>${teacher.gender}</td>
         <td>${teacher.country}</td>
+        <td>${teacher.b_date}</td>
       `;
       tbody?.appendChild(tr);
     });
@@ -2323,10 +2361,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
   //functionality on the page (clcick, drop etc)
   addTeacherForm();
-  createTeachersList(mergeUsersResult);
-  addTeacherCartInfo(mergeUsersResult);
   addFavouriteTeacher(mergeUsersResult);
   populateStatistics(mergeUsersResult);
+  createTeachersList(mergeUsersResult);
+  addTeacherCartInfo(mergeUsersResult);
+ 
   dropdownOptions();
 
   //functionality on sorting, fi;tating etc

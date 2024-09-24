@@ -133,4 +133,21 @@ a {
   border-bottom: 0.5px solid #0056b3;
 }
 
+.add-to-fav {
+  background-color: rgb(250, 247, 247);
+  color: rgb(234, 87, 53);
+  border: 1px solid rgb(234, 87, 53);
+  padding: 1em 1.5em;
+  font-weight: bold;
+  margin-left: 1em;
+  margin-top: 1em;
+  border-radius: 3px;
+}
+
+.add-to-fav:hover {
+  background-color: rgb(234, 87, 53);
+  color: rgb(250, 247, 247);
+  cursor: pointer;
+}
+
 /*# sourceMappingURL=teacherInfoStyle.css.map */

@@ -193,7 +193,7 @@ function calculataeMatchPercentage(users: FormattedUser[], matchedUsers: Formatt
   const filteredUsers = filterUsers(mergeUsersResult, { 
       course: 'Computer Science', 
       favorite: true,
-      age: 62-49,
+      age: 49 - 62,
   });
   console.log('Filtered users:', filteredUsers);
 
