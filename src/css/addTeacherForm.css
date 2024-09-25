@@ -11,6 +11,7 @@
   transform: translate(-50%, -50%);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: rgb(167, 159, 159);
+  text-align: left;
 }
 
 /* Form adjustments for compact design */
@@ -123,6 +124,10 @@ label[for=notes] {
   background-color: rgb(234, 87, 53);
   color: #fff;
   cursor: pointer;
+}
+
+.body {
+  margin: 0;
 }
 
 /*# sourceMappingURL=addTeacherForm.css.map */
