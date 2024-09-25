@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.additionalUsers = exports.randomUserMock = void 0;
-exports.randomUserMock = [
+export const randomUserMock = [
     {
         gender: "male",
         name: { title: "Mr", first: "Norbert", last: "Weishaupt" },
@@ -1805,7 +1802,7 @@ exports.randomUserMock = [
         nat: "FR",
     },
 ];
-exports.additionalUsers = [
+export const additionalUsers = [
     {
         gender: "male",
         title: "Mr",
@@ -1872,3 +1869,4 @@ exports.additionalUsers = [
         note: "old lady with a cats",
     },
 ];
+//# sourceMappingURL=data.js.map

@@ -2183,6 +2183,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function sortUsersByAttribute(users) {
         var data_sort_elements = document.querySelectorAll('th[data-sort]');
+        populateStatistics(sortUsers(users, 'full_name', 'asc'));
         // Store sorting directions for each column
         var sortDirections = {};
         data_sort_elements.forEach(function (element) {

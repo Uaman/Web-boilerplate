@@ -1,37 +1,14 @@
-"use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.mergeUsersResult = void 0;
-exports.default = {
+export default {
     teachers: getTeachersList(),
 };
-var data_1 = require("./data");
-var Courses_1 = require("./types/Courses");
+import { randomUserMock, additionalUsers } from './data';
+import { courses } from './types/Courses';
 function formatUser(users) {
-    return users.map(function (user) { return ({
+    return users.map((user) => ({
         id: generateUUID(),
         gender: user.gender,
         title: user.name.title,
-        full_name: "".concat(user.name.first, " ").concat(user.name.last),
+        full_name: `${user.name.first} ${user.name.last}`,
         city: user.location.city,
         state: user.location.state,
         country: user.location.country,
@@ -48,59 +25,56 @@ function formatUser(users) {
         favorite: Math.random() < 0.5,
         bg_color: '#FFFFFF',
         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }); });
+    }));
 }
 function getRandomCourse() {
-    return Courses_1.courses[Math.floor(Math.random() * Courses_1.courses.length)];
+    return courses[Math.floor(Math.random() * courses.length)];
 }
 function generateUUID() {
     return Math.floor(Math.random() * 1000000);
 }
 function mergeUsers(users, additionalUsers) {
-    var combinedUsers = __spreadArray(__spreadArray([], users, true), additionalUsers, true);
-    var uniqueUsers = combinedUsers.filter(function (user, index) {
-        var firstIndex = combinedUsers.findIndex(function (u) { return u.id === user.id; });
+    const combinedUsers = [...users, ...additionalUsers];
+    const uniqueUsers = combinedUsers.filter((user, index) => {
+        const firstIndex = combinedUsers.findIndex(u => u.id === user.id);
         return firstIndex === index;
     });
-    return uniqueUsers.map(function (user) { return (__assign(__assign({}, user), { course: getRandomCourse(), note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' })); });
+    return uniqueUsers.map(user => ({
+        ...user,
+        course: getRandomCourse(),
+        note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    }));
 }
 function validateTeachersData(user) {
-    console.log("Validating user ".concat(user.full_name, ", ID: ").concat(user.id));
-    var startsWithUpperCase = function (str) { return /^[A-Z]/.test(str); };
-    var validatePhoneNumber = function (phone) { return /^\d{10}$/.test(phone); }; // Adjust regex if needed
-    // Check phone number
+    console.log(`Validating user ${user.full_name}, ID: ${user.id}`);
+    const startsWithUpperCase = (str) => /^[A-Z]/.test(str);
+    const validatePhoneNumber = (phone) => /^\d{10}$/.test(phone);
     if (!validatePhoneNumber(user.phone)) {
         console.log('Invalid phone number');
         return false;
     }
-    // Check string fields
-    var stringFields = ['full_name', 'gender', 'note', 'state', 'city', 'country'];
-    for (var _i = 0, stringFields_1 = stringFields; _i < stringFields_1.length; _i++) {
-        var field = stringFields_1[_i];
+    const stringFields = ['full_name', 'gender', 'note', 'state', 'city', 'country'];
+    for (const field of stringFields) {
         if (typeof user[field] !== 'string' || !startsWithUpperCase(user[field])) {
-            console.log("Invalid ".concat(field));
+            console.log(`Invalid ${field}`);
             return false;
         }
     }
-    // Check age
     if (typeof user.age !== 'number' || user.age < 0) {
         console.log('Invalid age');
         return false;
     }
-    // Check email
     if (typeof user.email !== 'string' || !user.email.includes('@')) {
         console.log('Invalid email');
         return false;
     }
     return true;
 }
-function sortUsers(users, sortBy, direction) {
-    if (direction === void 0) { direction = 'asc'; }
+function sortUsers(users, sortBy, direction = 'asc') {
     if (sortBy === undefined)
         return users;
-    return users.sort(function (a, b) {
-        var comparison = 0;
-        // Ensure properties exist before comparing
+    return users.sort((a, b) => {
+        let comparison = 0;
         if (a[sortBy] !== undefined && b[sortBy] !== undefined) {
             if (sortBy === 'full_name' || sortBy === 'country') {
                 comparison = a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase());
@@ -116,10 +90,9 @@ function sortUsers(users, sortBy, direction) {
     });
 }
 function filterUsers(users, filters) {
-    return users.filter(function (user) {
-        var _a;
-        var ageString = (_a = filters.age) === null || _a === void 0 ? void 0 : _a.toString();
-        var _b = ageString && ageString.includes("-") ? ageString.split("-") : [ageString, ageString], ageStart = _b[0], ageEnd = _b[1];
+    return users.filter(user => {
+        const ageString = filters.age?.toString();
+        const [ageStart, ageEnd] = ageString && ageString.includes("-") ? ageString.split("-") : [ageString, ageString];
         if (filters.course && user.course !== filters.course)
             return false;
         if (filters.age !== undefined && !(user.age >= Number(ageStart) && user.age <= Number(ageEnd)))
@@ -132,41 +105,40 @@ function filterUsers(users, filters) {
     });
 }
 function searchForUser(users, searchBy) {
-    return users.filter(function (user) {
-        var _a;
-        var ageMatch = true;
-        var ageString = (_a = searchBy.age) === null || _a === void 0 ? void 0 : _a.toString().trim();
+    return users.filter(user => {
+        let ageMatch = true;
+        const ageString = searchBy.age?.toString().trim();
         if (ageString !== undefined) {
-            var userAge = user.age;
+            const userAge = user.age;
             if (ageString.startsWith(">=")) {
-                var ageValue = parseInt(ageString.slice(2).trim());
+                const ageValue = parseInt(ageString.slice(2).trim());
                 ageMatch = userAge >= ageValue;
             }
             else if (ageString.startsWith("<=")) {
-                var ageValue = parseInt(ageString.slice(2).trim());
+                const ageValue = parseInt(ageString.slice(2).trim());
                 ageMatch = userAge <= ageValue;
             }
             else if (ageString.startsWith(">")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
+                const ageValue = parseInt(ageString.slice(1).trim());
                 ageMatch = userAge > ageValue;
             }
             else if (ageString.startsWith("<")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
+                const ageValue = parseInt(ageString.slice(1).trim());
                 ageMatch = userAge < ageValue;
             }
             else if (ageString.startsWith("=")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
+                const ageValue = parseInt(ageString.slice(1).trim());
                 ageMatch = userAge === ageValue;
             }
             else {
-                var ageValue = parseInt(ageString);
+                const ageValue = parseInt(ageString);
                 ageMatch = userAge === ageValue;
             }
         }
-        var nameMatch = searchBy.name !== undefined
+        const nameMatch = searchBy.name !== undefined
             ? user.full_name.toLowerCase() === searchBy.name.toLowerCase()
             : true;
-        var noteMatch = searchBy.note !== undefined
+        const noteMatch = searchBy.note !== undefined
             ? user.note.toLowerCase().includes(searchBy.note.toLowerCase())
             : true;
         return ageMatch && nameMatch && noteMatch;
@@ -175,23 +147,24 @@ function searchForUser(users, searchBy) {
 function calculataeMatchPercentage(users, matchedUsers) {
     return Math.round((matchedUsers.length / users.length) * 100);
 }
-var formattedUsers = formatUser(__spreadArray([], data_1.randomUserMock, true));
-exports.mergeUsersResult = mergeUsers(formattedUsers, data_1.additionalUsers);
-console.log('Formatted and merged users:', exports.mergeUsersResult);
+const formattedUsers = formatUser([...randomUserMock]);
+export const mergeUsersResult = mergeUsers(formattedUsers, additionalUsers);
+console.log('Formatted and merged users:', mergeUsersResult);
 console.log('Validation Results:');
-formattedUsers.forEach(function (user) { return console.log(validateTeachersData(user)); });
-var filteredUsers = filterUsers(exports.mergeUsersResult, {
+formattedUsers.forEach(user => console.log(validateTeachersData(user)));
+const filteredUsers = filterUsers(mergeUsersResult, {
     course: 'Computer Science',
     favorite: true,
     age: 49 - 62,
 });
 console.log('Filtered users:', filteredUsers);
-var sortedUsers = sortUsers(exports.mergeUsersResult, 'full_name', 'asc');
+const sortedUsers = sortUsers(mergeUsersResult, 'full_name', 'asc');
 console.log('Sorted users:', sortedUsers);
-var searchResults = searchForUser(exports.mergeUsersResult, { age: ">30" });
-var matchPercentage = calculataeMatchPercentage(exports.mergeUsersResult, searchResults);
+const searchResults = searchForUser(mergeUsersResult, { age: ">30" });
+const matchPercentage = calculataeMatchPercentage(mergeUsersResult, searchResults);
 console.log('Search Results:', searchResults);
 console.log('Match percentage:', matchPercentage);
 function getTeachersList() {
-    return exports.mergeUsersResult;
+    return mergeUsersResult;
 }
+//# sourceMappingURL=validateData.js.map

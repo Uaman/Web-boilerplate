@@ -1870,8 +1870,7 @@ const randomUserMock = [
     note: "old lady with a cats",
   },
 ];
-
- type FormattedUser = {
+type FormattedUser = {
   id: number,
   gender: string,
   title: string,
@@ -2317,7 +2316,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function sortUsersByAttribute(users: FormattedUser[]): void {
     const data_sort_elements: NodeListOf<HTMLElement> = document.querySelectorAll('th[data-sort]');
-    
+    populateStatistics(sortUsers(users, 'full_name', 'asc'));
     // Store sorting directions for each column
     const sortDirections: Record<string, 'asc' | 'desc'> = {};
     
