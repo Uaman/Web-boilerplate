@@ -1875,7 +1875,6 @@ const randomUserMock = [
   },
 ];
 type FormattedUser = {
-
   id: number,
   gender: string,
   title: string,
@@ -1901,7 +1900,8 @@ type FormattedUser = {
   picture_large: string,
   picture_thumbnail: string,
   region: string;
-  favorite: boolean
+  favorite: boolean,
+  bg_color: string
 }
  const courses: string[] = [
   "Mathematics", "Physics", "English", "Computer Science", "Dancing",
@@ -2436,6 +2436,11 @@ console.log('Filtered Users:', filteredUsers);
     const addBtn: Element | null = document.querySelector('.add-teacher-form-button');
     const notification: HTMLElement | null = document.querySelector('#notification');
 
+    const counryButton: Element | null = document.querySelector('#country');
+    const specialityButton: Element | null = document.querySelector('#speciality');
+    const dateInput: Element | null = document.querySelector('#date');
+    const color: Element | null = document.querySelector('#favcolor');
+
     if (!addTeacherButton || !teacherForm || !overlay || !closeBtn || !notification) return;
 
     addTeacherButton.addEventListener('click', function () {
@@ -2465,32 +2470,34 @@ console.log('Filtered Users:', filteredUsers);
                 // Collecting data from the form fields
                 const formData = new FormData(form);
                 const newTeacher: FormattedUser = {
-                    full_name: formData.get('full_name') as string,
-                    course: formData.get('course') as string,
-                    age: Number(formData.get('age')),
-                    gender: formData.get('gender') as string,
-                    country: formData.get('country') as string,
-                    city: formData.get('city') as string,
-                    email: formData.get('email') as string,
-                    phone: formData.get('phone') as string,
-                    note: formData.get('note') as string,
-                    favorite: false, // Default to not favorite
-                    b_date: new Date().toISOString().split('T')[0],
-                    id: 0,
-                    title: "",
-                    state: "",
-                    postcode: 0,
-                    coordinates: {
-                        latitude: "",
-                        longitude: ""
-                    },
-                    timezone: {
-                        offset: "",
-                        description: ""
-                    },
-                    picture_large: "",
-                    picture_thumbnail: "",
-                    region: ""
+                  full_name: formData.get('full_name') as string,
+                  course: specialityButton.textContent as string,
+                  age: parseInt((dateInput as HTMLInputElement).value),
+                  gender: formData.get('gender') as string,
+                  country: counryButton.textContent as string,
+                  city: formData.get('city') as string,
+                  email: formData.get('email') as string,
+                  phone: formData.get('phone') as string,
+                  note: formData.get('note') as string || ' Hi, I am using this platform!',
+                  favorite: false, 
+                  b_date: dateInput.textContent as string,
+                  id: 0,
+                  title: "",
+                  state: "",
+                  postcode: 0,
+                  coordinates: {
+                    latitude: "",
+                    longitude: ""
+                  },
+                  timezone: {
+                    offset: "",
+                    description: ""
+                  },
+                  picture_large: "",
+                  picture_thumbnail: "",
+                  region: "",
+                  bg_color: (color as HTMLInputElement).value,
+                
                 };
 
                 // Add the new teacher to the beginning of the array
@@ -2518,14 +2525,13 @@ function showNotification(message: string): void {
         notification.classList.remove('hidden');
         notification.style.display = 'block';
 
-       
+        // Hide the notification after 3 seconds
         setTimeout(() => {
             notification.classList.add('hidden');
             notification.style.display = 'none';
-        }, 2000);
+        }, 3000);
     }
 }
-
 
   function toggleMenu(): void {
     const menu: Element | null = document.querySelector(".menu-links");

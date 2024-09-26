@@ -2273,6 +2273,10 @@ document.addEventListener("DOMContentLoaded", function () {
         var closeBtn = document.querySelector('.close-form-btn');
         var addBtn = document.querySelector('.add-teacher-form-button');
         var notification = document.querySelector('#notification');
+        var counryButton = document.querySelector('#country');
+        var specialityButton = document.querySelector('#speciality');
+        var dateInput = document.querySelector('#date');
+        var color = document.querySelector('#favcolor');
         if (!addTeacherButton || !teacherForm || !overlay || !closeBtn || !notification)
             return;
         addTeacherButton.addEventListener('click', function () {
@@ -2299,16 +2303,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     var formData = new FormData(form);
                     var newTeacher = {
                         full_name: formData.get('full_name'),
-                        course: formData.get('course'),
-                        age: Number(formData.get('age')),
+                        course: specialityButton.textContent,
+                        age: parseInt(dateInput.value),
                         gender: formData.get('gender'),
-                        country: formData.get('country'),
+                        country: counryButton.textContent,
                         city: formData.get('city'),
                         email: formData.get('email'),
                         phone: formData.get('phone'),
-                        note: formData.get('note'),
-                        favorite: false, // Default to not favorite
-                        b_date: new Date().toISOString().split('T')[0],
+                        note: formData.get('note') || ' Hi, I am using this platform!',
+                        favorite: false,
+                        b_date: dateInput.textContent,
                         id: 0,
                         title: "",
                         state: "",
@@ -2323,7 +2327,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         },
                         picture_large: "",
                         picture_thumbnail: "",
-                        region: ""
+                        region: "",
+                        bg_color: color.value,
                     };
                     // Add the new teacher to the beginning of the array
                     teachers.unshift(newTeacher);
@@ -2345,10 +2350,11 @@ document.addEventListener("DOMContentLoaded", function () {
             notification.textContent = message;
             notification.classList.remove('hidden');
             notification.style.display = 'block';
+            // Hide the notification after 3 seconds
             setTimeout(function () {
                 notification.classList.add('hidden');
                 notification.style.display = 'none';
-            }, 2000);
+            }, 3000);
         }
     }
     function toggleMenu() {
