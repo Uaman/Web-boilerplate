@@ -2011,29 +2011,12 @@ function searchForUser(users, searchBy) {
                 var ageValue = parseInt(ageString.slice(2).trim());
                 ageMatch = userAge <= ageValue;
             }
-            else if (ageString.startsWith(">")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
-                ageMatch = userAge > ageValue;
-            }
-            else if (ageString.startsWith("<")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
-                ageMatch = userAge < ageValue;
-            }
-            else if (ageString.startsWith("=")) {
-                var ageValue = parseInt(ageString.slice(1).trim());
-                ageMatch = userAge === ageValue;
-            }
             else {
-                var ageValue = parseInt(ageString);
-                ageMatch = userAge === ageValue;
+                ageMatch = userAge === parseInt(ageString);
             }
         }
-        var nameMatch = searchBy.name !== undefined
-            ? user.full_name.toLowerCase() === searchBy.name.toLowerCase()
-            : true;
-        var noteMatch = searchBy.note !== undefined
-            ? user.note.toLowerCase().includes(searchBy.note.toLowerCase())
-            : true;
+        var nameMatch = searchBy.name ? user.full_name.toLowerCase().trim().includes(searchBy.name.toLowerCase().trim()) : true;
+        var noteMatch = searchBy.note ? user.note.toLowerCase().trim().includes(searchBy.note.toLowerCase().trim()) : true;
         return ageMatch && nameMatch && noteMatch;
     });
 }
@@ -2244,12 +2227,70 @@ document.addEventListener("DOMContentLoaded", function () {
         menu === null || menu === void 0 ? void 0 : menu.classList.toggle("open");
         icon === null || icon === void 0 ? void 0 : icon.classList.toggle("open");
     }
+    function searchForTeacher(teachers) {
+        var searchButton = document.querySelector('.search-btn');
+        var searchInput = document.querySelector('.input-look-for-teacher');
+        if (!searchButton || !searchInput)
+            return;
+        searchInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+        searchButton.addEventListener('click', function () {
+            var searchQuery = searchInput.value.trim();
+            // If input is empty or *, display all teachers
+            var searchResults = (!searchQuery || searchQuery === '*')
+                ? teachers // Display all teachers
+                : teachers.filter(function (teacher) {
+                    var matches = false;
+                    var ageRegex = /([<>]=?)\s*(\d+)/; // Matches patterns like >=30, <=45
+                    var ageMatch = searchQuery.match(ageRegex);
+                    if (ageMatch) {
+                        var operator = ageMatch[1]; // Extracts >=, <=, >, <
+                        var age = Number(ageMatch[2]); // Extracts the number
+                        switch (operator) {
+                            case '>':
+                                matches = teacher.age > age;
+                                break;
+                            case '>=':
+                                matches = teacher.age >= age;
+                                break;
+                            case '<':
+                                matches = teacher.age < age;
+                                break;
+                            case '<=':
+                                matches = teacher.age <= age;
+                                break;
+                        }
+                    }
+                    else {
+                        var searchRegex = new RegExp(searchQuery, 'i'); // 'i' for case-insensitive matching
+                        matches = searchRegex.test(teacher.full_name) || searchRegex.test(teacher.note);
+                    }
+                    return matches;
+                });
+            // Clear the current teachers list before displaying new results
+            var teachersContainers = document.querySelectorAll(".teachers-list-container");
+            teachersContainers.forEach(function (container) {
+                var existingList = container.querySelector('.teachers-list');
+                if (existingList) {
+                    existingList.remove(); // Remove the existing list
+                }
+            });
+            // Create and display the new list with search results
+            createTeachersList(searchResults);
+            addTeacherCartInfo(mergeUsersResult);
+            console.log(searchResults);
+        });
+    }
     //functionality on the page (clcick, drop etc)
     addTeacherForm();
+    createTeachersList(mergeUsersResult);
     addFavouriteTeacher(mergeUsersResult);
     sortUsersByAttribute(mergeUsersResult);
-    createTeachersList(mergeUsersResult);
     addTeacherCartInfo(mergeUsersResult);
+    searchForTeacher(mergeUsersResult);
     dropdownOptions();
     //functionality on sorting, fi;tating etc
     window.addEventListener('click', function () {

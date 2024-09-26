@@ -2026,56 +2026,31 @@ return users.filter(user => {
   return true;
 });
 }
+function searchForUser(users: FormattedUser[], searchBy: { age?: number | string, name?: string, note?: string }): FormattedUser[] {
+  return users.filter(user => {
+      let ageMatch = true;
+      const ageString = searchBy.age?.toString().trim();
 
-function searchForUser(users: FormattedUser[],
-searchBy: {
-  age?: number | string,
-  name?: string,
-  note?: string,
+      if (ageString !== undefined) {
+          const userAge = user.age;
+          if (ageString.startsWith(">=")) {
+              const ageValue = parseInt(ageString.slice(2).trim());
+              ageMatch = userAge >= ageValue;
+          } else if (ageString.startsWith("<=")) {
+              const ageValue = parseInt(ageString.slice(2).trim());
+              ageMatch = userAge <= ageValue;
+          } else {
+              ageMatch = userAge === parseInt(ageString);
+          }
+      }
+
+      const nameMatch = searchBy.name ? user.full_name.toLowerCase().trim().includes(searchBy.name.toLowerCase().trim()) : true;
+      const noteMatch = searchBy.note ? user.note.toLowerCase().trim().includes(searchBy.note.toLowerCase().trim()) : true;
+
+      return ageMatch && nameMatch && noteMatch;
+  });
 }
-): FormattedUser[] {
-return users.filter(user => {
-  let ageMatch = true;
-  const ageString = searchBy.age?.toString().trim();
 
-  if (ageString !== undefined) {
-    const userAge = user.age;
-
-    if (ageString.startsWith(">=")) {
-      const ageValue = parseInt(ageString.slice(2).trim());
-      ageMatch = userAge >= ageValue;
-    } else if (ageString.startsWith("<=")) {
-      const ageValue = parseInt(ageString.slice(2).trim());
-      ageMatch = userAge <= ageValue;
-    } else if (ageString.startsWith(">")) {
-      const ageValue = parseInt(ageString.slice(1).trim());
-      ageMatch = userAge > ageValue;
-    } else if (ageString.startsWith("<")) {
-      const ageValue = parseInt(ageString.slice(1).trim());
-      ageMatch = userAge < ageValue;
-    } else if (ageString.startsWith("=")) {
-      const ageValue = parseInt(ageString.slice(1).trim());
-      ageMatch = userAge === ageValue;
-    } else {
-      
-      const ageValue = parseInt(ageString);
-      ageMatch = userAge === ageValue;
-    }
-  }
-
-  const nameMatch = searchBy.name !== undefined
-    ? user.full_name.toLowerCase() === searchBy.name.toLowerCase()
-    : true;
-
-  
-  const noteMatch = searchBy.note !== undefined
-    ? user.note.toLowerCase().includes(searchBy.note.toLowerCase())
-    : true;
-
- 
-  return ageMatch && nameMatch && noteMatch;
-});
-}
 
 
 function calculataeMatchPercentage(users: FormattedUser[], matchedUsers: FormattedUser[]): number {
@@ -2141,7 +2116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function addTeacherCartInfo(teachers: Array<FormattedUser>): void {
     const teacherListContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list");
     const teacherInfoCardContainer: Element | null = document.querySelector(".teacher-info-card-container");
-    const closeBtn: Element | null = document.querySelector(".close-btn");
+     const closeBtn: Element | null = document.querySelector(".close-btn");
     const overlay: Element | null = document.querySelector(".overlay");
   
     if (!teacherListContainers.length || !teacherInfoCardContainer || !overlay || !closeBtn) return;
@@ -2316,9 +2291,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function sortUsersByAttribute(users: FormattedUser[]): void {
     const data_sort_elements: NodeListOf<HTMLElement> = document.querySelectorAll('th[data-sort]');
+  
     populateStatistics(sortUsers(users, 'full_name', 'asc'));
     // Store sorting directions for each column
     const sortDirections: Record<string, 'asc' | 'desc'> = {};
+  
+
     
     data_sort_elements.forEach((element) => {
       element.addEventListener('click', function () {
@@ -2397,16 +2375,80 @@ document.addEventListener("DOMContentLoaded", () => {
     menu?.classList.toggle("open");
     icon?.classList.toggle("open");
   }
+  function searchForTeacher(teachers: FormattedUser[]): void {
+    const searchButton: Element | null = document.querySelector('.search-btn');
+    const searchInput: HTMLInputElement | null = document.querySelector('.input-look-for-teacher');
+
+    if (!searchButton || !searchInput) return;
+
+    searchInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            (searchButton as HTMLElement).click();
+        }
+    });
+
+    searchButton.addEventListener('click', function () {
+        const searchQuery = searchInput.value.trim();
+
+        // If input is empty or *, display all teachers
+        const searchResults: FormattedUser[] = (!searchQuery || searchQuery === '*') 
+            ? teachers // Display all teachers
+            : teachers.filter(teacher => {
+                let matches = false;
+
+                const ageRegex = /([<>]=?)\s*(\d+)/; // Matches patterns like >=30, <=45
+                const ageMatch = searchQuery.match(ageRegex);
+
+                if (ageMatch) {
+                    const operator = ageMatch[1]; // Extracts >=, <=, >, <
+                    const age = Number(ageMatch[2]); // Extracts the number
+                    switch (operator) {
+                        case '>':
+                            matches = teacher.age > age;
+                            break;
+                        case '>=':
+                            matches = teacher.age >= age;
+                            break;
+                        case '<':
+                            matches = teacher.age < age;
+                            break;
+                        case '<=':
+                            matches = teacher.age <= age;
+                            break;
+                    }
+                } else {
+                    const searchRegex = new RegExp(searchQuery, 'i'); // 'i' for case-insensitive matching
+                    matches = searchRegex.test(teacher.full_name) || searchRegex.test(teacher.note);
+                }
+
+                return matches;
+            });
+
+        // Clear the current teachers list before displaying new results
+        const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
+        teachersContainers.forEach(container => {
+            const existingList = container.querySelector('.teachers-list');
+            if (existingList) {
+                existingList.remove(); // Remove the existing list
+            }
+        });
+
+        // Create and display the new list with search results
+        createTeachersList(searchResults);
+        addTeacherCartInfo(mergeUsersResult);
+        console.log(searchResults);
+    });
+}
 
 
   
   //functionality on the page (clcick, drop etc)
   addTeacherForm();
+  createTeachersList(mergeUsersResult);
   addFavouriteTeacher(mergeUsersResult);
   sortUsersByAttribute(mergeUsersResult);
-  createTeachersList(mergeUsersResult);
   addTeacherCartInfo(mergeUsersResult);
- 
+  searchForTeacher(mergeUsersResult);
   dropdownOptions();
 
   //functionality on sorting, fi;tating etc
