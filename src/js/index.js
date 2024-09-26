@@ -1838,9 +1838,10 @@ var additionalUsers = [
         phone: "0079-8291509",
         id: "fgesrg456dsf234c1",
         favorite: true,
-        course: null,
+        course: "Physics",
         bg_color: "#1f75cb",
-        note: null,
+        note: "....",
+        region: 'Europe'
     },
     {
         gender: "male",
@@ -1850,9 +1851,10 @@ var additionalUsers = [
         picture_large: "https://randomuser.me/api/portraits/men/40.jpg",
         picture_thumbnail: "https://randomuser.me/api/portraits/thumb/men/40.jpg",
         favorite: true,
-        course: null,
-        bg_color: null,
-        note: null,
+        course: "Computer Science",
+        bg_color: "#dface7",
+        note: '...',
+        region: 'Other'
     },
     {
         gender: "male",
@@ -1866,10 +1868,11 @@ var additionalUsers = [
         timezone: { offset: "+3:30", description: "Tehran" },
         email: "aaron.enoksen@example.com",
         id: "FN19068929566",
-        favorite: null,
-        course: null,
+        favorite: true,
+        course: "Computer Science",
         bg_color: "#dface7",
-        note: null,
+        note: '...',
+        region: "Europe",
     },
     {
         gender: "female",
@@ -1887,11 +1890,27 @@ var additionalUsers = [
         course: "chemistry",
         bg_color: "#dface7",
         note: "old lady with a cats",
+        region: "Europe",
     },
 ];
 var courses = [
     "Mathematics", "Physics", "English", "Computer Science", "Dancing",
     "Chess", "Biology", "Chemistry", "Law", "Art", "Medicine", "Statistics"
+];
+var europeanCountries = [
+    'Albania', 'Andorra', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium',
+    'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic',
+    'Denmark', 'Estonia', 'Finland', 'France', 'Georgia', 'Germany', 'Greece',
+    'Hungary', 'Iceland', 'Ireland', 'Italy', 'Kazakhstan', 'Kosovo', 'Latvia',
+    'Liechtenstein', 'Lithuania', 'Luxembourg', 'Malta', 'Moldova', 'Monaco',
+    'Montenegro', 'Netherlands', 'North Macedonia', 'Norway', 'Poland', 'Portugal',
+    'Romania', 'Russia', 'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 'Spain',
+    'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City',
+    'Montenegro', 'Serbia', 'Kosovo', 'Bosnia and Herzegovina', 'Croatia', 'Slovenia',
+    'Hungary', 'Slovakia', 'Czech Republic', 'Poland', 'Lithuania', 'Latvia', 'Estonia',
+    'Finland', 'Sweden', 'Norway', 'Denmark', 'Iceland', 'Ireland', 'United Kingdom',
+    'Netherlands', 'Belgium', 'Luxembourg', 'France', 'Spain', 'Portugal', 'Germany',
+    'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
 ];
 function formatUser(users) {
     return users.map(function (user) { return ({
@@ -1915,8 +1934,21 @@ function formatUser(users) {
         favorite: false,
         img: user.picture.large,
         bg_color: '#FFFFFF',
+        region: setRegion(user),
         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     }); });
+}
+function setRegion(user) {
+    var country = user.location.country;
+    if (country === 'United States' || country === 'USA') {
+        return 'USA';
+    }
+    else if (europeanCountries.includes(country)) {
+        return 'Europe';
+    }
+    else {
+        return 'Other';
+    }
 }
 function getRandomCourse() {
     return courses[Math.floor(Math.random() * courses.length)];
@@ -1989,9 +2021,11 @@ function filterUsers(users, filters) {
             return false;
         if (filters.age !== undefined && !(user.age >= Number(ageStart) && user.age <= Number(ageEnd)))
             return false;
-        if (filters.gender && user.gender !== filters.gender)
+        if (filters.gender && user.gender !== filters.gender.toLowerCase())
             return false;
         if (filters.favorite !== undefined && user.favorite !== filters.favorite)
+            return false;
+        if (filters.region && user.region !== filters.region)
             return false;
         return true;
     });
@@ -2026,11 +2060,6 @@ function calculataeMatchPercentage(users, matchedUsers) {
 var formattedUsers = formatUser(__spreadArray([], randomUserMock, true));
 var mergeUsersResult = mergeUsers(formattedUsers, additionalUsers);
 formattedUsers.forEach(function (user) { return console.log(validateData(user)); });
-var filteredUsers = filterUsers(mergeUsersResult, {
-    course: 'Computer Science',
-    favorite: true,
-    age: 62 - 49,
-});
 var sortedUsers = sortUsers(mergeUsersResult, 'full_name', 'asc');
 var searchResults = searchForUser(mergeUsersResult, { age: ">30" });
 var matchPercentage = calculataeMatchPercentage(mergeUsersResult, searchResults);
@@ -2132,9 +2161,11 @@ document.addEventListener("DOMContentLoaded", function () {
         teachersList.appendChild(rightArrow);
         favTeachersContainer.appendChild(teachersList);
     }
-    function dropdownOptions() {
+    function dropdownOptions(teachers) {
         var dropdownButtons = document.querySelectorAll('.dropbtn');
         dropdownButtons.forEach(function (button) {
+            // Set default text
+            button.innerHTML = 'Select an option';
             button.addEventListener('click', function (event) {
                 var dropdownContent = this.nextElementSibling;
                 dropdownContent === null || dropdownContent === void 0 ? void 0 : dropdownContent.classList.toggle('show');
@@ -2151,8 +2182,10 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdownOptions.forEach(function (option) {
             option.addEventListener('click', function () {
                 var button = this.closest('.dropdown').querySelector('.dropbtn');
-                button.innerHTML = this.innerText + ' <span class="arrow-down">&#9662;</span>';
+                // Update the selected option without resetting others
+                button.innerHTML = this.innerText;
                 this.parentElement.parentElement.classList.remove('show');
+                filterTeachersByDropdown(teachers);
             });
         });
         document.querySelectorAll('nav ul li').forEach(function (li) {
@@ -2163,6 +2196,36 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add('active');
             });
         });
+    }
+    function filterTeachersByDropdown(teachers) {
+        var ageFilter = document.querySelector('#age-params .dropdown');
+        var regionParams = document.querySelector('#region-params .dropdown');
+        var sexParams = document.querySelector('#sex-params .dropdown');
+        if (!ageFilter || !regionParams || !sexParams)
+            return;
+        var regionParams_innerText = regionParams.innerText.replace('&#9662;', '').trim();
+        var sexParams_innerText = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
+        var ageFilter_innerText = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
+        console.log('Region:', regionParams_innerText);
+        console.log('Gender:', sexParams_innerText);
+        console.log('Age Filter:', ageFilter_innerText);
+        console.log(teachers[2]);
+        // Clear the current teachers list before displaying new results
+        var teachersContainers = document.querySelectorAll(".teachers-list-container");
+        teachersContainers.forEach(function (container) {
+            var existingList = container.querySelector('.teachers-list');
+            if (existingList) {
+                existingList.remove();
+            }
+        });
+        var filteredUsers = filterUsers(teachers, {
+            age: ageFilter_innerText,
+            gender: sexParams_innerText,
+            region: regionParams_innerText
+        });
+        console.log('Filtered Users:', filteredUsers);
+        createTeachersList(filteredUsers);
+        addTeacherCartInfo(filteredUsers);
     }
     function sortUsersByAttribute(users) {
         var data_sort_elements = document.querySelectorAll('th[data-sort]');
@@ -2203,23 +2266,90 @@ document.addEventListener("DOMContentLoaded", function () {
             tbody === null || tbody === void 0 ? void 0 : tbody.appendChild(tr);
         });
     }
-    function addTeacherForm() {
+    function addTeacherForm(teachers) {
         var addTeacherButton = document.querySelector('#add-teacher-btn');
         var teacherForm = document.querySelector('.add-teacher-form-container');
-        var overlay = document.querySelector(".overlay");
+        var overlay = document.querySelector('.overlay');
         var closeBtn = document.querySelector('.close-form-btn');
-        if (!addTeacherButton || !teacherForm || !overlay || !closeBtn)
+        var addBtn = document.querySelector('.add-teacher-form-button');
+        var notification = document.querySelector('#notification');
+        if (!addTeacherButton || !teacherForm || !overlay || !closeBtn || !notification)
             return;
         addTeacherButton.addEventListener('click', function () {
             teacherForm.classList.remove('hidden');
             overlay.classList.remove('hidden');
             overlay.style.display = "block";
         });
-        closeBtn.addEventListener("click", function () {
-            teacherForm.classList.add("hidden");
-            overlay.classList.add("hidden");
+        overlay.addEventListener("click", function () {
+            teacherForm.classList.add('hidden');
+            overlay.classList.add('hidden');
             overlay.style.display = "none";
         });
+        closeBtn.addEventListener("click", function () {
+            teacherForm.classList.add('hidden');
+            overlay.classList.add('hidden');
+            overlay.style.display = "none";
+        });
+        addBtn.addEventListener('click', function () {
+            var form = teacherForm.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+                    // Collecting data from the form fields
+                    var formData = new FormData(form);
+                    var newTeacher = {
+                        full_name: formData.get('full_name'),
+                        course: formData.get('course'),
+                        age: Number(formData.get('age')),
+                        gender: formData.get('gender'),
+                        country: formData.get('country'),
+                        city: formData.get('city'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        note: formData.get('note'),
+                        favorite: false, // Default to not favorite
+                        b_date: new Date().toISOString().split('T')[0],
+                        id: 0,
+                        title: "",
+                        state: "",
+                        postcode: 0,
+                        coordinates: {
+                            latitude: "",
+                            longitude: ""
+                        },
+                        timezone: {
+                            offset: "",
+                            description: ""
+                        },
+                        picture_large: "",
+                        picture_thumbnail: "",
+                        region: ""
+                    };
+                    // Add the new teacher to the beginning of the array
+                    teachers.unshift(newTeacher);
+                    // Show notification
+                    showNotification('Викладача додано!');
+                    form.reset();
+                    teacherForm.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                    overlay.style.display = "none";
+                    console.log(newTeacher);
+                });
+            }
+        });
+    }
+    // Function to show notification
+    function showNotification(message) {
+        var notification = document.querySelector('#notification');
+        if (notification) {
+            notification.textContent = message;
+            notification.classList.remove('hidden');
+            notification.style.display = 'block';
+            setTimeout(function () {
+                notification.classList.add('hidden');
+                notification.style.display = 'none';
+            }, 2000);
+        }
     }
     function toggleMenu() {
         var menu = document.querySelector(".menu-links");
@@ -2284,14 +2414,14 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(searchResults);
         });
     }
-    //functionality on the page (clcick, drop etc)
-    addTeacherForm();
+    dropdownOptions(mergeUsersResult);
+    filterTeachersByDropdown(mergeUsersResult);
     createTeachersList(mergeUsersResult);
     addFavouriteTeacher(mergeUsersResult);
     sortUsersByAttribute(mergeUsersResult);
     addTeacherCartInfo(mergeUsersResult);
     searchForTeacher(mergeUsersResult);
-    dropdownOptions();
+    addTeacherForm(mergeUsersResult);
     //functionality on sorting, fi;tating etc
     window.addEventListener('click', function () {
         var dropdowns = document.querySelectorAll('.dropdown-content');

@@ -1819,9 +1819,10 @@ const randomUserMock = [
     phone: "0079-8291509",
     id: "fgesrg456dsf234c1",
     favorite: true,
-    course: null,
+    course: "Physics",
     bg_color: "#1f75cb",
-    note: null,
+    note: "....",
+    region: 'Europe'
   },
   {
     gender: "male",
@@ -1831,9 +1832,10 @@ const randomUserMock = [
     picture_large: "https://randomuser.me/api/portraits/men/40.jpg",
     picture_thumbnail: "https://randomuser.me/api/portraits/thumb/men/40.jpg",
     favorite: true,
-    course: null,
-    bg_color: null,
-    note: null,
+    course: "Computer Science",
+    bg_color: "#dface7",
+    note: '...',
+    region: 'Other'
   },
   {
     gender: "male",
@@ -1847,10 +1849,11 @@ const randomUserMock = [
     timezone: { offset: "+3:30", description: "Tehran" },
     email: "aaron.enoksen@example.com",
     id: "FN19068929566",
-    favorite: null,
-    course: null,
+    favorite: true,
+    course: "Computer Science",
     bg_color: "#dface7",
-    note: null,
+    note: '...',
+    region: "Europe",
   },
   {
     gender: "female",
@@ -1868,9 +1871,11 @@ const randomUserMock = [
     course: "chemistry",
     bg_color: "#dface7",
     note: "old lady with a cats",
+    region: "Europe",
   },
 ];
 type FormattedUser = {
+
   id: number,
   gender: string,
   title: string,
@@ -1895,13 +1900,28 @@ type FormattedUser = {
   phone: string,
   picture_large: string,
   picture_thumbnail: string,
+  region: string;
   favorite: boolean
 }
  const courses: string[] = [
   "Mathematics", "Physics", "English", "Computer Science", "Dancing",
   "Chess", "Biology", "Chemistry", "Law", "Art", "Medicine", "Statistics"
 ];
-
+const europeanCountries = [
+  'Albania', 'Andorra', 'Armenia', 'Austria', 'Azerbaijan', 'Belarus', 'Belgium', 
+  'Bosnia and Herzegovina', 'Bulgaria', 'Croatia', 'Cyprus', 'Czech Republic', 
+  'Denmark', 'Estonia', 'Finland', 'France', 'Georgia', 'Germany', 'Greece', 
+  'Hungary', 'Iceland', 'Ireland', 'Italy', 'Kazakhstan', 'Kosovo', 'Latvia', 
+  'Liechtenstein', 'Lithuania', 'Luxembourg', 'Malta', 'Moldova', 'Monaco', 
+  'Montenegro', 'Netherlands', 'North Macedonia', 'Norway', 'Poland', 'Portugal', 
+  'Romania', 'Russia', 'San Marino', 'Serbia', 'Slovakia', 'Slovenia', 'Spain', 
+  'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Vatican City',
+  'Montenegro', 'Serbia', 'Kosovo', 'Bosnia and Herzegovina', 'Croatia', 'Slovenia',
+  'Hungary', 'Slovakia', 'Czech Republic', 'Poland', 'Lithuania', 'Latvia', 'Estonia',
+  'Finland', 'Sweden', 'Norway', 'Denmark', 'Iceland', 'Ireland', 'United Kingdom',
+  'Netherlands', 'Belgium', 'Luxembourg', 'France', 'Spain', 'Portugal', 'Germany',
+  'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
+];
 
 function formatUser(users: any[]): FormattedUser[] {
   return users.map((user: any) => ({
@@ -1925,9 +1945,25 @@ function formatUser(users: any[]): FormattedUser[] {
       favorite: false,
       img: user.picture.large,
       bg_color: '#FFFFFF',
+      region: setRegion(user),
       note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }));
 }
+
+function setRegion(user: any): string {
+
+    const country = user.location.country;
+
+    if (country === 'United States' || country === 'USA' ) {
+      return 'USA';
+    } else if (europeanCountries.includes(country)) {
+      return 'Europe';
+    } else {
+      return 'Other';
+    } 
+  
+}
+
 
 function getRandomCourse(): string {
   return courses[Math.floor(Math.random() * courses.length)];
@@ -2009,23 +2045,29 @@ return users.sort((a, b) => {
 });
 }
 
-function filterUsers(users: FormattedUser[], filters: {
-course?: string,
-age?: number | string,
-gender?: string,
-favorite?: boolean,
-}): FormattedUser[] {
-return users.filter(user => {
-  const ageString = filters.age?.toString();
-  const [ageStart, ageEnd] = ageString && ageString.includes("-") ? ageString.split("-") : [ageString, ageString];
 
-  if (filters.course && user.course !== filters.course) return false;
-  if (filters.age !== undefined && !(user.age >= Number(ageStart) && user.age <= Number(ageEnd))) return false;
-  if (filters.gender && user.gender !== filters.gender) return false;
-  if (filters.favorite !== undefined && user.favorite !== filters.favorite) return false;
-  return true;
-});
+function filterUsers(users: FormattedUser[], filters: {
+  course?: string,
+  age?: number | string,
+  gender?: string,
+  favorite?: boolean,
+  region?: string
+}): FormattedUser[] {
+  return users.filter(user => {
+    const ageString = filters.age?.toString();
+    const [ageStart, ageEnd] = ageString && ageString.includes("-") ? ageString.split("-") : [ageString, ageString];
+
+    if (filters.course && user.course !== filters.course) return false;
+    if (filters.age !== undefined && !(user.age >= Number(ageStart) && user.age <= Number(ageEnd))) return false;
+    if (filters.gender && user.gender !== filters.gender.toLowerCase()) return false;
+    if (filters.favorite !== undefined && user.favorite !== filters.favorite) return false;
+    if (filters.region && user.region !== filters.region) return false;
+    return true;
+  });
 }
+
+
+
 function searchForUser(users: FormattedUser[], searchBy: { age?: number | string, name?: string, note?: string }): FormattedUser[] {
   return users.filter(user => {
       let ageMatch = true;
@@ -2061,11 +2103,7 @@ const formattedUsers = formatUser([...randomUserMock]);
 const mergeUsersResult = mergeUsers(formattedUsers, additionalUsers);
 formattedUsers.forEach(user => console.log(validateData(user)));
 
-const filteredUsers = filterUsers(mergeUsersResult, { 
-    course: 'Computer Science', 
-    favorite: true,
-    age: 62-49,
-});
+
 
 const sortedUsers = sortUsers(mergeUsersResult, 'full_name', 'asc');
 const searchResults = searchForUser(mergeUsersResult, {  age: ">30" });
@@ -2253,42 +2291,86 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   
-  function dropdownOptions(): void {
+  function dropdownOptions(teachers: FormattedUser[]): void {
     const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
+
     dropdownButtons.forEach(button => {
-      button.addEventListener('click',  function (this: HTMLElement, event: Event) {
-        const dropdownContent: Element | null = this.nextElementSibling;
-        dropdownContent?.classList.toggle('show');
+        // Set default text
+        button.innerHTML = 'Select an option';
 
-        dropdownButtons.forEach(btn => {
-          const otherDropdown: Element | null = btn.nextElementSibling;
-          if (otherDropdown !== dropdownContent) {
-            otherDropdown?.classList.remove('show');
-          }
+        button.addEventListener('click', function (this: HTMLElement, event: Event) {
+            const dropdownContent: Element | null = this.nextElementSibling;
+            dropdownContent?.classList.toggle('show');
+
+            dropdownButtons.forEach(btn => {
+                const otherDropdown: Element | null = btn.nextElementSibling;
+                if (otherDropdown !== dropdownContent) {
+                    otherDropdown?.classList.remove('show');
+                }
+            });
+
+            event.stopPropagation();
         });
-
-        event.stopPropagation();
-      });
     });
 
     const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.dropdown-content li');
     dropdownOptions.forEach(option => {
-      option.addEventListener('click', function (this: HTMLElement) {
-        const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
-        button.innerHTML = this.innerText + ' <span class="arrow-down">&#9662;</span>';
-        this.parentElement!.parentElement!.classList.remove('show');
-      });
+        option.addEventListener('click', function (this: HTMLElement) {
+            const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
+
+            // Update the selected option without resetting others
+            button.innerHTML = this.innerText ;
+            this.parentElement!.parentElement!.classList.remove('show');
+            filterTeachersByDropdown(teachers);
+        });
     });
 
     document.querySelectorAll('nav ul li').forEach(li => {
-      li.addEventListener('click', function (this: HTMLElement) {
-        document.querySelectorAll('nav ul li.active').forEach(li => {
-          li.classList.remove('active');
+        li.addEventListener('click', function (this: HTMLElement) {
+            document.querySelectorAll('nav ul li.active').forEach(li => {
+                li.classList.remove('active');
+            });
+            this.classList.add('active');
         });
-        this.classList.add('active');
-      });
     });
-  }
+}
+
+
+ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
+  const ageFilter = document.querySelector('#age-params .dropdown') as HTMLElement | null;
+  const regionParams = document.querySelector('#region-params .dropdown') as HTMLInputElement | null;
+  const sexParams = document.querySelector('#sex-params .dropdown') as HTMLInputElement | null;
+
+  if (!ageFilter || !regionParams || !sexParams) return;
+  const regionParams_innerText = regionParams.innerText.replace('&#9662;', '').trim();
+  const sexParams_innerText = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
+  const ageFilter_innerText = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
+  
+  console.log('Region:', regionParams_innerText); 
+  console.log('Gender:', sexParams_innerText); 
+  console.log('Age Filter:', ageFilter_innerText);
+  console.log(teachers[2]);
+  // Clear the current teachers list before displaying new results
+  const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
+  teachersContainers.forEach(container => {
+      const existingList = container.querySelector('.teachers-list');
+      if (existingList) {
+          existingList.remove(); 
+      }
+  });
+  const filteredUsers: FormattedUser[] = filterUsers(teachers, {
+    age: ageFilter_innerText,
+    gender: sexParams_innerText,
+    region: regionParams_innerText
+  });
+
+console.log('Filtered Users:', filteredUsers); 
+  createTeachersList(filteredUsers);
+  addTeacherCartInfo(filteredUsers);
+}
+
+
+
   function sortUsersByAttribute(users: FormattedUser[]): void {
     const data_sort_elements: NodeListOf<HTMLElement> = document.querySelectorAll('th[data-sort]');
   
@@ -2346,27 +2428,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   
-
-  function addTeacherForm(): void {
+  function addTeacherForm(teachers: FormattedUser[]): void {
     const addTeacherButton: Element | null = document.querySelector('#add-teacher-btn'); 
     const teacherForm: Element | null = document.querySelector('.add-teacher-form-container'); 
-    const overlay: Element | null = document.querySelector(".overlay"); 
+    const overlay: Element | null = document.querySelector('.overlay'); 
     const closeBtn: Element | null = document.querySelector('.close-form-btn');  
+    const addBtn: Element | null = document.querySelector('.add-teacher-form-button');
+    const notification: HTMLElement | null = document.querySelector('#notification');
 
-    if (!addTeacherButton || !teacherForm || !overlay || !closeBtn) return;
+    if (!addTeacherButton || !teacherForm || !overlay || !closeBtn || !notification) return;
 
     addTeacherButton.addEventListener('click', function () {
-      teacherForm.classList.remove('hidden');
-      overlay.classList.remove('hidden');
-      (overlay as HTMLElement).style.display = "block";
+        teacherForm.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+        (overlay as HTMLElement).style.display = "block";
+    });
+
+    overlay.addEventListener("click", function () {
+        teacherForm.classList.add('hidden');
+        overlay.classList.add('hidden');
+        (overlay as HTMLElement).style.display = "none";
     });
 
     closeBtn.addEventListener("click", function () {
-      teacherForm.classList.add("hidden");
-      overlay.classList.add("hidden");  
-      (overlay as HTMLElement).style.display = "none";
+        teacherForm.classList.add('hidden');
+        overlay.classList.add('hidden');
+        (overlay as HTMLElement).style.display = "none";
     });
-  }
+
+    addBtn.addEventListener('click', function () {
+        const form = teacherForm.querySelector('form') as HTMLFormElement | null;
+        if (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Collecting data from the form fields
+                const formData = new FormData(form);
+                const newTeacher: FormattedUser = {
+                    full_name: formData.get('full_name') as string,
+                    course: formData.get('course') as string,
+                    age: Number(formData.get('age')),
+                    gender: formData.get('gender') as string,
+                    country: formData.get('country') as string,
+                    city: formData.get('city') as string,
+                    email: formData.get('email') as string,
+                    phone: formData.get('phone') as string,
+                    note: formData.get('note') as string,
+                    favorite: false, // Default to not favorite
+                    b_date: new Date().toISOString().split('T')[0],
+                    id: 0,
+                    title: "",
+                    state: "",
+                    postcode: 0,
+                    coordinates: {
+                        latitude: "",
+                        longitude: ""
+                    },
+                    timezone: {
+                        offset: "",
+                        description: ""
+                    },
+                    picture_large: "",
+                    picture_thumbnail: "",
+                    region: ""
+                };
+
+                // Add the new teacher to the beginning of the array
+                teachers.unshift(newTeacher);
+
+                // Show notification
+                showNotification('Викладача додано!');
+
+                form.reset();
+                teacherForm.classList.add('hidden');
+                overlay.classList.add('hidden');
+                (overlay as HTMLElement).style.display = "none";
+
+                console.log(newTeacher);
+            });
+        }
+    });
+}
+
+// Function to show notification
+function showNotification(message: string): void {
+    const notification: HTMLElement | null = document.querySelector('#notification');
+    if (notification) {
+        notification.textContent = message;
+        notification.classList.remove('hidden');
+        notification.style.display = 'block';
+
+       
+        setTimeout(() => {
+            notification.classList.add('hidden');
+            notification.style.display = 'none';
+        }, 2000);
+    }
+}
+
 
   function toggleMenu(): void {
     const menu: Element | null = document.querySelector(".menu-links");
@@ -2442,14 +2601,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   
-  //functionality on the page (clcick, drop etc)
-  addTeacherForm();
+  
+
+  dropdownOptions(mergeUsersResult);
+  filterTeachersByDropdown(mergeUsersResult);
   createTeachersList(mergeUsersResult);
   addFavouriteTeacher(mergeUsersResult);
   sortUsersByAttribute(mergeUsersResult);
   addTeacherCartInfo(mergeUsersResult);
   searchForTeacher(mergeUsersResult);
-  dropdownOptions();
+
+  addTeacherForm(mergeUsersResult);
 
   //functionality on sorting, fi;tating etc
 

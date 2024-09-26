@@ -79,7 +79,8 @@ p {
   height: 8em;
   border-radius: 50%;
   border: 3px solid rgb(234, 87, 53);
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .star-icon {
@@ -127,6 +128,7 @@ ul {
   padding: 1em 1.5em;
   font-weight: bold;
   height: 4vh;
+  width: -moz-max-content;
   width: max-content;
 }
 
@@ -468,6 +470,7 @@ footer .teachers-list {
   top: 100%;
   left: 0;
   background-color: white;
+  width: -moz-fit-content;
   width: fit-content;
   max-height: 0;
   overflow: hidden;
@@ -516,6 +519,4 @@ footer .teachers-list {
 
 li {
   text-align: left;
-}
-
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

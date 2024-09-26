@@ -208,128 +208,127 @@
 </section>
 
 <div class="overlay"></div> 
+<div id="notification" class="notification hidden"></div>
+
 
 <section class="add-teacher-form-container hidden">
-    <section class="add-teacher-form">
-      <div class="teacher-info-card-header-container">
-        <div class="teacher-info-card-header">
-          <div class="teacher-info-card-header-text">
-            Add Teacher
-          </div>
-          <div class="teacher-info-card-header-close-btn">
-            <button class="close-btn close-form-btn">X</button>
-          </div>
+  <section class="add-teacher-form">
+    <div class="teacher-info-card-header-container">
+      <div class="teacher-info-card-header">
+        <div class="teacher-info-card-header-text">
+          Add Teacher
+        </div>
+        <div class="teacher-info-card-header-close-btn">
+          <button class="close-btn close-form-btn">X</button>
         </div>
       </div>
-  
-      <section class="add-teacher-form-main-container">
-        <div class="add-teacher-form-element-container">
-          <label for="name">Name:</label>
-          <input type="text" id="name" placeholder="Enter name">
+    </div>
+
+    <form class="add-teacher-form-main-container"> <!-- Added form tag -->
+      <div class="add-teacher-form-element-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="full_name" placeholder="Enter name" required> <!-- Added name attribute -->
+      </div>
+
+      <div class="add-form-speciality-and-country-container">
+        <div class="add-teacher-form-speciality-container">
+          <p>Speciality</p>
+          <div class="params-container">
+            <div class="dropdown">
+              <button class="dropbtn" type="button" id="speciality">Mathematics <span class="arrow-down">&#9662;</span></button>
+              <div class="dropdown-content">
+                <ul>
+                  <li onclick="selectSpeciality(this)">Physics</li>
+                  <li onclick="selectSpeciality(this)">English</li>
+                  <li onclick="selectSpeciality(this)">Geography</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-  
-        <div class="add-form-speciality-and-country-container">
-          <div class="add-teacher-form-speciality-container">
-            <p>Speciality</p>
+
+        <div class="add-teacher-form-location-container">
+          <div class="add-teacher-form-country">
+            <p>Country</p>
             <div class="params-container">
               <div class="dropdown">
-                <button class="dropbtn">
-                  Mathematics <span class="arrow-down">&#9662;</span>
-                </button>
+                <button class="dropbtn" type="button" id="country">Ukraine <span class="arrow-down">&#9662;</span></button>
                 <div class="dropdown-content">
                   <ul>
-                    <li>Physics</li>
-                    <li>English</li>
-                    <li>Geography</li>
+                    <li onclick="selectCountry(this)">England</li>
+                    <li onclick="selectCountry(this)">USA</li>
+                    <li onclick="selectCountry(this)">Sweden</li>
+                    <li onclick="selectCountry(this)">France</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
-  
-          <div class="add-teacher-form-location-container">
-            <div class="add-teacher-form-country">
-              <p>Country</p>
-              <div class="params-container">
-                <div class="dropdown">
-                  <button class="dropbtn">
-                    Ukraine <span class="arrow-down">&#9662;</span>
-                  </button>
-                  <div class="dropdown-content">
-                    <ul>
-                      <li>England</li>
-                      <li>USA</li>
-                      <li>Sweden</li>
-                      <li>France</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="add-teacher-form-element-container">
-              <label for="city">City:</label>
-              <input type="text" id="city" placeholder="">
-            </div>
-          </div>
-        </div>
-  
-        <div class="add-teacher-form-contacts-container">
+
           <div class="add-teacher-form-element-container">
-            <label for="email">Email:</label>
-            <input type="email" id="email" placeholder="">
-          </div>
-          <div class="add-teacher-form-element-container">
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" placeholder="">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" placeholder="" required> <!-- Added name attribute -->
           </div>
         </div>
-  
-        <div class="add-teacher-form-date-of-birth-container">
-          <div class="add-teacher-form-element-container">
-            <label for="date">Date of birth:</label>
-            <input type="date" id="date">
-          </div>
-        </div>
-  
-        <div class="add-teacher-form-sex-container">
-          <p>Sex</p>
-          <ul class="sex-container">
-            <li>
-              <input type="radio" id="male" name="sex-answer">
-              <label for="male" class="sex-label">Male</label>
-            </li>
-            <li>
-              <input type="radio" id="female" name="sex-answer">
-              <label for="female" class="sex-label">Female</label>
-            </li>
-            <li>
-              <input type="radio" id="other" name="sex-answer">
-              <label for="other" class="sex-label">Other</label>
-            </li>
-          </ul>
-        </div>
-  
-        <div class="add-teacher-form-background-color-container">
-          <div class="background-color-chooser">
-            <label for="favcolor" id="favcolor">Background color:</label>
-            <span>🎨</span>
-            <input type="color" id="favcolor" value="#ff0000">
-          </div>
-        </div>
-  
+      </div>
+
+      <div class="add-teacher-form-contacts-container">
         <div class="add-teacher-form-element-container">
-          <label for="notes">Notes (optional):</label>
-          <textarea name="notes" id="notes" cols="30" rows="10" placeholder=""></textarea>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="" required> <!-- Added name attribute -->
         </div>
-  
-        <div class="add-teacher-form-button-container">
-          <button class="add-teacher-form-button">Add</button>
+        <div class="add-teacher-form-element-container">
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" name="phone" placeholder=""> <!-- Added name attribute -->
         </div>
-      </section>
-    </section>
+      </div>
+
+      <div class="add-teacher-form-date-of-birth-container">
+        <div class="add-teacher-form-element-container">
+          <label for="date">Date of birth:</label>
+          <input type="date" id="date" name="b_date"> <!-- Added name attribute -->
+        </div>
+      </div>
+
+      <div class="add-teacher-form-sex-container">
+        <p>Sex</p>
+        <ul class="sex-container">
+          <li>
+            <input type="radio" id="male" name="gender" value="male"> <!-- Added value -->
+            <label for="male" class="sex-label">Male</label>
+          </li>
+          <li>
+            <input type="radio" id="female" name="gender" value="female"> <!-- Added value -->
+            <label for="female" class="sex-label">Female</label>
+          </li>
+          <li>
+            <input type="radio" id="other" name="gender" value="other"> <!-- Added value -->
+            <label for="other" class="sex-label">Other</label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="add-teacher-form-background-color-container">
+        <div class="background-color-chooser">
+          <label for="favcolor" id="favcolor">Background color:</label>
+          <span>🎨</span>
+          <input type="color" id="favcolor" name="favcolor" value="#ff0000"> <!-- Added name attribute -->
+        </div>
+      </div>
+
+      <div class="add-teacher-form-element-container">
+        <label for="notes">Notes (optional):</label>
+        <textarea name="notes" id="notes" cols="30" rows="10" placeholder=""></textarea>
+      </div>
+
+      <div class="add-teacher-form-button-container">
+        <button type="submit" class="add-teacher-form-button">Add</button> <!-- Changed button type to submit -->
+      </div>
+    </form> <!-- Closing form tag -->
   </section>
-  
+</section>
+
+
 
 
   <script type="module" src="./js/index.js"></script>
