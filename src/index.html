@@ -12,126 +12,251 @@
       <img src="images/logo.png">
    </div>
    <div class="header-search">
-      <input type="text" placeholder="Name, note or age to search">
-      <button class="search-button">Search</button>
+      <input id="search-bar" type="text" placeholder="Name, note or age to search">
+      <button id="search-button" onclick="searchUsers()">Search</button>
    </div>
 </header>
 
 <nav class="navigation">
-   <button class="navigation-button">Teachers</button>
-   <button class="navigation-button">Statistics</button>
-   <button class="navigation-button">Favourites</button>
-   <button class="navigation-button">About</button>
-   <button class="add-teacher-button">Add teacher</button>
+   <button class="navigation-button" onclick="scrollToSection('teachers-anchor')">Teachers</button>
+   <button class="navigation-button" onclick="scrollToSection('statistics-anchor')">Statistics</button>
+   <button class="navigation-button" onclick="scrollToSection('favourites-anchor')">Favourites</button>
+   <button class="navigation-button" onclick="scrollToSection('about-anchor')">About</button>
+   <button class="add-teacher-button" onclick="showAddPopup()">Add teacher</button>
 </nav>
 
 <div class="horizontal-line"></div>
 
 <section class="top-teachers-section">
-   <h2 class="title-name">Top Teachers</h2>
+   <h2 class="title-name" id="teachers-anchor">Top Teachers</h2>
    <div class="filter-bar">
       <label for="age">Age</label>
       <select id="age">
-         <option>18-31</option>
-         <option>32-45</option>
-         <option>46-60</option>
-         <option>61+</option>
+         <option>Any</option>
+         <option>16-25</option>
+         <option>26-35</option>
+         <option>36-45</option>
+         <option>46-55</option>
+         <option>56-65</option>
+         <option>66+</option>
       </select>
       <div class="vertical-divider"></div>
+
       <label for="region">Region</label>
       <select id="region">
-         <option>Europe</option>
-         <option>Asia</option>
-         <option>North America</option>
+         <option>Any</option>
+         <option>Afghanistan</option>
+         <option>Albania</option>
+         <option>Algeria</option>
+         <option>Andorra</option>
+         <option>Angola</option>
+         <option>Antigua and Barbuda</option>
+         <option>Argentina</option>
+         <option>Armenia</option>
+         <option>Australia</option>
+         <option>Austria</option>
+         <option>Azerbaijan</option>
+         <option>Bahamas</option>
+         <option>Bahrain</option>
+         <option>Bangladesh</option>
+         <option>Barbados</option>
+         <option>Belarus</option>
+         <option>Belgium</option>
+         <option>Belize</option>
+         <option>Benin</option>
+         <option>Bhutan</option>
+         <option>Bolivia</option>
+         <option>Bosnia and Herzegovina</option>
+         <option>Botswana</option>
+         <option>Brazil</option>
+         <option>Brunei</option>
+         <option>Bulgaria</option>
+         <option>Burkina Faso</option>
+         <option>Burundi</option>
+         <option>Cabo Verde</option>
+         <option>Cambodia</option>
+         <option>Cameroon</option>
+         <option>Canada</option>
+         <option>Central African Republic</option>
+         <option>Chad</option>
+         <option>Chile</option>
+         <option>China</option>
+         <option>Colombia</option>
+         <option>Comoros</option>
+         <option>Congo, Democratic Republic of the</option>
+         <option>Congo, Republic of the</option>
+         <option>Costa Rica</option>
+         <option>Croatia</option>
+         <option>Cuba</option>
+         <option>Cyprus</option>
+         <option>Czech Republic</option>
+         <option>Denmark</option>
+         <option>Djibouti</option>
+         <option>Dominica</option>
+         <option>Dominican Republic</option>
+         <option>Ecuador</option>
+         <option>Egypt</option>
+         <option>El Salvador</option>
+         <option>Equatorial Guinea</option>
+         <option>Eritrea</option>
+         <option>Estonia</option>
+         <option>Eswatini</option>
+         <option>Ethiopia</option>
+         <option>Fiji</option>
+         <option>Finland</option>
+         <option>France</option>
+         <option>Gabon</option>
+         <option>Gambia</option>
+         <option>Georgia</option>
+         <option>Germany</option>
+         <option>Ghana</option>
+         <option>Greece</option>
+         <option>Grenada</option>
+         <option>Guatemala</option>
+         <option>Guinea</option>
+         <option>Guinea-Bissau</option>
+         <option>Guyana</option>
+         <option>Haiti</option>
+         <option>Honduras</option>
+         <option>Hungary</option>
+         <option>Iceland</option>
+         <option>India</option>
+         <option>Indonesia</option>
+         <option>Iran</option>
+         <option>Iraq</option>
+         <option>Ireland</option>
+         <option>Israel</option>
+         <option>Italy</option>
+         <option>Jamaica</option>
+         <option>Japan</option>
+         <option>Jordan</option>
+         <option>Kazakhstan</option>
+         <option>Kenya</option>
+         <option>Kiribati</option>
+         <option>Korea, North</option>
+         <option>Korea, South</option>
+         <option>Kosovo</option>
+         <option>Kuwait</option>
+         <option>Kyrgyzstan</option>
+         <option>Laos</option>
+         <option>Latvia</option>
+         <option>Lebanon</option>
+         <option>Lesotho</option>
+         <option>Liberia</option>
+         <option>Libya</option>
+         <option>Liechtenstein</option>
+         <option>Lithuania</option>
+         <option>Luxembourg</option>
+         <option>Madagascar</option>
+         <option>Malawi</option>
+         <option>Malaysia</option>
+         <option>Maldives</option>
+         <option>Mali</option>
+         <option>Malta</option>
+         <option>Marshall Islands</option>
+         <option>Mauritania</option>
+         <option>Mauritius</option>
+         <option>Mexico</option>
+         <option>Micronesia</option>
+         <option>Moldova</option>
+         <option>Monaco</option>
+         <option>Mongolia</option>
+         <option>Montenegro</option>
+         <option>Morocco</option>
+         <option>Mozambique</option>
+         <option>Myanmar</option>
+         <option>Namibia</option>
+         <option>Nauru</option>
+         <option>Nepal</option>
+         <option>Netherlands</option>
+         <option>New Zealand</option>
+         <option>Nicaragua</option>
+         <option>Niger</option>
+         <option>Nigeria</option>
+         <option>North Macedonia</option>
+         <option>Norway</option>
+         <option>Oman</option>
+         <option>Pakistan</option>
+         <option>Palau</option>
+         <option>Panama</option>
+         <option>Papua New Guinea</option>
+         <option>Paraguay</option>
+         <option>Peru</option>
+         <option>Philippines</option>
+         <option>Poland</option>
+         <option>Portugal</option>
+         <option>Qatar</option>
+         <option>Romania</option>
+         <option>Russia</option>
+         <option>Rwanda</option>
+         <option>Saint Kitts and Nevis</option>
+         <option>Saint Lucia</option>
+         <option>Saint Vincent and the Grenadines</option>
+         <option>Samoa</option>
+         <option>San Marino</option>
+         <option>Sao Tome and Principe</option>
+         <option>Saudi Arabia</option>
+         <option>Senegal</option>
+         <option>Serbia</option>
+         <option>Seychelles</option>
+         <option>Sierra Leone</option>
+         <option>Singapore</option>
+         <option>Slovakia</option>
+         <option>Slovenia</option>
+         <option>Solomon Islands</option>
+         <option>Somalia</option>
+         <option>South Africa</option>
+         <option>South Sudan</option>
+         <option>Spain</option>
+         <option>Sri Lanka</option>
+         <option>Sudan</option>
+         <option>Suriname</option>
+         <option>Sweden</option>
+         <option>Switzerland</option>
+         <option>Syria</option>
+         <option>Taiwan</option>
+         <option>Tajikistan</option>
+         <option>Tanzania</option>
+         <option>Thailand</option>
+         <option>Timor-Leste</option>
+         <option>Togo</option>
+         <option>Tonga</option>
+         <option>Trinidad and Tobago</option>
+         <option>Tunisia</option>
+         <option>Turkey</option>
+         <option>Turkmenistan</option>
+         <option>Tuvalu</option>
+         <option>Uganda</option>
+         <option>Ukraine</option>
+         <option>United Arab Emirates</option>
+         <option>United Kingdom</option>
+         <option>United States</option>
+         <option>Uruguay</option>
+         <option>Uzbekistan</option>
+         <option>Vanuatu</option>
+         <option>Vatican City</option>
+         <option>Venezuela</option>
+         <option>Vietnam</option>
+         <option>Yemen</option>
+         <option>Zambia</option>
+         <option>Zimbabwe</option>
       </select>
       <div class="vertical-divider"></div>
+
       <label for="sex">Sex</label>
       <select id="sex">
+         <option>Any</option>
          <option>Male</option>
          <option>Female</option>
-         <option>Other</option>
       </select>
       <div class="vertical-divider"></div>
-      <label><input type="checkbox"> Only with photo</label>
+
+      <label><input type="checkbox" id="has-photo"> Only with photo</label>
       <div class="vertical-divider"></div>
-      <label><input type="checkbox"> Only favourites</label>
+      <label><input type="checkbox" id="is-favorite"> Only favourites</label>
    </div>
 
-   <div class="teachers-grid">
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo1.jpg" alt="Teacher photo" class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Ihor</p>
-         <p class="teacher-name">Tkachuk</p>
-         <p class="teacher-subject">Chemistry</p>
-         <p class="teacher-nation">Ukraine</p>
-      </div>
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo2.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Pragg</p>
-         <p class="teacher-name">Rameshbabu</p>
-         <p class="teacher-subject">Chess</p>
-         <p class="teacher-nation">India</p>
-      </div>
-      <div class="teacher-card favourite">
-         <div class="teacher-photo">
-            <img src="images/photo3.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Floor</p>
-         <p class="teacher-name">Jansen</p>
-         <p class="teacher-subject">Vocal</p>
-         <p class="teacher-nation">Denmark</p>
-         <div class="star">&#9733;</div>
-      </div>
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo4.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">John</p>
-         <p class="teacher-name">Burke</p>
-         <p class="teacher-subject">Computer Science</p>
-         <p class="teacher-nation">Belgium</p>
-      </div>
-      <div class="teacher-card favourite">
-         <div class="teacher-photo">
-            <img src="images/photo5.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Ari</p>
-         <p class="teacher-name">Tang</p>
-         <p class="teacher-subject">Biology</p>
-         <p class="teacher-nation">China</p>
-         <div class="star">&#9733;</div>
-      </div>
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo6.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Rachel</p>
-         <p class="teacher-name">Andrew</p>
-         <p class="teacher-subject">Medicine</p>
-         <p class="teacher-nation">UK</p>
-      </div>
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo44.jpg" alt="A.M.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Anna</p>
-         <p class="teacher-name">Muzychuk</p>
-         <p class="teacher-subject">Chess</p>
-         <p class="teacher-nation">Belarus</p>
-      </div>
-      <div class="teacher-card">
-         <div class="teacher-photo">
-            <img src="images/photo44.jpg" alt="R.L.  " class="teacher-photo-inside">
-         </div>
-         <p class="teacher-name">Radoslaw</p>
-         <p class="teacher-name">Ljuboevic</p>
-         <p class="teacher-subject">Physics</p>
-         <p class="teacher-nation">Poland</p>
-      </div>
+   <div id="teachers-grid">
    </div>
 
 </section>
@@ -139,106 +264,33 @@
 <div class="horizontal-line"></div>
 
 <section class="statistics-section">
-   <h2 class="title-name">Statistics</h2>
+   <h2 class="title-name" id="statistics-anchor">Statistics</h2>
    <table>
       <thead>
       <tr>
-         <th>Name</th>
-         <th>Speciality</th>
-         <th>Age</th>
-         <th>Gender</th>
-         <th>Nationality</th>
+         <th class="sortable" data-sort="full_name">Name</th>
+         <th class="sortable" data-sort="course">Speciality</th>
+         <th class="sortable" data-sort="age">Age</th>
+         <th class="sortable" data-sort="gender">Gender</th>
+         <th class="sortable" data-sort="country">Nationality</th>
       </tr>
       </thead>
-      <tbody>
-      <tr>
-         <td>Daisy Alexander</td>
-         <td>Chemistry</td>
-         <td>28</td>
-         <td>Female</td>
-         <td>Vietnam</td>
-      </tr>
-      <tr>
-         <td>Julia Bradley</td>
-         <td>Math</td>
-         <td>26</td>
-         <td>Female</td>
-         <td>USA</td>
-      </tr>
-      <tr>
-         <td>Rita Hart</td>
-         <td>Art</td>
-         <td>41</td>
-         <td>Female</td>
-         <td>Ireland</td>
-      </tr>
-      <tr>
-         <td>Jonathan Jacobs</td>
-         <td>Math</td>
-         <td>32</td>
-         <td>Male</td>
-         <td>England</td>
-      </tr>
-      <tr>
-         <td>Nathaniel White</td>
-         <td>Computer Science</td>
-         <td>37</td>
-         <td>Male</td>
-         <td>Austria</td>
-      </tr>
-      <tr>
-         <td>Frank Medina</td>
-         <td>English</td>
-         <td>43</td>
-         <td>Male</td>
-         <td>Italy</td>
-      </tr>
-      <tr>
-         <td>Ella Curtis</td>
-         <td>Chess</td>
-         <td>34</td>
-         <td>Female</td>
-         <td>USA</td>
-      </tr>
-      <tr>
-         <td>Claire Simmmons</td>
-         <td>Art</td>
-         <td>38</td>
-         <td>Female</td>
-         <td>Netherlands</td>
-      </tr>
-      <tr>
-         <td>Benjamin Knight</td>
-         <td>Biology</td>
-         <td>44</td>
-         <td>Male</td>
-         <td>Scotland</td>
-      </tr>
-      <tr>
-         <td>Norma Rose</td>
-         <td>Statistics</td>
-         <td>36</td>
-         <td>Female</td>
-         <td>France</td>
-      </tr>
+      <tbody id="statistics-table-body">
+
       </tbody>
    </table>
-   <div class="pagination">
-      <span class="chosen-page">1</span>
-      <span class="other-page">2</span>
-      <span class="other-page">3</span>
-      <span class="other-page">...</span>
-      <span class="other-page">Last</span>
+   <div class="pagination" id="pagination">
+
    </div>
 </section>
 
 <div class="horizontal-line"></div>
 
 <section class="favourites-section">
-   <h2 class="title-name">Favourites</h2>
+   <h2 class="title-name" id="favourites-anchor">Favourites</h2>
    <div class="carousel-wrapper">
-      <button class="carousel-arrow left-arrow">&lt;</button>
-      <div class="favourites-carousel">
+      <button class="carousel-arrow left-arrow" onclick="shiftLeft()">&lt;</button>
+      <div id="favourites-carousel">
          <div class="teacher-card-bottom">
             <div class="teacher-photo">
                <img src="images/photo1.jpg" alt="Teacher photo" class="teacher-photo-inside">
@@ -280,52 +332,172 @@
             <p class="teacher-nation">Denmark</p>
          </div>
       </div>
-      <button class="carousel-arrow right-arrow">&gt;</button>
+      <button class="carousel-arrow right-arrow" onclick="shiftRight()">&gt;</button>
    </div>
 </section>
 
 <div class="horizontal-line"></div>
 
 <section class="about-section">
-   <p>
+   <p id="about-anchor">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet placerat lectus. Cras imperdiet dolor vitae sapien finibus dictum. Nunc rhoncus auctor sodales. Curabitur quis lorem eget nunc aliquet iaculis. Sed convallis mattis varius. Curabitur ut enim lacus. Vivamus ipsum libero, luctus sit amet aliquam nec, ultricies nec massa. Praesent dapibus mollis sem, at suscipit sapien bibendum ac. Aenean id enim purus. Vestibulum quis turpis et nulla sodales rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
 
       Pellentesque tempor urna at fringilla finibus. Mauris ac feugiat velit. Curabitur sollicitudin semper maximus. Aenean dapibus eu velit ac molestie. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam ut dolor nec dolor scelerisque lacinia id a massa. Duis sed egestas tortor. Praesent non diam turpis.</p>
 </section>
 
 <nav class="navigation">
-   <button class="navigation-button">Teachers</button>
-   <button class="navigation-button">Statistics</button>
-   <button class="navigation-button">Favourites</button>
-   <button class="navigation-button">About</button>
-   <button class="add-teacher-button">Add teacher</button>
+   <button class="navigation-button" onclick="scrollToSection('teachers-anchor')">Teachers</button>
+   <button class="navigation-button" onclick="scrollToSection('statistics-anchor')">Statistics</button>
+   <button class="navigation-button" onclick="scrollToSection('favourites-anchor')">Favourites</button>
+   <button class="navigation-button" onclick="scrollToSection('about-anchor')">About</button>
+   <button class="add-teacher-button" onclick="showAddPopup()">Add teacher</button>
 </nav>
 
 <div class="popup-overlay" id="popup_overlay1">
-   <div class="popup-add-teacher">
+   <div id="popup-add-teacher">
       <header>
          <h2>Add teacher</h2>
-         <button class="close-button" aria-label="Close">&times;</button>
+         <button class="close-button" aria-label="Close" onclick="hideAddPopup()">&times;</button>
       </header>
       <div class="add-teacher-main">
          <form class="add-teacher-form">
             <label class= "input-label" for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Enter name">
-
             <label for="speciality" class= "input-label">Speciality</label>
             <select id="speciality" name="speciality">
-               <option value="math">Mathematics</option>
-               <option value="science">Science</option>
-               <option value="history">History</option>
+               <option value="Mathematics">Mathematics</option>
+               <option value="Physics">Physics</option>
+               <option value="English">English</option>
+               <option value="Computer Science">Computer Science</option>
+               <option value="Dancing">Dancing</option>
+               <option value="Chess">Chess</option>
+               <option value="Biology">Biology</option>
+               <option value="Chemistry">Chemistry</option>
+               <option value="Law">Law</option>
+               <option value="Art">Art</option>
+               <option value="Medicine">Medicine</option>
+               <option value="Statistics">Statistics</option>
             </select>
-
             <div class="horizontal-div">
                <div class="add-teacher-form">
-                  <label for="country" class= "input-label">Country</label>
+                  <label for="country" class="input-label">Country</label>
                   <select id="country" name="country">
-                     <option value="ukraine">Ukraine</option>
-                     <option value="usa">USA</option>
-                     <option value="germany">Germany</option>
+                     <option value="Afghanistan">Afghanistan</option>
+                     <option value="Albania">Albania</option>
+                     <option value="Algeria">Algeria</option>
+                     <option value="Andorra">Andorra</option>
+                     <option value="Angola">Angola</option>
+                     <option value="Argentina">Argentina</option>
+                     <option value="Armenia">Armenia</option>
+                     <option value="Australia">Australia</option>
+                     <option value="Austria">Austria</option>
+                     <option value="Azerbaijan">Azerbaijan</option>
+                     <option value="Bahamas">Bahamas</option>
+                     <option value="Bahrain">Bahrain</option>
+                     <option value="Bangladesh">Bangladesh</option>
+                     <option value="Belarus">Belarus</option>
+                     <option value="Belgium">Belgium</option>
+                     <option value="Belize">Belize</option>
+                     <option value="Benin">Benin</option>
+                     <option value="Bhutan">Bhutan</option>
+                     <option value="Bolivia">Bolivia</option>
+                     <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                     <option value="Botswana">Botswana</option>
+                     <option value="Brazil">Brazil</option>
+                     <option value="Brunei">Brunei</option>
+                     <option value="Bulgaria">Bulgaria</option>
+                     <option value="Burkina Faso">Burkina Faso</option>
+                     <option value="Burundi">Burundi</option>
+                     <option value="Cambodia">Cambodia</option>
+                     <option value="Cameroon">Cameroon</option>
+                     <option value="Canada">Canada</option>
+                     <option value="Chile">Chile</option>
+                     <option value="China">China</option>
+                     <option value="Colombia">Colombia</option>
+                     <option value="Costa Rica">Costa Rica</option>
+                     <option value="Croatia">Croatia</option>
+                     <option value="Cuba">Cuba</option>
+                     <option value="Cyprus">Cyprus</option>
+                     <option value="Czech Republic">Czech Republic</option>
+                     <option value="Denmark">Denmark</option>
+                     <option value="Djibouti">Djibouti</option>
+                     <option value="Dominican Republic">Dominican Republic</option>
+                     <option value="Ecuador">Ecuador</option>
+                     <option value="Egypt">Egypt</option>
+                     <option value="El Salvador">El Salvador</option>
+                     <option value="Estonia">Estonia</option>
+                     <option value="Eswatini">Eswatini</option>
+                     <option value="Ethiopia">Ethiopia</option>
+                     <option value="Fiji">Fiji</option>
+                     <option value="Finland">Finland</option>
+                     <option value="France">France</option>
+                     <option value="Germany">Germany</option>
+                     <option value="Greece">Greece</option>
+                     <option value="Hungary">Hungary</option>
+                     <option value="Iceland">Iceland</option>
+                     <option value="India">India</option>
+                     <option value="Indonesia">Indonesia</option>
+                     <option value="Iran">Iran</option>
+                     <option value="Iraq">Iraq</option>
+                     <option value="Ireland">Ireland</option>
+                     <option value="Israel">Israel</option>
+                     <option value="Italy">Italy</option>
+                     <option value="Japan">Japan</option>
+                     <option value="Kazakhstan">Kazakhstan</option>
+                     <option value="Kenya">Kenya</option>
+                     <option value="Kuwait">Kuwait</option>
+                     <option value="Latvia">Latvia</option>
+                     <option value="Lebanon">Lebanon</option>
+                     <option value="Lithuania">Lithuania</option>
+                     <option value="Luxembourg">Luxembourg</option>
+                     <option value="Madagascar">Madagascar</option>
+                     <option value="Malawi">Malawi</option>
+                     <option value="Malaysia">Malaysia</option>
+                     <option value="Malta">Malta</option>
+                     <option value="Mexico">Mexico</option>
+                     <option value="Moldova">Moldova</option>
+                     <option value="Monaco">Monaco</option>
+                     <option value="Mongolia">Mongolia</option>
+                     <option value="Morocco">Morocco</option>
+                     <option value="Myanmar">Myanmar</option>
+                     <option value="Nepal">Nepal</option>
+                     <option value="Netherlands">Netherlands</option>
+                     <option value="New Zealand">New Zealand</option>
+                     <option value="Nigeria">Nigeria</option>
+                     <option value="North Macedonia">North Macedonia</option>
+                     <option value="Norway">Norway</option>
+                     <option value="Pakistan">Pakistan</option>
+                     <option value="Panama">Panama</option>
+                     <option value="Peru">Peru</option>
+                     <option value="Philippines">Philippines</option>
+                     <option value="Poland">Poland</option>
+                     <option value="Portugal">Portugal</option>
+                     <option value="Qatar">Qatar</option>
+                     <option value="Romania">Romania</option>
+                     <option value="Russia">Russia</option>
+                     <option value="Saudi Arabia">Saudi Arabia</option>
+                     <option value="Senegal">Senegal</option>
+                     <option value="Serbia">Serbia</option>
+                     <option value="Singapore">Singapore</option>
+                     <option value="Slovakia">Slovakia</option>
+                     <option value="Slovenia">Slovenia</option>
+                     <option value="South Africa">South Africa</option>
+                     <option value="South Korea">South Korea</option>
+                     <option value="Spain">Spain</option>
+                     <option value="Sri Lanka">Sri Lanka</option>
+                     <option value="Sweden">Sweden</option>
+                     <option value="Switzerland">Switzerland</option>
+                     <option value="Thailand">Thailand</option>
+                     <option value="Turkey">Turkey</option>
+                     <option value="Ukraine">Ukraine</option>
+                     <option value="United Arab Emirates">United Arab Emirates</option>
+                     <option value="United Kingdom">United Kingdom</option>
+                     <option value="United States">United States</option>
+                     <option value="Uruguay">Uruguay</option>
+                     <option value="Venezuela">Venezuela</option>
+                     <option value="Vietnam">Vietnam</option>
+                     <option value="Yemen">Yemen</option>
+                     <option value="Zimbabwe">Zimbabwe</option>
                   </select>
                </div>
                <div class="add-teacher-form">
@@ -345,11 +517,10 @@
             </div>
             <label for="dob" class= "input-label" >Date of birth</label>
             <input type="date" id="dob" name="dob">
-
             <div class="horizontal-div-2">
                <label class= "input-label">Sex</label>
-               <label class= "input-label-2"><input type="radio" name="sex" value="male"> Male</label>
-               <label class= "input-label-2"><input type="radio" name="sex" value="female"> Female</label>
+               <label class= "input-label-2"><input type="radio" name="sex" value="Male"> Male</label>
+               <label class= "input-label-2"><input type="radio" name="sex" value="Female"> Female</label>
             </div>
             <div class="horizontal-div-2">
                <label class= "input-label" for="bg-color">Background color</label>
@@ -357,8 +528,7 @@
             </div>
             <label for="notes" class= "input-label">Notes (optional)</label>
             <textarea id="notes" name="notes"></textarea>
-
-            <button type="submit" class="add-btn">Add</button>
+            <button type="submit" class="add-btn" onclick="addNewTeacher(event)">Add</button>
          </form>
       </div>
    </div>
@@ -366,24 +536,27 @@
 </div>
 
 <div class="popup-overlay" id="popup_overlay2">
-   <div class="popup-info-teacher">
+   <div id="popup-info-teacher">
       <header>
          <h2>Teacher info</h2>
-         <button class="close-button" aria-label="Close">&times;</button>
+         <div class="favorite-star-container">
+            <span id="favorite-star" class="favorite-star">&#9734;</span>
+         </div>
+         <button class="close-button" aria-label="Close" onclick="hideInfoPopup()">&times;</button>
       </header>
       <div class="info-teacher-main">
          <div class="main-info-div">
-            <div class="img-div"><img src="images/photo1.jpg"/></div>
+            <div class="img-div"><img /></div>
             <div class="details-div">
-               <p class="d-teacher-name">Ihor Tkachuk</p>
-               <p class="d-teacher-subject">Chemistry</p>
-               <p class="d-teacher-resides">Kyiv, Ukraine</p>
-               <p class="d-teacher-agesex">35, Male</p>
-               <p class="d-teacher-email">ihor_tkachuk@domain.com</p>
-               <p class="d-teacher-phone">+380964993252</p>
+               <p class="d-teacher-name"></p>
+               <p class="d-teacher-subject"></p>
+               <p class="d-teacher-resides"></p>
+               <p class="d-teacher-agesex"></p>
+               <p class="d-teacher-email"></p>
+               <p class="d-teacher-phone"></p>
             </div>
          </div>
-         <p class="additional-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce arcu felis, ultrices vel quam nec, facilisis dignissim arcu. Suspendisse potenti. Nulla egestas eget odio non placerat. Donec dapibus congue sapien a dictum. Etiam congue feugiat erat at pharetra. Aliquam accumsan urna euismod libero tristique maximus. Cras aliquam neque ut hendrerit tempus. Maecenas ultricies, metus quis malesuada molestie, magna ex porta est, vel venenatis eros est nec dui.</p>
+         <p class="additional-info"></p>
          <p class="toggle-map">toggle map</p>
       </div>
    </div>

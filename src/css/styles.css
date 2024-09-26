@@ -36,7 +36,7 @@ body {
     width: 275px;
 }
 
-.search-button {
+#search-button {
     padding: 5px 10px;
     margin-left: 5px;
     height: 40px;
@@ -53,7 +53,7 @@ body {
     vertical-align: middle;
 }
 
-.search-button:hover {
+#search-button:hover {
     background-color: tomato;
     color: white;
 }
@@ -159,7 +159,7 @@ body {
     margin: 0 5px;
 }
 
-.teachers-grid {
+#teachers-grid {
     padding-left: 25px;
     padding-right: 25px;
     display: grid;
@@ -167,6 +167,7 @@ body {
     grid-auto-flow: row;
     justify-content: flex-start;
     justify-items: center;
+    row-gap: 30px;
 }
 
 .teacher-card {
@@ -234,7 +235,7 @@ body {
     font-size: 9px;
 }
 
-.favourite .star {
+.star {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -357,14 +358,16 @@ tbody tr:nth-child(odd) {
     right: 0;
 }
 
-.favourites-carousel {
+#favourites-carousel {
     padding-left: 25px;
     padding-right: 25px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     width: 100%;
     overflow: hidden;
+    display: flex;
+    padding-left: 75px;
+    padding-right: 15px;
+    white-space: nowrap;
 }
 .favourites-section {
     position: relative;
@@ -377,13 +380,6 @@ tbody tr:nth-child(odd) {
     justify-content: center;
     position: relative;
     overflow: hidden;
-}
-
-.favourites-carousel {
-    display: flex;
-    padding-left: 75px;
-    padding-right: 15px;
-    white-space: nowrap;
 }
 
 .carousel-arrow {
@@ -471,7 +467,7 @@ tbody tr:nth-child(odd) {
     visibility: hidden;
 }
 
-.popup-add-teacher {
+#popup-add-teacher {
     visibility: hidden;
     background: white;
     width: 300px;
@@ -481,20 +477,20 @@ tbody tr:nth-child(odd) {
 }
 
 
-.popup-add-teacher header {
+#popup-add-teacher header {
     background: #333;
     color: #fff;
     padding: 15px;
     position: relative;
 }
 
-.popup-add-teacher header h2 {
+#popup-add-teacher header h2 {
     margin: 0;
     font-size: 16px;
     font-weight: normal;
 }
 
-.popup-add-teacher .close-button {
+#popup-add-teacher .close-button {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -576,7 +572,7 @@ tbody tr:nth-child(odd) {
     width: 48%;
 }
 
-.popup-info-teacher {
+#popup-info-teacher {
     visibility: hidden;
     background: white;
     width: 525px;
@@ -586,20 +582,20 @@ tbody tr:nth-child(odd) {
 }
 
 
-.popup-info-teacher header {
+#popup-info-teacher header {
     background: #333;
     color: white;
     padding: 15px;
     position: relative;
 }
 
-.popup-info-teacher header h2 {
+#popup-info-teacher header h2 {
     margin: 0;
     font-size: 16px;
     font-weight: normal;
 }
 
-.popup-info-teacher .close-button {
+#popup-info-teacher .close-button {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -682,8 +678,43 @@ tbody tr:nth-child(odd) {
     text-decoration: underline dashed;
 }
 
+.favorite-star-container {
+    position: absolute;
+    top: 50px;
+    right: 25px;
+}
+
+.favorite-star {
+    font-size: 36px;
+    color: yellow;
+    cursor: pointer;
+}
+
+.favorite-star.filled {
+    content: '\u2605';
+}
+
+.favorite-star.empty {
+    content: '\u2606';
+}
+
+.initials-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: lightcoral;
+    width: 105%;
+    height: 100%;
+    font-size: 24px;
+}
+
+.initials-placeholder:hover{
+    color: #e62200;
+    font-size: 28px;
+}
+
 @media (max-width: 1200px) {
-    .teachers-grid{
+    #teachers-grid{
         grid-template-columns: repeat(4, 1fr);
     }
 }
@@ -704,19 +735,19 @@ tbody tr:nth-child(odd) {
     .vertical-divider{
         visibility: hidden;
     }
-    .teachers-grid{
+    #teachers-grid{
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media (max-width: 750px) {
-    .teachers-grid{
+    #teachers-grid{
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 650px) {
-    .teachers-grid{
+    #teachers-grid{
         grid-template-columns: repeat(1, 1fr);
     }
     body {
