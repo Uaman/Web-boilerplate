@@ -2051,7 +2051,8 @@ function filterUsers(users: FormattedUser[], filters: {
   age?: number | string,
   gender?: string,
   favorite?: boolean,
-  region?: string
+  region?: string,
+  hasPhoto?: boolean
 }): FormattedUser[] {
   return users.filter(user => {
     const ageString = filters.age?.toString();
@@ -2062,6 +2063,7 @@ function filterUsers(users: FormattedUser[], filters: {
     if (filters.gender && user.gender !== filters.gender.toLowerCase()) return false;
     if (filters.favorite !== undefined && user.favorite !== filters.favorite) return false;
     if (filters.region && user.region !== filters.region) return false;
+    if (filters.hasPhoto !== undefined && user.picture_large!=undefined) return false;
     return true;
   });
 }
@@ -2335,22 +2337,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 }
 
-
- function filterTeachersByDropdown(teachers: FormattedUser[]): void {
+function filterTeachersByDropdown(teachers: FormattedUser[]): void {
   const ageFilter = document.querySelector('#age-params .dropdown') as HTMLElement | null;
   const regionParams = document.querySelector('#region-params .dropdown') as HTMLInputElement | null;
   const sexParams = document.querySelector('#sex-params .dropdown') as HTMLInputElement | null;
+ const favCheck = document.querySelector('#favCheck') as HTMLInputElement | null;
+ const photoCheck = document.querySelector('#photoCheck') as HTMLInputElement | null;
 
   if (!ageFilter || !regionParams || !sexParams) return;
-  const regionParams_innerText = regionParams.innerText.replace('&#9662;', '').trim();
-  const sexParams_innerText = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
-  const ageFilter_innerText = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
+
+ 
+  const selectedRegion = regionParams.innerText.replace('&#9662;', '').trim();
+  const selectedGender = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
+  const selectedAge = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
   
-  console.log('Region:', regionParams_innerText); 
-  console.log('Gender:', sexParams_innerText); 
-  console.log('Age Filter:', ageFilter_innerText);
-  console.log(teachers[2]);
-  // Clear the current teachers list before displaying new results
+
+  console.log('Region:', selectedRegion); 
+  console.log('Gender:', selectedGender); 
+  console.log('Age Filter:', selectedAge);
+
+
   const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
   teachersContainers.forEach(container => {
       const existingList = container.querySelector('.teachers-list');
@@ -2358,13 +2364,20 @@ document.addEventListener("DOMContentLoaded", () => {
           existingList.remove(); 
       }
   });
+
+  
   const filteredUsers: FormattedUser[] = filterUsers(teachers, {
-    age: ageFilter_innerText,
-    gender: sexParams_innerText,
-    region: regionParams_innerText
+    age: selectedAge,
+    gender: selectedGender,
+    region: selectedRegion,
+    favorite: favCheck?.checked,
+    hasPhoto: photoCheck?.checked
   });
 
-console.log('Filtered Users:', filteredUsers); 
+  // Log the filtered users
+  console.log('Filtered Users:', filteredUsers); 
+
+  // Create a new teachers list and add additional info
   createTeachersList(filteredUsers);
   addTeacherCartInfo(filteredUsers);
 }

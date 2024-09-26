@@ -2027,6 +2027,8 @@ function filterUsers(users, filters) {
             return false;
         if (filters.region && user.region !== filters.region)
             return false;
+        if (filters.hasPhoto !== undefined && user.picture_large != undefined)
+            return false;
         return true;
     });
 }
@@ -2201,16 +2203,16 @@ document.addEventListener("DOMContentLoaded", function () {
         var ageFilter = document.querySelector('#age-params .dropdown');
         var regionParams = document.querySelector('#region-params .dropdown');
         var sexParams = document.querySelector('#sex-params .dropdown');
+        var favCheck = document.querySelector('#favCheck');
+        var photoCheck = document.querySelector('#photoCheck');
         if (!ageFilter || !regionParams || !sexParams)
             return;
-        var regionParams_innerText = regionParams.innerText.replace('&#9662;', '').trim();
-        var sexParams_innerText = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
-        var ageFilter_innerText = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
-        console.log('Region:', regionParams_innerText);
-        console.log('Gender:', sexParams_innerText);
-        console.log('Age Filter:', ageFilter_innerText);
-        console.log(teachers[2]);
-        // Clear the current teachers list before displaying new results
+        var selectedRegion = regionParams.innerText.replace('&#9662;', '').trim();
+        var selectedGender = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
+        var selectedAge = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
+        console.log('Region:', selectedRegion);
+        console.log('Gender:', selectedGender);
+        console.log('Age Filter:', selectedAge);
         var teachersContainers = document.querySelectorAll(".teachers-list-container");
         teachersContainers.forEach(function (container) {
             var existingList = container.querySelector('.teachers-list');
@@ -2219,11 +2221,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
         var filteredUsers = filterUsers(teachers, {
-            age: ageFilter_innerText,
-            gender: sexParams_innerText,
-            region: regionParams_innerText
+            age: selectedAge,
+            gender: selectedGender,
+            region: selectedRegion,
+            favorite: favCheck === null || favCheck === void 0 ? void 0 : favCheck.checked,
+            hasPhoto: photoCheck === null || photoCheck === void 0 ? void 0 : photoCheck.checked
         });
+        // Log the filtered users
         console.log('Filtered Users:', filteredUsers);
+        // Create a new teachers list and add additional info
         createTeachersList(filteredUsers);
         addTeacherCartInfo(filteredUsers);
     }
