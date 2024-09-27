@@ -346,26 +346,6 @@ tr:nth-child(odd) {
   border-radius: 5px;
 }
 
-.arrow {
-  border: solid black;
-  border-width: 0 6px 6px 0;
-  display: inline-block;
-  padding: 10px;
-  position: absolute;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.right {
-  transform: rotate(-45deg) translateY(-50%);
-  right: 3em;
-}
-
-.left {
-  transform: rotate(135deg) translateY(-50%);
-  left: 3em;
-}
-
 footer {
   bottom: 0;
   border-top: 1px solid rgb(167, 159, 159);
@@ -517,5 +497,30 @@ footer .teachers-list {
 li {
   text-align: left;
 }
+
+.teachers-list-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+*/
 
 /*# sourceMappingURL=style.css.map */

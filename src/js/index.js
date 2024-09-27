@@ -81,7 +81,7 @@ function fetchUsers() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=50')];
+                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=10')];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -280,19 +280,42 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var teachersContainers = document.querySelectorAll(".teachers-list-container");
         if (teachersContainers.length === 0)
             return;
+        // Create a single teachers list
         var teachersList = document.createElement("ul");
         teachersList.classList.add("teachers-list");
-        teachersList.innerHTML = "<span class=\"arrow left\"></span>";
+        // Create left arrow
+        var leftArrow = document.createElement("span");
+        leftArrow.classList.add("arrow", "left");
+        teachersList.appendChild(leftArrow);
+        // Add teachers to the list
         teachers.forEach(function (teacher, index) {
             var listItem = document.createElement("li");
             listItem.classList.add("teacher-item");
             listItem.dataset.index = index.toString();
-            listItem.innerHTML = "\n        <div class=\"teacher-image-container\">\n          <img src=".concat(teacher.picture_thumbnail, " alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n          <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n        </div>\n        <div class=\"teacher-info-container\">\n          <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n          <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n          <p class=\"teacher-country\">").concat(teacher.country, "</p>\n        </div>\n      ");
+            listItem.innerHTML = "\n            <div class=\"teacher-image-container\">\n                <img src=\"".concat(teacher.picture_thumbnail, "\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n                <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n            </div>\n            <div class=\"teacher-info-container\">\n                <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n                <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n                <p class=\"teacher-country\">").concat(teacher.country, "</p>\n            </div>\n        ");
             teachersList.appendChild(listItem);
         });
-        teachersList.innerHTML += "<span class=\"arrow right\"></span>";
+        // Create right arrow
+        var rightArrow = document.createElement("span");
+        rightArrow.classList.add("arrow", "right");
+        teachersList.appendChild(rightArrow);
+        // Append the list to all containers
         teachersContainers.forEach(function (teachersContainer) {
-            teachersContainer.appendChild(teachersList.cloneNode(true));
+            teachersContainer.appendChild(teachersList);
+        });
+        // Add scrolling functionality
+        var scrollAmount = 300; // Adjust the amount to scroll
+        leftArrow.addEventListener('click', function () {
+            teachersList.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+        rightArrow.addEventListener('click', function () {
+            teachersList.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
         });
     }
     function addTeacherCartInfo(teachers) {
@@ -308,11 +331,13 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 var clickedItem = mouseEvent.target.closest(".teacher-item");
                 if (clickedItem) {
                     var teacherIndex = clickedItem.dataset.index;
+                    console.log("Clicked index: ".concat(teacherIndex)); // Log the index to debug
                     var teacher = teachers[parseInt(teacherIndex)];
+                    console.log("Selected Teacher: ".concat(teacher.full_name)); // Debug output for selected teacher
+                    // Now proceed to show the info card
                     teacherInfoCardContainer.classList.remove("hidden");
                     overlay.classList.remove("hidden");
                     overlay.style.display = "block";
-                    // Pass the full teacher list to update favorites dynamically
                     addTeacherInfoToCard(teacher, teachers);
                 }
             });
@@ -684,7 +709,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         });
         searchButton.addEventListener('click', handleSearch);
     }
-    var teachers, formattedTeachers, error_2;
+    var teachers, formattedTeachers, sortedUsers, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -693,15 +718,15 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             case 1:
                 teachers = _a.sent();
                 formattedTeachers = formatUser(teachers);
-                console.log(teachers[2]);
-                dropdownOptions(formattedTeachers);
-                filterTeachersByDropdown(formattedTeachers);
-                createTeachersList(formattedTeachers);
-                addFavouriteTeacher(formattedTeachers);
-                sortUsersByAttribute(formattedTeachers);
-                addTeacherCartInfo(formattedTeachers);
-                searchForTeacher(formattedTeachers);
-                addTeacherForm(formattedTeachers);
+                sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
+                dropdownOptions(sortedUsers);
+                filterTeachersByDropdown(sortedUsers);
+                createTeachersList(sortedUsers);
+                addFavouriteTeacher(sortedUsers);
+                sortUsersByAttribute(sortedUsers);
+                addTeacherCartInfo(sortedUsers);
+                searchForTeacher(sortedUsers);
+                addTeacherForm(sortedUsers);
                 return [3 /*break*/, 3];
             case 2:
                 error_2 = _a.sent();

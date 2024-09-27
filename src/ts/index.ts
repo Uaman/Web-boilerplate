@@ -51,7 +51,7 @@ const europeanCountries = [
 
 async function fetchUsers() {
   try {
-    const response = await fetch('https://randomuser.me/api/?results=50');
+    const response = await fetch('https://randomuser.me/api/?results=10');
     const data = await response.json();
     return data.results; 
   } catch (error) {
@@ -278,44 +278,68 @@ const matchPercentage = calculataeMatchPercentage(teachers, searchResults);
 */
 
 
-
 document.addEventListener("DOMContentLoaded", async () => {
 
   function createTeachersList(teachers: Array<FormattedUser>): void {
-    const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
+    const teachersContainers = document.querySelectorAll(".teachers-list-container");
     if (teachersContainers.length === 0) return;
 
-    const teachersList: HTMLUListElement = document.createElement("ul");
+    // Create a single teachers list
+    const teachersList = document.createElement("ul");
     teachersList.classList.add("teachers-list");
 
-    teachersList.innerHTML = `<span class="arrow left"></span>`;
+    // Create left arrow
+    const leftArrow = document.createElement("span");
+    leftArrow.classList.add("arrow", "left");
+    teachersList.appendChild(leftArrow);
 
-    teachers.forEach((teacher, index) => { 
-      const listItem: HTMLLIElement = document.createElement("li");
-      listItem.classList.add("teacher-item");
+    // Add teachers to the list
+    teachers.forEach((teacher, index) => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("teacher-item");
+        listItem.dataset.index = index.toString(); 
 
-      listItem.dataset.index = index.toString(); 
-
-      listItem.innerHTML = `
-        <div class="teacher-image-container">
-          <img src=${teacher.picture_thumbnail} alt="${teacher.full_name}" class="teacher-image"/>
-          <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
-        </div>
-        <div class="teacher-info-container">
-          <h3 class="teacher-name">${teacher.full_name}</h3>
-          <p class="teacher-subject">${teacher.course}</p>
-          <p class="teacher-country">${teacher.country}</p>
-        </div>
-      `;
-      teachersList.appendChild(listItem);
+        listItem.innerHTML = `
+            <div class="teacher-image-container">
+                <img src="${teacher.picture_thumbnail}" alt="${teacher.full_name}" class="teacher-image"/>
+                <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
+            </div>
+            <div class="teacher-info-container">
+                <h3 class="teacher-name">${teacher.full_name}</h3>
+                <p class="teacher-subject">${teacher.course}</p>
+                <p class="teacher-country">${teacher.country}</p>
+            </div>
+        `;
+        teachersList.appendChild(listItem);
     });
 
-    teachersList.innerHTML += `<span class="arrow right"></span>`;
+    // Create right arrow
+    const rightArrow = document.createElement("span");
+    rightArrow.classList.add("arrow", "right");
+    teachersList.appendChild(rightArrow);
 
+    // Append the list to all containers
     teachersContainers.forEach((teachersContainer) => {
-      teachersContainer.appendChild(teachersList.cloneNode(true));
+        teachersContainer.appendChild(teachersList);
     });
-  }
+
+    // Add scrolling functionality
+    const scrollAmount = 300; // Adjust the amount to scroll
+    leftArrow.addEventListener('click', () => {
+        teachersList.scrollBy({
+            left: -scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+
+    rightArrow.addEventListener('click', () => {
+        teachersList.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    });
+}
+
 
   function addTeacherCartInfo(teachers: Array<FormattedUser>): void {
     const teacherListContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list");
@@ -327,22 +351,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     teacherListContainers.forEach(teacherListContainer => {
       teacherListContainer.addEventListener("click", function (event) {
-        const mouseEvent = event as MouseEvent;
-        const clickedItem: Element | null = (mouseEvent.target as HTMLElement).closest(".teacher-item");
+          const mouseEvent = event as MouseEvent;
+          const clickedItem: Element | null = (mouseEvent.target as HTMLElement).closest(".teacher-item");
   
-        if (clickedItem) {
-          const teacherIndex: string = (clickedItem as HTMLElement).dataset.index!;
-          const teacher = teachers[parseInt(teacherIndex)]; 
+          if (clickedItem) {
+              const teacherIndex: string = (clickedItem as HTMLElement).dataset.index!;
+              console.log(`Clicked index: ${teacherIndex}`); // Log the index to debug
+              const teacher = teachers[parseInt(teacherIndex)];
   
-          teacherInfoCardContainer.classList.remove("hidden");
-          overlay.classList.remove("hidden");
-          (overlay as HTMLElement).style.display = "block";
+              console.log(`Selected Teacher: ${teacher.full_name}`); // Debug output for selected teacher
   
-          // Pass the full teacher list to update favorites dynamically
-          addTeacherInfoToCard(teacher, teachers);
-        }
+              // Now proceed to show the info card
+              teacherInfoCardContainer.classList.remove("hidden");
+              overlay.classList.remove("hidden");
+              (overlay as HTMLElement).style.display = "block";
+  
+              addTeacherInfoToCard(teacher, teachers);
+          }
       });
-    });
+  });
+  
   
     closeBtn.addEventListener("click", function () {
       teacherInfoCardContainer.classList.add("hidden");
@@ -396,7 +424,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       addToFavButton.addEventListener("click", function () {
         teacher.favorite = !teacher.favorite; 
         addToFavButton.textContent = teacher.favorite ? '⚝' : '⭐️';
-      
+     
         //Star
         const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
         const starIcon = teacherItem?.querySelector('.star-icon');
@@ -852,18 +880,21 @@ try {
   const teachers = await fetchUsers();
   
   
-const formattedTeachers: FormattedUser[] = formatUser(teachers);
-console.log(teachers[2]);
-  dropdownOptions(formattedTeachers);
+  const formattedTeachers: FormattedUser[] = formatUser(teachers);
+  const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
 
-  filterTeachersByDropdown(formattedTeachers);
-  createTeachersList(formattedTeachers);
-  addFavouriteTeacher(formattedTeachers);
-  sortUsersByAttribute(formattedTeachers);
-  addTeacherCartInfo(formattedTeachers);
-  searchForTeacher(formattedTeachers);
+  
 
-  addTeacherForm(formattedTeachers);
+  dropdownOptions(sortedUsers);
+
+  filterTeachersByDropdown(sortedUsers);
+  createTeachersList(sortedUsers);
+  addFavouriteTeacher(sortedUsers);
+  sortUsersByAttribute(sortedUsers);
+  addTeacherCartInfo(sortedUsers);
+  searchForTeacher(sortedUsers);
+
+  addTeacherForm(sortedUsers);
 
   //functionality on sorting, fi;tating etc
 
