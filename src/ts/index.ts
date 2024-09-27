@@ -1973,17 +1973,24 @@ function generateUUID(): number {
   return Math.floor(Math.random() * 1000000);
 }
 function mergeUsers(users: FormattedUser[], additionalUsers): FormattedUser[] {
-const combinedUsers = [...users, ...additionalUsers];
-const uniqueUsers = combinedUsers.filter((user, index) => {
-    const firstIndex = combinedUsers.findIndex(u => u.id === user.id);
-    return firstIndex === index;
-});
-return uniqueUsers.map(user => ({
-...user,
-course: getRandomCourse(),
-note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'  
-}));
+  const combinedUsers = [...users, ...additionalUsers];
+  const seenNames = new Set<string>();
+
+  const uniqueUsers = combinedUsers.filter(user => {
+    if (!seenNames.has(user.full_name)) {
+      seenNames.add(user.full_name);
+      return true;
+    }
+    return false;
+  });
+
+  return uniqueUsers.map(user => ({
+    ...user,
+    course: getRandomCourse(),
+    note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  }));
 }
+
 function validateData(user: FormattedUser): boolean {
   console.log(`Validating user ${user.full_name}, ID: ${user.id}`);
   
@@ -2045,7 +2052,6 @@ return users.sort((a, b) => {
 });
 }
 
-
 function filterUsers(users: FormattedUser[], filters: {
   course?: string,
   age?: number | string,
@@ -2056,14 +2062,22 @@ function filterUsers(users: FormattedUser[], filters: {
 }): FormattedUser[] {
   return users.filter(user => {
     const ageString = filters.age?.toString();
-    const [ageStart, ageEnd] = ageString && ageString.includes("-") ? ageString.split("-") : [ageString, ageString];
+    const [ageStart, ageEnd] = ageString && ageString.includes("-")
+      ? ageString.split("-").map(Number)
+      : [ageString ? Number(ageString) : undefined, ageString ? Number(ageString) : undefined];
 
     if (filters.course && user.course !== filters.course) return false;
-    if (filters.age !== undefined && !(user.age >= Number(ageStart) && user.age <= Number(ageEnd))) return false;
-    if (filters.gender && user.gender !== filters.gender.toLowerCase()) return false;
+    if (filters.age !== undefined && user.age !== undefined && !(user.age >= ageStart! && user.age <= ageEnd!)) return false;
+    if (filters.gender && user.gender.toLowerCase() !== filters.gender.toLowerCase()) return false;
     if (filters.favorite !== undefined && user.favorite !== filters.favorite) return false;
     if (filters.region && user.region !== filters.region) return false;
-    if (filters.hasPhoto !== undefined && user.picture_large!=undefined) return false;
+
+    if (filters.hasPhoto !== undefined) {
+      const userHasPhoto = user.picture_large !== undefined && user.picture_large !== '';
+      if (filters.hasPhoto && !userHasPhoto) return false;
+      if (!filters.hasPhoto && userHasPhoto) return false;
+    }
+
     return true;
   });
 }
@@ -2337,26 +2351,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 }
 
+function setupDropdownListeners(teachers: FormattedUser[]): void {
+
+  document.querySelectorAll('.age-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const ageFilterBtn = document.querySelector('#age-params-btn');
+      if (ageFilterBtn) {
+        ageFilterBtn.textContent = this.textContent; 
+        filterTeachersByDropdown(teachers);
+      }
+    });
+  });
+
+
+  document.querySelectorAll('.region-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const regionParamsBtn = document.querySelector('#region-params-btn');
+      if (regionParamsBtn) {
+        regionParamsBtn.textContent = this.textContent;
+        filterTeachersByDropdown(teachers); 
+      }
+    });
+  });
+
+  document.querySelectorAll('.gender-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const sexParamsBtn = document.querySelector('#sex-params-btn');
+      if (sexParamsBtn) {
+        sexParamsBtn.textContent = this.textContent; 
+        filterTeachersByDropdown(teachers); 
+      }
+    });
+  });
+
+  
+  document.querySelectorAll('.input-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      filterTeachersByDropdown(teachers);
+    });
+  });
+}
+
 function filterTeachersByDropdown(teachers: FormattedUser[]): void {
-  const ageFilter = document.querySelector('#age-params .dropdown') as HTMLElement | null;
-  const regionParams = document.querySelector('#region-params .dropdown') as HTMLInputElement | null;
-  const sexParams = document.querySelector('#sex-params .dropdown') as HTMLInputElement | null;
- const favCheck = document.querySelector('#favCheck') as HTMLInputElement | null;
- const photoCheck = document.querySelector('#photoCheck') as HTMLInputElement | null;
+  setupDropdownListeners(teachers);
+  const ageFilter = document.querySelector('#age-params-btn') as HTMLElement | null;
+  const regionParams = document.querySelector('#region-params-btn') as HTMLElement | null;
+  const sexParams = document.querySelector('#sex-params-btn') as HTMLElement | null;
+  const favCheck = document.querySelector('#favCheck') as HTMLInputElement | null;
+  const photoCheck = document.querySelector('#photoCheck') as HTMLInputElement | null;
 
   if (!ageFilter || !regionParams || !sexParams) return;
 
- 
-  const selectedRegion = regionParams.innerText.replace('&#9662;', '').trim();
-  const selectedGender = sexParams.innerText.replace('&#9662;', '').trim().toLowerCase();
-  const selectedAge = ageFilter.innerText.replace('&#9662;', '').trim().toLowerCase();
-  
+  const selectedRegion = regionParams.textContent?.trim();
+  const selectedGender = sexParams.textContent?.trim().toLowerCase();
+  const selectedAge = ageFilter.textContent?.trim().toLowerCase();
 
+  // Log for debugging
   console.log('Region:', selectedRegion); 
   console.log('Gender:', selectedGender); 
   console.log('Age Filter:', selectedAge);
 
+  const filteredUsers: FormattedUser[] = filterUsers(teachers, {
+    age: selectedAge,
+    gender: selectedGender,
+    region: selectedRegion,
+    favorite: favCheck?.checked || false,
+    hasPhoto: photoCheck?.checked || false
+  });
 
+ 
+  console.log('Filtered Users:', filteredUsers); 
+
+  // Remove existing list
   const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
   teachersContainers.forEach(container => {
       const existingList = container.querySelector('.teachers-list');
@@ -2365,22 +2431,13 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
       }
   });
 
-  
-  const filteredUsers: FormattedUser[] = filterUsers(teachers, {
-    age: selectedAge,
-    gender: selectedGender,
-    region: selectedRegion,
-    favorite: favCheck?.checked,
-    hasPhoto: photoCheck?.checked
-  });
-
-  // Log the filtered users
-  console.log('Filtered Users:', filteredUsers); 
-
-  // Create a new teachers list and add additional info
+ 
   createTeachersList(filteredUsers);
   addTeacherCartInfo(filteredUsers);
 }
+
+
+
 
 
 
@@ -2513,7 +2570,7 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
                 
                 };
 
-                // Add the new teacher to the beginning of the array
+            
                 teachers.unshift(newTeacher);
 
                 // Show notification
@@ -2559,27 +2616,23 @@ function showNotification(message: string): void {
 
     if (!searchButton || !searchInput) return;
 
-    searchInput.addEventListener('keypress', function (event) {
-        if (event.key === 'Enter') {
-            (searchButton as HTMLElement).click();
-        }
-    });
+    // Set to track already displayed users' full names
+    const displayedUsers = new Set<string>();
 
-    searchButton.addEventListener('click', function () {
+    const handleSearch = () => {
         const searchQuery = searchInput.value.trim();
 
-        // If input is empty or *, display all teachers
-        const searchResults: FormattedUser[] = (!searchQuery || searchQuery === '*') 
-            ? teachers // Display all teachers
+        let searchResults: FormattedUser[] = (!searchQuery || searchQuery === '*') 
+            ? teachers 
             : teachers.filter(teacher => {
                 let matches = false;
 
-                const ageRegex = /([<>]=?)\s*(\d+)/; // Matches patterns like >=30, <=45
+                const ageRegex = /([<>]=?)\s*(\d+)/;
                 const ageMatch = searchQuery.match(ageRegex);
 
                 if (ageMatch) {
-                    const operator = ageMatch[1]; // Extracts >=, <=, >, <
-                    const age = Number(ageMatch[2]); // Extracts the number
+                    const operator = ageMatch[1];
+                    const age = Number(ageMatch[2]);
                     switch (operator) {
                         case '>':
                             matches = teacher.age > age;
@@ -2595,34 +2648,60 @@ function showNotification(message: string): void {
                             break;
                     }
                 } else {
-                    const searchRegex = new RegExp(searchQuery, 'i'); // 'i' for case-insensitive matching
+                    const searchRegex = new RegExp(searchQuery, 'i');
                     matches = searchRegex.test(teacher.full_name) || searchRegex.test(teacher.note);
                 }
 
-                return matches;
+                // Only include this teacher if they haven't been displayed already
+                if (matches && !displayedUsers.has(teacher.full_name)) {
+                    displayedUsers.add(teacher.full_name);
+                    return true;
+                }
+
+                return false;
             });
 
-        // Clear the current teachers list before displaying new results
+        // Check if all search results are identical
+        if (searchResults.length > 1) {
+            const firstTeacher = JSON.stringify(searchResults[0]);
+            const allIdentical = searchResults.every(teacher => JSON.stringify(teacher) === firstTeacher);
+
+            if (allIdentical) {
+                searchResults = [searchResults[0]]; // Keep only one if all are identical
+            }
+        }
+
         const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
         teachersContainers.forEach(container => {
             const existingList = container.querySelector('.teachers-list');
             if (existingList) {
-                existingList.remove(); // Remove the existing list
+                existingList.remove();
             }
         });
 
-        // Create and display the new list with search results
         createTeachersList(searchResults);
         addTeacherCartInfo(mergeUsersResult);
         console.log(searchResults);
+    };
+
+    searchInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            handleSearch();
+        }
     });
+
+    searchButton.addEventListener('click', handleSearch);
 }
+
+
+
 
 
   
   
 
   dropdownOptions(mergeUsersResult);
+
   filterTeachersByDropdown(mergeUsersResult);
   createTeachersList(mergeUsersResult);
   addFavouriteTeacher(mergeUsersResult);

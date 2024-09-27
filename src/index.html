@@ -67,18 +67,18 @@
             <h1>Top Teachers</h1>
         </div>
 
-        <div class="teacher-parametrs-container" id="age-params">
+        <div class="teacher-parametrs-container" >
           <div class="params-container">
               <p>Age</p>
               <div class="dropdown">
-                  <button class="dropbtn">
+                  <button class="dropbtn" id="age-params-btn">
                       18-25 <span class="arrow-down">&#9662;</span>
                   </button>
                   <div class="dropdown-content">
                       <ul>
-                          <li>18-25</li>
-                          <li>26-31</li>
-                          <li>32-40</li>
+                          <li  class="age-option">18-25</li>
+                          <li  class="age-option">26-31</li>
+                          <li  class="age-option">32-40</li>
                       </ul>
                   </div>
               </div>
@@ -87,14 +87,14 @@
           <div class="params-container" id="region-params">
               <p>Region</p>
               <div class="dropdown">
-                  <button class="dropbtn">
+                  <button class="dropbtn" id="region-params-btn">
                       Europe <span class="arrow-down">&#9662;</span>
                   </button>
                   <div class="dropdown-content">
                       <ul>
-                          <li>Europe</li>
-                          <li>USA</li>
-                          <li>Other</li>
+                          <li class="region-option">Europe</li>
+                          <li class="region-option">USA</li>
+                          <li class="region-option">Other</li>
                       </ul>
                   </div>
               </div>
@@ -103,14 +103,14 @@
           <div class="params-container" id="sex-params">
               <p>Sex</p>
               <div class="dropdown">
-                  <button class="dropbtn">
+                  <button class="dropbtn" id="sex-params-btn">
                       Male <span class="arrow-down">&#9662;</span>
                   </button>
                   <div class="dropdown-content">
                       <ul>
-                          <li>Male</li>
-                          <li>Female</li>
-                          <li>Other</li>
+                          <li  class="gender-option"> Male</li>
+                          <li  class="gender-option" > Female</li>
+                          <li  class="gender-option" >Other</li>
                       </ul>
                   </div>
               </div>
@@ -224,11 +224,10 @@
       </div>
     </div>
 
-    <form class="add-teacher-form-main-container"> <!-- Added form tag -->
+    <form class="add-teacher-form-main-container"> 
       <div class="add-teacher-form-element-container">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="full_name" placeholder="Enter name" required> <!-- Added name attribute -->
-      </div>
+        <input type="text" id="name" name="full_name" placeholder="Enter name" required> 
 
       <div class="add-form-speciality-and-country-container">
         <div class="add-teacher-form-speciality-container">
@@ -271,7 +270,7 @@
 
           <div class="add-teacher-form-element-container">
             <label for="city">City:</label>
-            <input type="text" id="city" name="city" placeholder="" required> <!-- Added name attribute -->
+            <input type="text" id="city" name="city" placeholder="" required> 
           </div>
         </div>
       </div>
@@ -279,18 +278,18 @@
       <div class="add-teacher-form-contacts-container">
         <div class="add-teacher-form-element-container">
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" placeholder="" required> <!-- Added name attribute -->
+          <input type="email" id="email" name="email" placeholder="" required> 
         </div>
         <div class="add-teacher-form-element-container">
           <label for="phone">Phone:</label>
-          <input type="tel" id="phone" name="phone" placeholder=""> <!-- Added name attribute -->
+          <input type="tel" id="phone" name="phone" placeholder="" required> 
         </div>
       </div>
 
       <div class="add-teacher-form-date-of-birth-container">
         <div class="add-teacher-form-element-container">
           <label for="date">Date of birth:</label>
-          <input type="date" id="date" name="b_date"> <!-- Added name attribute -->
+          <input type="date" id="date" name="b_date" required>
         </div>
       </div>
 
@@ -298,15 +297,15 @@
         <p>Sex</p>
         <ul class="sex-container">
           <li>
-            <input type="radio" id="male" name="gender" value="male"> <!-- Added value -->
+            <input type="radio" id="male" name="gender" value="male"> 
             <label for="male" class="sex-label">Male</label>
           </li>
           <li>
-            <input type="radio" id="female" name="gender" value="female"> <!-- Added value -->
+            <input type="radio" id="female" name="gender" value="female">
             <label for="female" class="sex-label">Female</label>
           </li>
           <li>
-            <input type="radio" id="other" name="gender" value="other"> <!-- Added value -->
+            <input type="radio" id="other" name="gender" value="other">
             <label for="other" class="sex-label">Other</label>
           </li>
         </ul>
@@ -316,7 +315,7 @@
         <div class="background-color-chooser">
           <label for="favcolor" id="favcolor">Background color:</label>
           <span>🎨</span>
-          <input type="color" id="favcolor" name="favcolor" value="#ff0000"> <!-- Added name attribute -->
+          <input type="color" id="favcolor" name="favcolor" value="#ff0000"> 
         </div>
       </div>
 
@@ -326,7 +325,7 @@
       </div>
 
       <div class="add-teacher-form-button-container">
-        <button type="submit" class="add-teacher-form-button">Add</button> <!-- Changed button type to submit -->
+        <button type="submit" class="add-teacher-form-button">Add</button> 
       </div>
     </form> <!-- Closing form tag -->
   </section>
