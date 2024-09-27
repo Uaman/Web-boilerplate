@@ -22,9 +22,9 @@ type FormattedUser = {
   b_date: string,
   age: number,
   phone: string,
-  picture_large: Promise<string>,
-  picture_thumbnail: Promise<string>,
-  region: string;
+  picture_large: 'https://randomuser.me/api/portraits/men/93.jpg',
+  picture_thumbnail: 'https://randomuser.me/api/portraits/med/men/73.jpg';
+  region: string;  
   favorite: boolean,
   bg_color: string
 }
@@ -85,8 +85,8 @@ medium: "https://randomuser.me/api/portraits/med/men/73.jpg"
 
 thumbnail: "https://randomuser.me/api/portraits/thumb/men/73.jpg"
 */
-      picture_large: getPicture(user.picture.large),
-      picture_thumbnail: getPicture(user.picture.large),
+      picture_large: user.picture.large,
+      picture_thumbnail: user.picture.large,
       course: getRandomCourse(),
       favorite: false,
       img: user.picture.large,
@@ -95,11 +95,7 @@ thumbnail: "https://randomuser.me/api/portraits/thumb/men/73.jpg"
       note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }));
 }
-async function getPicture(url: string): Promise<string> {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return URL.createObjectURL(blob);
-}
+
 
 
 function setRegion(user: any): string {
@@ -302,7 +298,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       listItem.innerHTML = `
         <div class="teacher-image-container">
-          <img src="./images/teacher.webp" alt="${teacher.full_name}" class="teacher-image"/>
+          <img src=${teacher.picture_thumbnail} alt="${teacher.full_name}" class="teacher-image"/>
           <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
         </div>
         <div class="teacher-info-container">
@@ -363,7 +359,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     teacherInfoCard.innerHTML = `
       <div class="teacher-info-card-main">
 
-        <div class="teacher-info-card-image-container">
+        <div class="teacher-info-card-image-container" data-id="${teacher.id}">
           <img src="${teacher.picture_large}}" alt="${teacher.full_name}" class="teacher-info-card-image" />
         </div>
         <div class="teacher-info-card-details">
