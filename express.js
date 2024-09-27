@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
-// app.use(compression());
+
 
 app.get('/favicon.ico', (req, res) => res.status(200).send());
 app.use(express.static('./src'));
-app.listen(3001, () => console.log('Example app listening on port 3001!'));
+app.use(cors());
+app.listen(3000, () => console.log('Example app listening on port 3001!'));
