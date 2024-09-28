@@ -500,13 +500,13 @@ li {
 }
 
 .teachers-list {
-  flex-wrap: nowrap; //for horixontal scrolling
+  flex-wrap: nowrap; 
   overflow-x: auto; 
-  -webkit-overflow-scrolling: touch; // Smooth scrolling on touch devices.
+  -webkit-overflow-scrolling: touch; 
 }
 
 .teacher-item {
-  flex: 0 0 auto; // Prevent shrinking and keep each item fixed in size.
+  flex: 0 0 auto; 
 }
 
 
