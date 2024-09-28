@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Format and sort users
         const formattedTeachers: FormattedUser[] = formatUser(teachers);
         const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-
+      
         // Call your existing functions with sorted users
         dropdownOptions(sortedUsers);
         filterTeachersByDropdown(sortedUsers);
@@ -802,7 +802,7 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
                   city: formData.get('city') as string,
                   email: formData.get('email') as string,
                   phone: formData.get('phone') as string,
-                  note: formData.get('note') as string || ' Hi, I am using this platform!',
+                  note: formData.get('#note') as string || ' Hi, I am using this platform!',
                   favorite: false, 
                   b_date: dateInput.textContent as string,
                   id: 0,
@@ -827,21 +827,36 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
 
             
                 teachers.unshift(newTeacher);
-
+                createTeachersList(teachers); 
+                addTeacherCartInfo(teachers);
                 // Show notification
                 showNotification('Викладача додано!');
 
+                
                 form.reset();
                 teacherForm.classList.add('hidden');
                 overlay.classList.add('hidden');
                 (overlay as HTMLElement).style.display = "none";
 
                 console.log(newTeacher);
+
+   
+                //POST request
+                fetch('http://localhost:3000/teachers', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(newTeacher)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
             });
         }
     });
 }
-
 // Function to show notification
 function showNotification(message: string): void {
     const notification: HTMLElement | null = document.querySelector('#notification');

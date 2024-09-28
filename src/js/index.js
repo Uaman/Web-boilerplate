@@ -668,7 +668,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         city: formData.get('city'),
                         email: formData.get('email'),
                         phone: formData.get('phone'),
-                        note: formData.get('note') || ' Hi, I am using this platform!',
+                        note: formData.get('#note') || ' Hi, I am using this platform!',
                         favorite: false,
                         b_date: dateInput.textContent,
                         id: 0,
@@ -690,6 +690,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         bg_color: color.value,
                     };
                     teachers.unshift(newTeacher);
+                    createTeachersList(teachers);
+                    addTeacherCartInfo(teachers);
                     // Show notification
                     showNotification('Викладача додано!');
                     form.reset();
@@ -697,6 +699,18 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     overlay.classList.add('hidden');
                     overlay.style.display = "none";
                     console.log(newTeacher);
+                    //POST request
+                    fetch('http://localhost:3000/teachers', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(newTeacher)
+                    })
+                        .then(function (response) { return response.json(); })
+                        .then(function (data) {
+                        console.log('Success:', data);
+                    });
                 });
             }
         });
