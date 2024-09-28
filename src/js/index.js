@@ -352,7 +352,9 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         teachers.push.apply(teachers, formattedTeachers); // Add the new teachers to the array
                         totalFetched += formattedTeachers.length; // Update the count of fetched users
                         // Recreate the teacher list with the updated teachers array
-                        createTeachersList(teachers); // Call createTeachersList again to update the view
+                        createTeachersList(teachers);
+                        addTeacherCartInfo(teachers);
+                        sortUsersByAttribute(teachers);
                         return [3 /*break*/, 4];
                     case 3:
                         error_3 = _a.sent();
@@ -588,7 +590,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
     function sortUsersByAttribute(users) {
         var data_sort_elements = document.querySelectorAll('th[data-sort]');
         populateStatistics(sortUsers(users, 'full_name', 'asc'));
-        // Store sorting directions for each column
         var sortDirections = {};
         data_sort_elements.forEach(function (element) {
             element.addEventListener('click', function () {
@@ -612,17 +613,80 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         if (!table)
             return;
         var tbody = table.querySelector('tbody');
-        var td = table.querySelector('td');
-        // Очищаємо попередній вміст таблиці перед новим заповненням
-        if (tbody) {
-            tbody.innerHTML = '';
+        var paginationContainer = document.querySelector('.pagination');
+        var teachersPerPage = 10;
+        var currentPage = 1;
+        // Розбити викладачів на сторінки
+        function getPaginatedTeachers(page) {
+            var startIndex = (page - 1) * teachersPerPage;
+            return teachers.slice(startIndex, startIndex + teachersPerPage);
         }
-        // Заповнюємо таблицю відсортованими даними
-        teachers.forEach(function (teacher) {
-            var tr = document.createElement('tr');
-            tr.innerHTML = "\n        <td>".concat(teacher.full_name, "</td>\n        <td>").concat(teacher.course, "</td>\n        <td>").concat(teacher.age, "</td>\n        <td>").concat(teacher.gender, "</td>\n        <td>").concat(teacher.country, "</td>\n        <td>").concat(teacher.b_date, "</td>\n      ");
-            tbody === null || tbody === void 0 ? void 0 : tbody.appendChild(tr);
-        });
+        // Оновити відображення таблиці викладачів
+        function renderTable(page) {
+            if (tbody) {
+                tbody.innerHTML = ''; // Очищення попереднього вмісту таблиці
+            }
+            var paginatedTeachers = getPaginatedTeachers(page);
+            // Заповнити таблицю відсортованими даними
+            paginatedTeachers.forEach(function (teacher) {
+                var tr = document.createElement('tr');
+                tr.innerHTML = "\n          <td>".concat(teacher.full_name, "</td>\n          <td>").concat(teacher.course, "</td>\n          <td>").concat(teacher.age, "</td>\n          <td>").concat(teacher.gender, "</td>\n          <td>").concat(teacher.country, "</td>\n          <td>").concat(teacher.b_date, "</td>\n        ");
+                tbody === null || tbody === void 0 ? void 0 : tbody.appendChild(tr);
+            });
+        }
+        function createPagination() {
+            if (paginationContainer) {
+                paginationContainer.innerHTML = '';
+                var totalPages_1 = Math.ceil(teachers.length / teachersPerPage);
+                var leftArrow = document.createElement('button');
+                leftArrow.textContent = '←';
+                leftArrow.disabled = currentPage === 1;
+                leftArrow.addEventListener('click', function () {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderTable(currentPage);
+                        updatePagination();
+                    }
+                });
+                paginationContainer.appendChild(leftArrow);
+                var _loop_1 = function (i) {
+                    var pageButton = document.createElement('button');
+                    pageButton.textContent = i.toString();
+                    pageButton.classList.add('page-button');
+                    if (i === currentPage) {
+                        pageButton.classList.add('active');
+                    }
+                    pageButton.addEventListener('click', function () {
+                        currentPage = i;
+                        renderTable(currentPage);
+                        updatePagination();
+                    });
+                    paginationContainer.appendChild(pageButton);
+                };
+                for (var i = 1; i <= totalPages_1; i++) {
+                    _loop_1(i);
+                }
+                var rightArrow = document.createElement('button');
+                rightArrow.textContent = '→';
+                rightArrow.disabled = currentPage === totalPages_1;
+                rightArrow.addEventListener('click', function () {
+                    if (currentPage < totalPages_1) {
+                        currentPage++;
+                        renderTable(currentPage);
+                        updatePagination();
+                    }
+                });
+                paginationContainer.appendChild(rightArrow);
+            }
+        }
+        function updatePagination() {
+            var buttons = document.querySelectorAll('.page-button');
+            buttons.forEach(function (button, index) {
+                button.classList.toggle('active', index + 1 === currentPage);
+            });
+        }
+        renderTable(currentPage);
+        createPagination();
     }
     function addTeacherForm(teachers) {
         var addTeacherButton = document.querySelector('#add-teacher-btn');

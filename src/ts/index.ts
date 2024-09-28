@@ -362,7 +362,9 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
               totalFetched += formattedTeachers.length; // Update the count of fetched users
 
               // Recreate the teacher list with the updated teachers array
-              createTeachersList(teachers); // Call createTeachersList again to update the view
+              createTeachersList(teachers); 
+              addTeacherCartInfo(teachers);
+              sortUsersByAttribute(teachers);
 
           } catch (error) {
               console.error('Error fetching more users:', error);
@@ -699,7 +701,7 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
     const data_sort_elements: NodeListOf<HTMLElement> = document.querySelectorAll('th[data-sort]');
   
     populateStatistics(sortUsers(users, 'full_name', 'asc'));
-    // Store sorting directions for each column
+    
     const sortDirections: Record<string, 'asc' | 'desc'> = {};
   
 
@@ -729,28 +731,101 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
     if (!table) return;
   
     const tbody: HTMLTableSectionElement | null = table.querySelector('tbody');
-    const td: HTMLElement | null = table.querySelector('td');
-    
-    // Очищаємо попередній вміст таблиці перед новим заповненням
-    if (tbody) {
-      tbody.innerHTML = '';
+    const paginationContainer: HTMLElement | null = document.querySelector('.pagination');
+    const teachersPerPage = 10;
+    let currentPage = 1;
   
+    // Розбити викладачів на сторінки
+    function getPaginatedTeachers(page: number): FormattedUser[] {
+      const startIndex = (page - 1) * teachersPerPage;
+      return teachers.slice(startIndex, startIndex + teachersPerPage);
     }
   
-    // Заповнюємо таблицю відсортованими даними
-    teachers.forEach(teacher => {
-      const tr: HTMLTableRowElement = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${teacher.full_name}</td>
-        <td>${teacher.course}</td>
-        <td>${teacher.age}</td>
-        <td>${teacher.gender}</td>
-        <td>${teacher.country}</td>
-        <td>${teacher.b_date}</td>
-      `;
-      tbody?.appendChild(tr);
-    });
+    // Оновити відображення таблиці викладачів
+    function renderTable(page: number) {
+      if (tbody) {
+        tbody.innerHTML = ''; // Очищення попереднього вмісту таблиці
+      }
+  
+      const paginatedTeachers = getPaginatedTeachers(page);
+  
+      // Заповнити таблицю відсортованими даними
+      paginatedTeachers.forEach((teacher) => {
+        const tr: HTMLTableRowElement = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${teacher.full_name}</td>
+          <td>${teacher.course}</td>
+          <td>${teacher.age}</td>
+          <td>${teacher.gender}</td>
+          <td>${teacher.country}</td>
+          <td>${teacher.b_date}</td>
+        `;
+        tbody?.appendChild(tr);
+      });
+    }
+  
+
+    function createPagination() {
+      if (paginationContainer) {
+        paginationContainer.innerHTML = '';
+  
+        const totalPages = Math.ceil(teachers.length / teachersPerPage);
+  
+        const leftArrow = document.createElement('button');
+        leftArrow.textContent = '←';
+        leftArrow.disabled = currentPage === 1;
+        leftArrow.addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTable(currentPage);
+            updatePagination();
+          }
+        });
+        paginationContainer.appendChild(leftArrow);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.textContent = i.toString();
+          pageButton.classList.add('page-button');
+          if (i === currentPage) {
+            pageButton.classList.add('active');
+          }
+  
+          pageButton.addEventListener('click', () => {
+            currentPage = i;
+            renderTable(currentPage);
+            updatePagination();
+          });
+  
+          paginationContainer.appendChild(pageButton);
+        }
+
+
+        const rightArrow = document.createElement('button');
+        rightArrow.textContent = '→';
+        rightArrow.disabled = currentPage === totalPages;
+        rightArrow.addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTable(currentPage);
+            updatePagination();
+          }
+        });
+        paginationContainer.appendChild(rightArrow);
+      }
+    }
+
+    function updatePagination() {
+      const buttons = document.querySelectorAll('.page-button');
+      buttons.forEach((button, index) => {
+        button.classList.toggle('active', index + 1 === currentPage);
+      });
+    }
+
+    renderTable(currentPage);
+    createPagination();
   }
+  
   
   function addTeacherForm(teachers: FormattedUser[]): void {
     const addTeacherButton: Element | null = document.querySelector('#add-teacher-btn'); 

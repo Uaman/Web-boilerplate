@@ -20,38 +20,9 @@ app.get('/', (req, res) => res.render('/teachers'));
 
 app.get('/teachers', (req, res) => {
   const { teachers } = JSON.parse(fs.readFileSync('db.json'));
-  res.render('teachers');
+  res.render('teachers', { teacher: teachers });
 });
 
- *           full_name: formData.get('full_name') as string,
-                  course: specialityButton.textContent as string,
-                  age: parseInt((dateInput as HTMLInputElement).value),
-                  gender: formData.get('gender') as string,
-                  country: counryButton.textContent as string,
-                  city: formData.get('city') as string,
-                  email: formData.get('email') as string,
-                  phone: formData.get('phone') as string,
-                  note: formData.get('note') as string || ' Hi, I am using this platform!',
-                  favorite: false, 
-                  b_date: dateInput.textContent as string,
-                  id: 0,
-                  title: "",
-                  state: "",
-                  postcode: 0,
-                  coordinates: {
-                    latitude: "",
-                    longitude: ""
-                  },
-                  timezone: {
-                    offset: "",
-                    description: ""
-                  },
-                  picture_large: null,
-                  picture_thumbnail: null,
-                  picture_medium: null,
-                  region: "",
-                  bg_color: (color as HTMLInputElement).value,
- */
 app.post('/teachers', (req, res) => {
   const { teachers } = JSON.parse(fs.readFileSync('db.json'));
   const newTeacher = {

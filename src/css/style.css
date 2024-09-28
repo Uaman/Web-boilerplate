@@ -329,19 +329,21 @@ tr:nth-child(odd) {
   margin-bottom: 2em;
 }
 
-.pagination a {
+.pagination button {
   color: rgb(107, 164, 218);
   float: left;
   padding: 8px 16px;
   text-decoration: none;
+  background: none;
+  border: none;
 }
 
-.pagination a.active {
+.pagination button.active {
   color: rgb(14, 100, 181);
   border-radius: 5px;
 }
 
-.pagination a:hover:not(.active) {
+.pagination button:hover:not(.active) {
   color: rgb(14, 100, 181);
   border-radius: 5px;
 }
