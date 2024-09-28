@@ -11,23 +11,25 @@ type FormattedUser = {
   country: string,
   postcode: number,
   coordinates: {
-      latitude: string,
-      longitude: string
+    latitude: string,
+    longitude: string
   },
   timezone: {
-      offset: string,
-      description: string
+    offset: string,
+    description: string
   },
   email: string,
   b_date: string,
   age: number,
   phone: string,
-  picture_large: 'https://randomuser.me/api/portraits/men/93.jpg',
-  picture_thumbnail: 'https://randomuser.me/api/portraits/med/men/73.jpg';
-  region: string;  
+  picture_large: string,
+  picture_thumbnail: string,
+  picture_medium: string,
+  region: string,
   favorite: boolean,
   bg_color: string
-}
+};
+
  const courses: string[] = [
   "Mathematics", "Physics", "English", "Computer Science", "Dancing",
   "Chess", "Biology", "Chemistry", "Law", "Art", "Medicine", "Statistics"
@@ -86,7 +88,8 @@ medium: "https://randomuser.me/api/portraits/med/men/73.jpg"
 thumbnail: "https://randomuser.me/api/portraits/thumb/men/73.jpg"
 */
       picture_large: user.picture.large,
-      picture_thumbnail: user.picture.large,
+      picture_thumbnail: user.picture.thumbnail,
+      picture_medium: user.picture.medium,
       course: getRandomCourse(),
       favorite: false,
       img: user.picture.large,
@@ -301,7 +304,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         listItem.innerHTML = `
             <div class="teacher-image-container">
-                <img src="${teacher.picture_thumbnail}" alt="${teacher.full_name}" class="teacher-image"/>
+                <img src="${teacher.picture_large}" alt="${teacher.full_name}" class="teacher-image"/>
                 <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
             </div>
             <div class="teacher-info-container">
@@ -388,7 +391,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="teacher-info-card-main">
 
         <div class="teacher-info-card-image-container" data-id="${teacher.id}">
-          <img src="${teacher.picture_large}}" alt="${teacher.full_name}" class="teacher-info-card-image" />
+          <img src='${teacher.picture_large}' alt="${teacher.full_name}" class="teacher-info-card-image" />
         </div>
         <div class="teacher-info-card-details">
         <div class="with-star">
@@ -423,7 +426,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (addToFavButton) {
       addToFavButton.addEventListener("click", function () {
         teacher.favorite = !teacher.favorite; 
-        addToFavButton.textContent = teacher.favorite ? '⚝' : '⭐️';
+        addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
      
         //Star
         const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
@@ -743,6 +746,7 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
                   },
                   picture_large: null,
                   picture_thumbnail: null,
+                  picture_medium: null,
                   region: "",
                   bg_color: (color as HTMLInputElement).value,
                 
@@ -881,6 +885,7 @@ try {
   
   
   const formattedTeachers: FormattedUser[] = formatUser(teachers);
+
   const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
 
   

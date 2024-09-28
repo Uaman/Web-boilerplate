@@ -122,7 +122,8 @@ function formatUser(users) {
         thumbnail: "https://randomuser.me/api/portraits/thumb/men/73.jpg"
         */
         picture_large: user.picture.large,
-        picture_thumbnail: user.picture.large,
+        picture_thumbnail: user.picture.thumbnail,
+        picture_medium: user.picture.medium,
         course: getRandomCourse(),
         favorite: false,
         img: user.picture.large,
@@ -292,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             var listItem = document.createElement("li");
             listItem.classList.add("teacher-item");
             listItem.dataset.index = index.toString();
-            listItem.innerHTML = "\n            <div class=\"teacher-image-container\">\n                <img src=\"".concat(teacher.picture_thumbnail, "\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n                <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n            </div>\n            <div class=\"teacher-info-container\">\n                <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n                <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n                <p class=\"teacher-country\">").concat(teacher.country, "</p>\n            </div>\n        ");
+            listItem.innerHTML = "\n            <div class=\"teacher-image-container\">\n                <img src=\"".concat(teacher.picture_large, "\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n                <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n            </div>\n            <div class=\"teacher-info-container\">\n                <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n                <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n                <p class=\"teacher-country\">").concat(teacher.country, "</p>\n            </div>\n        ");
             teachersList.appendChild(listItem);
         });
         // Create right arrow
@@ -352,12 +353,12 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var teacherInfoCard = document.querySelector(".teacher-info-card-main-container");
         if (!teacherInfoCard)
             return;
-        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n\n        <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n          <img src=\"").concat(teacher.picture_large, "}\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n        <div class=\"with-star\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n             <div class=\"add-fav-button-container\">\n          <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n          </div>\n        </div>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n        </div>\n        \n     \n     \n      </div>\n    ");
+        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n\n        <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n          <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n        <div class=\"with-star\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n             <div class=\"add-fav-button-container\">\n          <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n          </div>\n        </div>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n        </div>\n        \n     \n     \n      </div>\n    ");
         var addToFavButton = document.querySelector(".add-to-fav");
         if (addToFavButton) {
             addToFavButton.addEventListener("click", function () {
                 teacher.favorite = !teacher.favorite;
-                addToFavButton.textContent = teacher.favorite ? '⚝' : '⭐️';
+                addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
                 //Star
                 var teacherItem = document.querySelector(".teacher-item[data-index=\"".concat(teachers.indexOf(teacher), "\"]"));
                 var starIcon = teacherItem === null || teacherItem === void 0 ? void 0 : teacherItem.querySelector('.star-icon');
@@ -604,6 +605,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         },
                         picture_large: null,
                         picture_thumbnail: null,
+                        picture_medium: null,
                         region: "",
                         bg_color: color.value,
                     };
