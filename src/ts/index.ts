@@ -68,8 +68,6 @@ function formatUser(users: any[]): FormattedUser[] {
       b_date: user.dob.date,
       age: user.dob.age,
       phone: user.phone,
-
-      //icture: Object
 /*
 large: "https://randomuser.me/api/portraits/men/73.jpg"
 
@@ -284,15 +282,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
     
      
+       // populateDropDowns(sortedUsers);
         dropdownOptions(sortedUsers);
     
-        filterTeachersByDropdown(sortedUsers);
         createTeachersList(sortedUsers);
         addFavouriteTeacher(sortedUsers);
         sortUsersByAttribute(sortedUsers);
         addTeacherCartInfo(sortedUsers);
         searchForTeacher(sortedUsers);
+        filterTeachersByDropdown(sortedUsers);
         addTeacherForm(sortedUsers);
+
 
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -546,81 +546,76 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
 }
 
   
-  function dropdownOptions(teachers: FormattedUser[]): void {
-    populateDropDowns(teachers);
-    const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
+function dropdownOptions(teachers: FormattedUser[]): void {
+  populateDropDowns(teachers);
+  const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
 
-    dropdownButtons.forEach(button => {
-        // Set default text
-        button.innerHTML = 'Select an option';
+  dropdownButtons.forEach(button => {
+      button.innerHTML = 'Select an option';
 
-        button.addEventListener('click', function (this: HTMLElement, event: Event) {
-            const dropdownContent: Element | null = this.nextElementSibling;
-            dropdownContent?.classList.toggle('show');
+      button.addEventListener('click', function (this: HTMLElement, event: Event) {
+          const dropdownContent: Element | null = this.nextElementSibling;
+          dropdownContent?.classList.toggle('show');
 
-            dropdownButtons.forEach(btn => {
-                const otherDropdown: Element | null = btn.nextElementSibling;
-                if (otherDropdown !== dropdownContent) {
-                    otherDropdown?.classList.remove('show');
-                }
-            });
+          dropdownButtons.forEach(btn => {
+              const otherDropdown: Element | null = btn.nextElementSibling;
+              if (otherDropdown !== dropdownContent) {
+                  otherDropdown?.classList.remove('show');
+              }
+          });
 
-            event.stopPropagation();
-        });
-    });
+          event.stopPropagation();
+      });
+  });
 
-    const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.dropdown-content li');
-    dropdownOptions.forEach(option => {
-        option.addEventListener('click', function (this: HTMLElement) {
-            const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
+  const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.dropdown-content li');
+  dropdownOptions.forEach(option => {
+      option.addEventListener('click', function (this: HTMLElement) {
+          const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
 
-            // Update the selected option without resetting others
-            button.innerHTML = this.innerText ;
-            this.parentElement!.parentElement!.classList.remove('show');
-            filterTeachersByDropdown(teachers);
-        });
-    });
+          button.innerHTML = this.textContent || ''; 
+          this.parentElement!.parentElement!.classList.remove('show'); // Close the dropdown
+          
+          filterTeachersByDropdown(teachers);
+      });
+  });
 
-    document.querySelectorAll('nav ul li').forEach(li => {
-        li.addEventListener('click', function (this: HTMLElement) {
-            document.querySelectorAll('nav ul li.active').forEach(li => {
-                li.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
+  document.querySelectorAll('nav ul li').forEach(li => {
+      li.addEventListener('click', function (this: HTMLElement) {
+          document.querySelectorAll('nav ul li.active').forEach(li => {
+              li.classList.remove('active');
+          });
+          this.classList.add('active');
+      });
+  });
 }
 
 function populateDropDowns(teachers: FormattedUser[]): void {
- countriesToPopulate(teachers);
+  countriesToPopulate(teachers);
   specialityToPopulate(teachers);
-
 }
+
 async function countriesToPopulate(teachers: FormattedUser[]): Promise<void> {
   const countriesDropdownULs: NodeListOf<HTMLUListElement> = document.querySelectorAll('.countries-dropdown-to-populate');
   const uniqueCountries = new Set<string>();
 
-  // Collect unique countries from the teachers array
   teachers.forEach(teacher => {
     if (teacher.country) {
       uniqueCountries.add(teacher.country);
     }
   });
 
-  // Sort the unique countries
-  const sortedCountries = Array.from(uniqueCountries).sort();
 
-  // Fetch country data
+
   try {
     const response = await fetch('https://restcountries.com/v3.1/all');
     const countriesData = await response.json();
 
-    // Create a mapping of country names to country codes (or other attributes)
+   
     const countryMap = new Set<string>();
     countriesData.forEach((country: any) => {
-      if (country.name && country.name.common) {
-        // Add country name and any other attribute you want, e.g., alpha2Code
-        countryMap.add(country.name.common); // Using common name and alpha-2 code
+      if ( country.name.common) {
+        countryMap.add(country.name.common); 
       }
     });
 
@@ -636,9 +631,25 @@ async function countriesToPopulate(teachers: FormattedUser[]): Promise<void> {
         dropdown.appendChild(li);
       });
     });
+
+    addDropdownOptionListeners();
   } catch (error) {
     console.error('Error fetching country data:', error);
   }
+}
+
+function addDropdownOptionListeners(): void {
+  const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.countries-dropdown-to-populate li');
+  
+  dropdownOptions.forEach(option => {
+      option.addEventListener('click', function (this: HTMLElement) {
+          const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
+          
+      
+          button.innerHTML = this.textContent || '';
+          this.parentElement!.parentElement!.classList.remove('show'); 
+      });
+  });
 }
 
 

@@ -90,7 +90,6 @@ function formatUser(users) {
         b_date: user.dob.date,
         age: user.dob.age,
         phone: user.phone,
-        //icture: Object
         /*
         large: "https://randomuser.me/api/portraits/men/73.jpg"
         
@@ -277,19 +276,18 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, fetchUsers()];
                     case 1:
-                        // Fetch initial users
                         teachers = _a.sent();
-                        totalFetched = teachers.length; // Update the total fetched count
+                        totalFetched = teachers.length;
                         formattedTeachers = formatUser(teachers);
                         sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-                        // Call your existing functions with sorted users
+                        // populateDropDowns(sortedUsers);
                         dropdownOptions(sortedUsers);
-                        filterTeachersByDropdown(sortedUsers);
                         createTeachersList(sortedUsers);
                         addFavouriteTeacher(sortedUsers);
                         sortUsersByAttribute(sortedUsers);
                         addTeacherCartInfo(sortedUsers);
                         searchForTeacher(sortedUsers);
+                        filterTeachersByDropdown(sortedUsers);
                         addTeacherForm(sortedUsers);
                         return [3 /*break*/, 3];
                     case 2:
@@ -461,7 +459,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         populateDropDowns(teachers);
         var dropdownButtons = document.querySelectorAll('.dropbtn');
         dropdownButtons.forEach(function (button) {
-            // Set default text
             button.innerHTML = 'Select an option';
             button.addEventListener('click', function (event) {
                 var dropdownContent = this.nextElementSibling;
@@ -479,9 +476,9 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         dropdownOptions.forEach(function (option) {
             option.addEventListener('click', function () {
                 var button = this.closest('.dropdown').querySelector('.dropbtn');
-                // Update the selected option without resetting others
-                button.innerHTML = this.innerText;
-                this.parentElement.parentElement.classList.remove('show');
+                // Set the button text to the clicked option's text
+                button.innerHTML = this.textContent || ''; // Using textContent instead of innerText for better compatibility
+                this.parentElement.parentElement.classList.remove('show'); // Close the dropdown
                 filterTeachersByDropdown(teachers);
             });
         });
@@ -500,19 +497,17 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
     }
     function countriesToPopulate(teachers) {
         return __awaiter(this, void 0, void 0, function () {
-            var countriesDropdownULs, uniqueCountries, sortedCountries, response, countriesData, countryMap_1, sortedCountries_1, error_3;
+            var countriesDropdownULs, uniqueCountries, response, countriesData, countryMap_1, sortedCountries_1, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         countriesDropdownULs = document.querySelectorAll('.countries-dropdown-to-populate');
                         uniqueCountries = new Set();
-                        // Collect unique countries from the teachers array
                         teachers.forEach(function (teacher) {
                             if (teacher.country) {
                                 uniqueCountries.add(teacher.country);
                             }
                         });
-                        sortedCountries = Array.from(uniqueCountries).sort();
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
@@ -524,9 +519,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         countriesData = _a.sent();
                         countryMap_1 = new Set();
                         countriesData.forEach(function (country) {
-                            if (country.name && country.name.common) {
-                                // Add country name and any other attribute you want, e.g., alpha2Code
-                                countryMap_1.add(country.name.common); // Using common name and alpha-2 code
+                            if (country.name.common) {
+                                countryMap_1.add(country.name.common);
                             }
                         });
                         sortedCountries_1 = Array.from(countryMap_1).sort();
@@ -539,6 +533,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                                 dropdown.appendChild(li);
                             });
                         });
+                        addDropdownOptionListeners();
                         return [3 /*break*/, 5];
                     case 4:
                         error_3 = _a.sent();
@@ -546,6 +541,17 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
+            });
+        });
+    }
+    function addDropdownOptionListeners() {
+        var dropdownOptions = document.querySelectorAll('.countries-dropdown-to-populate li');
+        dropdownOptions.forEach(function (option) {
+            option.addEventListener('click', function () {
+                var button = this.closest('.dropdown').querySelector('.dropbtn');
+                // Set the button text to the clicked option's text
+                button.innerHTML = this.textContent || ''; // Use textContent to get the text correctly
+                this.parentElement.parentElement.classList.remove('show'); // Close the dropdown
             });
         });
     }
