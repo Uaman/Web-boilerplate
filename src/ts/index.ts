@@ -1,4 +1,3 @@
-
 type FormattedUser = {
   id: number,
   gender: string,
@@ -263,7 +262,7 @@ const maxUsers = 50;
 
 async function fetchUsers(): Promise<any[]> {
     try {
-        const response = await fetch('https://randomuser.me/api/?results=10');
+        const response = await fetch('https://randomuser.me/api/?results=50');
         const data = await response.json();
         return data.results;
     } catch (error) {
@@ -285,7 +284,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
       
         // Call your existing functions with sorted users
+
+     
         dropdownOptions(sortedUsers);
+    
         filterTeachersByDropdown(sortedUsers);
         createTeachersList(sortedUsers);
         addFavouriteTeacher(sortedUsers);
@@ -353,23 +355,6 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   const scrollAmount = 500;
 
   rightArrow.addEventListener('click', async () => {
-      // Only fetch more users if the limit has not been reached
-      if (totalFetched < maxUsers) {
-          try {
-              const newTeachers = await fetchUsers();
-              const formattedTeachers: FormattedUser[] = formatUser(newTeachers);
-              teachers.push(...formattedTeachers); // Add the new teachers to the array
-              totalFetched += formattedTeachers.length; // Update the count of fetched users
-
-              // Recreate the teacher list with the updated teachers array
-              createTeachersList(teachers); 
-              addTeacherCartInfo(teachers);
-              sortUsersByAttribute(teachers);
-
-          } catch (error) {
-              console.error('Error fetching more users:', error);
-          }
-      }
       teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   });
 
@@ -564,6 +549,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
 
   
   function dropdownOptions(teachers: FormattedUser[]): void {
+    populateDropDowns(teachers);
     const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
 
     dropdownButtons.forEach(button => {
@@ -607,49 +593,83 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
     });
 }
 
-function setupDropdownListeners(teachers: FormattedUser[]): void {
+function populateDropDowns(teachers: FormattedUser[]): void {
+ countriesToPopulate(teachers);
+  specialityToPopulate(teachers);
 
-  document.querySelectorAll('.age-option').forEach(option => {
-    option.addEventListener('click', function() {
-      const ageFilterBtn = document.querySelector('#age-params-btn');
-      if (ageFilterBtn) {
-        ageFilterBtn.textContent = this.textContent; 
-        filterTeachersByDropdown(teachers);
-      }
-    });
+}
+async function countriesToPopulate(teachers: FormattedUser[]): Promise<void> {
+  const countriesDropdownULs: NodeListOf<HTMLUListElement> = document.querySelectorAll('.countries-dropdown-to-populate');
+  const uniqueCountries = new Set<string>();
+
+  // Collect unique countries from the teachers array
+  teachers.forEach(teacher => {
+    if (teacher.country) {
+      uniqueCountries.add(teacher.country);
+    }
   });
 
+  // Sort the unique countries
+  const sortedCountries = Array.from(uniqueCountries).sort();
 
-  document.querySelectorAll('.region-option').forEach(option => {
-    option.addEventListener('click', function() {
-      const regionParamsBtn = document.querySelector('#region-params-btn');
-      if (regionParamsBtn) {
-        regionParamsBtn.textContent = this.textContent;
-        filterTeachersByDropdown(teachers); 
+  // Fetch country data
+  try {
+    const response = await fetch('https://restcountries.com/v3.1/all');
+    const countriesData = await response.json();
+
+    // Create a mapping of country names to country codes (or other attributes)
+    const countryMap = new Set<string>();
+    countriesData.forEach((country: any) => {
+      if (country.name && country.name.common) {
+        // Add country name and any other attribute you want, e.g., alpha2Code
+        countryMap.add(country.name.common); // Using common name and alpha-2 code
       }
     });
-  });
 
-  document.querySelectorAll('.gender-option').forEach(option => {
-    option.addEventListener('click', function() {
-      const sexParamsBtn = document.querySelector('#sex-params-btn');
-      if (sexParamsBtn) {
-        sexParamsBtn.textContent = this.textContent; 
-        filterTeachersByDropdown(teachers); 
-      }
+    const sortedCountries = Array.from(countryMap).sort();
+    countriesDropdownULs.forEach(dropdown => {
+      dropdown.innerHTML = '';
+
+      sortedCountries.forEach(country => {
+        const li = document.createElement('li');
+        li.classList.add('region-option');
+        li.textContent = country;
+
+        dropdown.appendChild(li);
+      });
     });
+  } catch (error) {
+    console.error('Error fetching country data:', error);
+  }
+}
+
+
+function specialityToPopulate(teachers: FormattedUser[]): void {  
+  const specialityDropdownULs: NodeListOf<HTMLUListElement> = document.querySelectorAll('.speciality-dropdown-to-populate');
+
+
+
+  const uniqueSpecialities = new Set<string>();
+  teachers.forEach(teacher => {
+    if (teacher.course) {
+      uniqueSpecialities.add(teacher.course);
+    }
   });
 
-  
-  document.querySelectorAll('.input-checkbox').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-      filterTeachersByDropdown(teachers);
+  const sortedSpeciality = Array.from(uniqueSpecialities).sort();
+  specialityDropdownULs.forEach(dropdown => {
+    dropdown.innerHTML = '';
+
+    sortedSpeciality.forEach(course => {
+      const li = document.createElement('li');
+      li.classList.add('region-option');
+      li.textContent = course; 
+      dropdown.appendChild(li); 
     });
   });
 }
-
 function filterTeachersByDropdown(teachers: FormattedUser[]): void {
-  setupDropdownListeners(teachers);
+
   const ageFilter = document.querySelector('#age-params-btn') as HTMLElement | null;
   const regionParams = document.querySelector('#region-params-btn') as HTMLElement | null;
   const sexParams = document.querySelector('#sex-params-btn') as HTMLElement | null;

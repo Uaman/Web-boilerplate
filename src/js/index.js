@@ -251,7 +251,7 @@ function fetchUsers() {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=10')];
+                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=50')];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -337,33 +337,9 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         // Add scrolling functionality
         var scrollAmount = 500;
         rightArrow.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
-            var newTeachers, formattedTeachers, error_3;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        if (!(totalFetched < maxUsers)) return [3 /*break*/, 4];
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, fetchUsers()];
-                    case 2:
-                        newTeachers = _a.sent();
-                        formattedTeachers = formatUser(newTeachers);
-                        teachers.push.apply(teachers, formattedTeachers); // Add the new teachers to the array
-                        totalFetched += formattedTeachers.length; // Update the count of fetched users
-                        // Recreate the teacher list with the updated teachers array
-                        createTeachersList(teachers);
-                        addTeacherCartInfo(teachers);
-                        sortUsersByAttribute(teachers);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        error_3 = _a.sent();
-                        console.error('Error fetching more users:', error_3);
-                        return [3 /*break*/, 4];
-                    case 4:
-                        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                        return [2 /*return*/];
-                }
+                teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                return [2 /*return*/];
             });
         }); });
         leftArrow.addEventListener('click', function () {
@@ -482,6 +458,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         });
     }
     function dropdownOptions(teachers) {
+        populateDropDowns(teachers);
         var dropdownButtons = document.querySelectorAll('.dropbtn');
         dropdownButtons.forEach(function (button) {
             // Set default text
@@ -517,43 +494,82 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             });
         });
     }
-    function setupDropdownListeners(teachers) {
-        document.querySelectorAll('.age-option').forEach(function (option) {
-            option.addEventListener('click', function () {
-                var ageFilterBtn = document.querySelector('#age-params-btn');
-                if (ageFilterBtn) {
-                    ageFilterBtn.textContent = this.textContent;
-                    filterTeachersByDropdown(teachers);
+    function populateDropDowns(teachers) {
+        countriesToPopulate(teachers);
+        specialityToPopulate(teachers);
+    }
+    function countriesToPopulate(teachers) {
+        return __awaiter(this, void 0, void 0, function () {
+            var countriesDropdownULs, uniqueCountries, sortedCountries, response, countriesData, countryMap_1, sortedCountries_1, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        countriesDropdownULs = document.querySelectorAll('.countries-dropdown-to-populate');
+                        uniqueCountries = new Set();
+                        // Collect unique countries from the teachers array
+                        teachers.forEach(function (teacher) {
+                            if (teacher.country) {
+                                uniqueCountries.add(teacher.country);
+                            }
+                        });
+                        sortedCountries = Array.from(uniqueCountries).sort();
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 4, , 5]);
+                        return [4 /*yield*/, fetch('https://restcountries.com/v3.1/all')];
+                    case 2:
+                        response = _a.sent();
+                        return [4 /*yield*/, response.json()];
+                    case 3:
+                        countriesData = _a.sent();
+                        countryMap_1 = new Set();
+                        countriesData.forEach(function (country) {
+                            if (country.name && country.name.common) {
+                                // Add country name and any other attribute you want, e.g., alpha2Code
+                                countryMap_1.add(country.name.common); // Using common name and alpha-2 code
+                            }
+                        });
+                        sortedCountries_1 = Array.from(countryMap_1).sort();
+                        countriesDropdownULs.forEach(function (dropdown) {
+                            dropdown.innerHTML = '';
+                            sortedCountries_1.forEach(function (country) {
+                                var li = document.createElement('li');
+                                li.classList.add('region-option');
+                                li.textContent = country;
+                                dropdown.appendChild(li);
+                            });
+                        });
+                        return [3 /*break*/, 5];
+                    case 4:
+                        error_3 = _a.sent();
+                        console.error('Error fetching country data:', error_3);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
-        document.querySelectorAll('.region-option').forEach(function (option) {
-            option.addEventListener('click', function () {
-                var regionParamsBtn = document.querySelector('#region-params-btn');
-                if (regionParamsBtn) {
-                    regionParamsBtn.textContent = this.textContent;
-                    filterTeachersByDropdown(teachers);
-                }
-            });
+    }
+    function specialityToPopulate(teachers) {
+        var specialityDropdownULs = document.querySelectorAll('.speciality-dropdown-to-populate');
+        var uniqueSpecialities = new Set();
+        teachers.forEach(function (teacher) {
+            if (teacher.course) {
+                uniqueSpecialities.add(teacher.course);
+            }
         });
-        document.querySelectorAll('.gender-option').forEach(function (option) {
-            option.addEventListener('click', function () {
-                var sexParamsBtn = document.querySelector('#sex-params-btn');
-                if (sexParamsBtn) {
-                    sexParamsBtn.textContent = this.textContent;
-                    filterTeachersByDropdown(teachers);
-                }
-            });
-        });
-        document.querySelectorAll('.input-checkbox').forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                filterTeachersByDropdown(teachers);
+        var sortedSpeciality = Array.from(uniqueSpecialities).sort();
+        specialityDropdownULs.forEach(function (dropdown) {
+            dropdown.innerHTML = '';
+            sortedSpeciality.forEach(function (course) {
+                var li = document.createElement('li');
+                li.classList.add('region-option');
+                li.textContent = course;
+                dropdown.appendChild(li);
             });
         });
     }
     function filterTeachersByDropdown(teachers) {
         var _a, _b, _c;
-        setupDropdownListeners(teachers);
         var ageFilter = document.querySelector('#age-params-btn');
         var regionParams = document.querySelector('#region-params-btn');
         var sexParams = document.querySelector('#sex-params-btn');

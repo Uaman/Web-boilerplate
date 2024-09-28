@@ -255,9 +255,10 @@ margin-top: 0.4em;
     padding: 8px;
     font-size: 16px;
     color:rgb(108, 103, 103);
+    width: 10em;
     cursor: pointer;
   }
-  
+ 
   .dropbtn .arrow-down {
     margin-left: 5px;
 
@@ -532,4 +533,12 @@ li {
 .hidden {
   display: none;
   visibility: hidden;
+}
+.scroll {
+  overflow: scroll;
+  max-height: 150px;
+}
+.dropbtn:hover {
+  border-color: #322e2e;
+  background-color: rgba(226, 226, 226, 0.83);
 }
