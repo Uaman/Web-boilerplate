@@ -401,13 +401,6 @@ footer .teachers-list {
   cursor: pointer;
 }
 
-.arrow {
-  border: none;
-  margin-top: 0.6em;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
 .table-header th:hover .arrow {
   opacity: 1;
 }
@@ -501,26 +494,35 @@ li {
 .teachers-list-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 0;
 }
 
-/*
-.arrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
+.teachers-list {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.right {
-  transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);
+.teacher-item {
+  flex: 0 0 auto;
 }
 
-.left {
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);
+.teachers-list:hover .arrow {
+  opacity: 1;
 }
 
-*/
+.material-icons {
+  font-size: 40px;
+  margin: 2em;
+  cursor: pointer;
+}
+
+.teachers-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100em;
+}
 
 /*# sourceMappingURL=style.css.map */

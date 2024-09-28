@@ -84,10 +84,14 @@
 }
 
 .teacher-info-card-image-container {
-  width: 200px;
-  height: 230px;
   overflow: hidden;
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: 2em;
+  margin-top: 1em;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.608);
 }
 

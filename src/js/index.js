@@ -74,29 +74,6 @@ var europeanCountries = [
     'Netherlands', 'Belgium', 'Luxembourg', 'France', 'Spain', 'Portugal', 'Germany',
     'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
 ];
-function fetchUsers() {
-    return __awaiter(this, void 0, void 0, function () {
-        var response, data, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=10')];
-                case 1:
-                    response = _a.sent();
-                    return [4 /*yield*/, response.json()];
-                case 2:
-                    data = _a.sent();
-                    return [2 /*return*/, data.results];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error('Error fetching users:', error_1);
-                    return [2 /*return*/, []];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
 function formatUser(users) {
     return users.map(function (user) { return ({
         id: generateUUID(),
@@ -125,7 +102,7 @@ function formatUser(users) {
         picture_thumbnail: user.picture.thumbnail,
         picture_medium: user.picture.medium,
         course: getRandomCourse(),
-        favorite: false,
+        favorite: Math.random() > 0.5,
         img: user.picture.large,
         bg_color: '#FFFFFF',
         region: setRegion(user),
@@ -264,59 +241,141 @@ function searchForUser(users, searchBy) {
 function calculataeMatchPercentage(users, matchedUsers) {
     return Math.round((matchedUsers.length / users.length) * 100);
 }
-/*
-const formattedUsers = formatUser([...randomUserMock]);
-const teachers = mergeUsers(formattedUsers, additionalUsers);
-formattedUsers.forEach(user => console.log(validateData(user)));
-
-
-
-const sortedUsers = sortUsers(teachers, 'full_name', 'asc');
-const searchResults = searchForUser(teachers, {  age: ">30" });
-const matchPercentage = calculataeMatchPercentage(teachers, searchResults);
-
-*/
+var teachers = [];
+var totalFetched = 0;
+var maxUsers = 50;
+function fetchUsers() {
+    return __awaiter(this, void 0, void 0, function () {
+        var response, data, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=10')];
+                case 1:
+                    response = _a.sent();
+                    return [4 /*yield*/, response.json()];
+                case 2:
+                    data = _a.sent();
+                    return [2 /*return*/, data.results];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error('Error fetching users:', error_1);
+                    return [2 /*return*/, []];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
 document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
+    function loadInitialTeachers() {
+        return __awaiter(this, void 0, void 0, function () {
+            var formattedTeachers, sortedUsers, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, fetchUsers()];
+                    case 1:
+                        // Fetch initial users
+                        teachers = _a.sent();
+                        totalFetched = teachers.length; // Update the total fetched count
+                        formattedTeachers = formatUser(teachers);
+                        sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
+                        // Call your existing functions with sorted users
+                        dropdownOptions(sortedUsers);
+                        filterTeachersByDropdown(sortedUsers);
+                        createTeachersList(sortedUsers);
+                        addFavouriteTeacher(sortedUsers);
+                        sortUsersByAttribute(sortedUsers);
+                        addTeacherCartInfo(sortedUsers);
+                        searchForTeacher(sortedUsers);
+                        addTeacherForm(sortedUsers);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error('Error fetching users:', error_2);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    }
     function createTeachersList(teachers) {
+        var _this = this;
         var teachersContainers = document.querySelectorAll(".teachers-list-container");
         if (teachersContainers.length === 0)
             return;
-        // Create a single teachers list
+        // Clear previous content
+        teachersContainers.forEach(function (container) {
+            container.innerHTML = '';
+        });
+        var teachersWrapper = document.createElement("div");
+        teachersWrapper.classList.add("teachers-wrapper");
         var teachersList = document.createElement("ul");
         teachersList.classList.add("teachers-list");
-        // Create left arrow
         var leftArrow = document.createElement("span");
-        leftArrow.classList.add("arrow", "left");
-        teachersList.appendChild(leftArrow);
-        // Add teachers to the list
+        leftArrow.classList.add("material-icons");
+        leftArrow.textContent = "arrow_back";
+        var rightArrow = document.createElement("span");
+        rightArrow.classList.add("material-icons");
+        rightArrow.textContent = "arrow_forward";
+        // Create and append teacher list items
         teachers.forEach(function (teacher, index) {
             var listItem = document.createElement("li");
             listItem.classList.add("teacher-item");
             listItem.dataset.index = index.toString();
-            listItem.innerHTML = "\n            <div class=\"teacher-image-container\">\n                <img src=\"".concat(teacher.picture_large, "\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n                <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n            </div>\n            <div class=\"teacher-info-container\">\n                <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n                <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n                <p class=\"teacher-country\">").concat(teacher.country, "</p>\n            </div>\n        ");
+            listItem.innerHTML = "\n          <div class=\"teacher-image-container\">\n              <img src=\"".concat(teacher.picture_large, "\" alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\"/>\n              <span class=\"star-icon ").concat(teacher.favorite ? 'visible' : 'hidden', "\">\u2B50</span>\n          </div>\n          <div class=\"teacher-info-container\">\n              <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n              <p class=\"teacher-subject\">").concat(teacher.course, "</p>\n              <p class=\"teacher-country\">").concat(teacher.country, "</p>\n          </div>\n      ");
             teachersList.appendChild(listItem);
         });
-        // Create right arrow
-        var rightArrow = document.createElement("span");
-        rightArrow.classList.add("arrow", "right");
-        teachersList.appendChild(rightArrow);
-        // Append the list to all containers
+        teachersWrapper.appendChild(leftArrow);
+        teachersWrapper.appendChild(teachersList);
+        teachersWrapper.appendChild(rightArrow);
         teachersContainers.forEach(function (teachersContainer) {
-            teachersContainer.appendChild(teachersList);
+            teachersContainer.appendChild(teachersWrapper);
         });
         // Add scrolling functionality
-        var scrollAmount = 300; // Adjust the amount to scroll
+        var scrollAmount = 500;
+        rightArrow.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
+            var newTeachers, formattedTeachers, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(totalFetched < maxUsers)) return [3 /*break*/, 4];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, fetchUsers()];
+                    case 2:
+                        newTeachers = _a.sent();
+                        formattedTeachers = formatUser(newTeachers);
+                        teachers.push.apply(teachers, formattedTeachers); // Add the new teachers to the array
+                        totalFetched += formattedTeachers.length; // Update the count of fetched users
+                        // Recreate the teacher list with the updated teachers array
+                        createTeachersList(teachers); // Call createTeachersList again to update the view
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error('Error fetching more users:', error_3);
+                        return [3 /*break*/, 4];
+                    case 4:
+                        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         leftArrow.addEventListener('click', function () {
-            teachersList.scrollBy({
-                left: -scrollAmount,
-                behavior: 'smooth'
-            });
+            teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         });
-        rightArrow.addEventListener('click', function () {
-            teachersList.scrollBy({
-                left: scrollAmount,
-                behavior: 'smooth'
-            });
+        // Star icon functionality
+        teachersList.addEventListener('click', function (e) {
+            if (e.target.classList.contains('star-icon')) {
+                var listItem = e.target.closest('.teacher-item');
+                var teacherIndex = parseInt(listItem.dataset.index, 10);
+                teachers[teacherIndex].favorite = !teachers[teacherIndex].favorite;
+                e.target.classList.toggle('visible', teachers[teacherIndex].favorite);
+                e.target.classList.toggle('hidden', !teachers[teacherIndex].favorite);
+            }
         });
     }
     function addTeacherCartInfo(teachers) {
@@ -376,28 +435,49 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             return;
         // Clear previous favorite teachers list
         favTeachersContainer.innerHTML = '';
+        var teachersWrapper = document.createElement("div");
+        teachersWrapper.classList.add("teachers-wrapper");
         var teachersList = document.createElement("ul");
         teachersList.classList.add("teachers-list");
+        // Create the left arrow
         var leftArrow = document.createElement("span");
-        leftArrow.classList.add("arrow", "left");
-        teachersList.appendChild(leftArrow);
+        leftArrow.classList.add("material-icons");
+        leftArrow.textContent = "arrow_back";
+        // Create the right arrow
+        var rightArrow = document.createElement("span");
+        rightArrow.classList.add("material-icons");
+        rightArrow.textContent = "arrow_forward";
+        // Create a list of favorite teachers
         var favTeachers = teachers
             .filter(function (teacher) { return teacher.favorite; })
             .map(function (teacher) {
             var listItem = document.createElement("li");
             listItem.classList.add("teacher-item");
-            listItem.innerHTML = "\n          <div class=\"teacher-image-container\">\n            <img src=\"./images/teacher.webp\" alt=\"".concat(teacher.full_name, "\" class=\"teacher-image\" />\n          </div>\n          <div class=\"teacher-info-container\">\n            <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n            <p class=\"teacher-country\">").concat(teacher.country, "</p>\n          </div>\n        ");
+            listItem.innerHTML = "\n                <div class=\"teacher-image-container\">\n                    <img src='".concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-image\" />\n                </div>\n                <div class=\"teacher-info-container\">\n                    <h3 class=\"teacher-name\">").concat(teacher.full_name, "</h3>\n                    <p class=\"teacher-country\">").concat(teacher.country, "</p>\n                </div>\n            ");
             return listItem;
         });
+        // Append favorite teachers to the list
         favTeachers.forEach(function (listItem) {
-            var _a;
             teachersList.appendChild(listItem);
-            (_a = document.querySelector('.star-icon')) === null || _a === void 0 ? void 0 : _a.classList.add('visible');
         });
-        var rightArrow = document.createElement("span");
-        rightArrow.classList.add("arrow", "right");
-        teachersList.appendChild(rightArrow);
-        favTeachersContainer.appendChild(teachersList);
+        // Append the list and arrows to the wrapper
+        teachersWrapper.appendChild(leftArrow);
+        teachersWrapper.appendChild(teachersList);
+        teachersWrapper.appendChild(rightArrow);
+        // Append the wrapper to the favorites container
+        favTeachersContainer.appendChild(teachersWrapper);
+        // Add scrolling functionality
+        var scrollAmount = 300; // Adjust the amount to scroll
+        leftArrow.addEventListener('click', function () {
+            teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        rightArrow.addEventListener('click', function () {
+            teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+        // Show star icons for favorites
+        document.querySelectorAll('.star-icon').forEach(function (icon) {
+            icon.classList.add('visible');
+        });
     }
     function dropdownOptions(teachers) {
         var dropdownButtons = document.querySelectorAll('.dropbtn');
@@ -711,39 +791,18 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         });
         searchButton.addEventListener('click', handleSearch);
     }
-    var teachers, formattedTeachers, sortedUsers, error_2;
+    var teachers;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, fetchUsers()];
-            case 1:
-                teachers = _a.sent();
-                formattedTeachers = formatUser(teachers);
-                sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-                dropdownOptions(sortedUsers);
-                filterTeachersByDropdown(sortedUsers);
-                createTeachersList(sortedUsers);
-                addFavouriteTeacher(sortedUsers);
-                sortUsersByAttribute(sortedUsers);
-                addTeacherCartInfo(sortedUsers);
-                searchForTeacher(sortedUsers);
-                addTeacherForm(sortedUsers);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                console.error('Error fetching users:', error_2);
-                return [3 /*break*/, 3];
-            case 3:
-                window.addEventListener('click', function () {
-                    var dropdowns = document.querySelectorAll('.dropdown-content');
-                    dropdowns.forEach(function (dropdown) {
-                        dropdown.classList.remove('show');
-                    });
-                    var hamburgerIcon = document.querySelector('.hamburger-icon');
-                    hamburgerIcon === null || hamburgerIcon === void 0 ? void 0 : hamburgerIcon.addEventListener('click', toggleMenu);
-                });
-                return [2 /*return*/];
-        }
+        teachers = [];
+        loadInitialTeachers();
+        window.addEventListener('click', function () {
+            var dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(function (dropdown) {
+                dropdown.classList.remove('show');
+            });
+            var hamburgerIcon = document.querySelector('.hamburger-icon');
+            hamburgerIcon === null || hamburgerIcon === void 0 ? void 0 : hamburgerIcon.addEventListener('click', toggleMenu);
+        });
+        return [2 /*return*/];
     });
 }); });

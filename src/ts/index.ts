@@ -51,16 +51,7 @@ const europeanCountries = [
   'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
 ];
 
-async function fetchUsers() {
-  try {
-    const response = await fetch('https://randomuser.me/api/?results=10');
-    const data = await response.json();
-    return data.results; 
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    return [];
-  }
-}
+
 
 function formatUser(users: any[]): FormattedUser[] {
   return users.map((user: any) => ({
@@ -91,7 +82,7 @@ thumbnail: "https://randomuser.me/api/portraits/thumb/men/73.jpg"
       picture_thumbnail: user.picture.thumbnail,
       picture_medium: user.picture.medium,
       course: getRandomCourse(),
-      favorite: false,
+      favorite: Math.random() > 0.5,
       img: user.picture.large,
       bg_color: '#FFFFFF',
       region: setRegion(user),
@@ -266,82 +257,137 @@ function calculataeMatchPercentage(users: FormattedUser[], matchedUsers: Formatt
   return Math.round((matchedUsers.length / users.length) * 100);
 }
 
+let teachers: FormattedUser[] = []; 
+let totalFetched = 0; 
+const maxUsers = 50; 
 
-/*
-const formattedUsers = formatUser([...randomUserMock]);
-const teachers = mergeUsers(formattedUsers, additionalUsers);
-formattedUsers.forEach(user => console.log(validateData(user)));
-
-
-
-const sortedUsers = sortUsers(teachers, 'full_name', 'asc');
-const searchResults = searchForUser(teachers, {  age: ">30" });
-const matchPercentage = calculataeMatchPercentage(teachers, searchResults); 
-
-*/
+async function fetchUsers(): Promise<any[]> {
+    try {
+        const response = await fetch('https://randomuser.me/api/?results=10');
+        const data = await response.json();
+        return data.results;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
+    }
+}
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+  async function loadInitialTeachers() {
+    try {
+        // Fetch initial users
+        teachers = await fetchUsers();
+        totalFetched = teachers.length; // Update the total fetched count
 
-  function createTeachersList(teachers: Array<FormattedUser>): void {
-    const teachersContainers = document.querySelectorAll(".teachers-list-container");
-    if (teachersContainers.length === 0) return;
+        // Format and sort users
+        const formattedTeachers: FormattedUser[] = formatUser(teachers);
+        const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
 
-    // Create a single teachers list
-    const teachersList = document.createElement("ul");
-    teachersList.classList.add("teachers-list");
+        // Call your existing functions with sorted users
+        dropdownOptions(sortedUsers);
+        filterTeachersByDropdown(sortedUsers);
+        createTeachersList(sortedUsers);
+        addFavouriteTeacher(sortedUsers);
+        sortUsersByAttribute(sortedUsers);
+        addTeacherCartInfo(sortedUsers);
+        searchForTeacher(sortedUsers);
+        addTeacherForm(sortedUsers);
 
-    // Create left arrow
-    const leftArrow = document.createElement("span");
-    leftArrow.classList.add("arrow", "left");
-    teachersList.appendChild(leftArrow);
-
-    // Add teachers to the list
-    teachers.forEach((teacher, index) => {
-        const listItem = document.createElement("li");
-        listItem.classList.add("teacher-item");
-        listItem.dataset.index = index.toString(); 
-
-        listItem.innerHTML = `
-            <div class="teacher-image-container">
-                <img src="${teacher.picture_large}" alt="${teacher.full_name}" class="teacher-image"/>
-                <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
-            </div>
-            <div class="teacher-info-container">
-                <h3 class="teacher-name">${teacher.full_name}</h3>
-                <p class="teacher-subject">${teacher.course}</p>
-                <p class="teacher-country">${teacher.country}</p>
-            </div>
-        `;
-        teachersList.appendChild(listItem);
-    });
-
-    // Create right arrow
-    const rightArrow = document.createElement("span");
-    rightArrow.classList.add("arrow", "right");
-    teachersList.appendChild(rightArrow);
-
-    // Append the list to all containers
-    teachersContainers.forEach((teachersContainer) => {
-        teachersContainer.appendChild(teachersList);
-    });
-
-    // Add scrolling functionality
-    const scrollAmount = 300; // Adjust the amount to scroll
-    leftArrow.addEventListener('click', () => {
-        teachersList.scrollBy({
-            left: -scrollAmount,
-            behavior: 'smooth'
-        });
-    });
-
-    rightArrow.addEventListener('click', () => {
-        teachersList.scrollBy({
-            left: scrollAmount,
-            behavior: 'smooth'
-        });
-    });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
 }
+
+function createTeachersList(teachers: Array<FormattedUser>): void {
+  const teachersContainers = document.querySelectorAll(".teachers-list-container");
+  if (teachersContainers.length === 0) return;
+
+  // Clear previous content
+  teachersContainers.forEach(container => {
+      container.innerHTML = '';
+  });
+
+  const teachersWrapper = document.createElement("div");
+  teachersWrapper.classList.add("teachers-wrapper");
+
+  const teachersList = document.createElement("ul");
+  teachersList.classList.add("teachers-list");
+
+  const leftArrow = document.createElement("span");
+  leftArrow.classList.add("material-icons");
+  leftArrow.textContent = "arrow_back";
+
+  const rightArrow = document.createElement("span");
+  rightArrow.classList.add("material-icons");
+  rightArrow.textContent = "arrow_forward";
+
+  // Create and append teacher list items
+  teachers.forEach((teacher, index) => {
+      const listItem = document.createElement("li");
+      listItem.classList.add("teacher-item");
+      listItem.dataset.index = index.toString();
+      listItem.innerHTML = `
+          <div class="teacher-image-container">
+              <img src="${teacher.picture_large}" alt="${teacher.full_name}" class="teacher-image"/>
+              <span class="star-icon ${teacher.favorite ? 'visible' : 'hidden'}">⭐</span>
+          </div>
+          <div class="teacher-info-container">
+              <h3 class="teacher-name">${teacher.full_name}</h3>
+              <p class="teacher-subject">${teacher.course}</p>
+              <p class="teacher-country">${teacher.country}</p>
+          </div>
+      `;
+      teachersList.appendChild(listItem);
+  });
+
+  teachersWrapper.appendChild(leftArrow);
+  teachersWrapper.appendChild(teachersList);
+  teachersWrapper.appendChild(rightArrow);
+
+  teachersContainers.forEach((teachersContainer) => {
+      teachersContainer.appendChild(teachersWrapper);
+  });
+
+  // Add scrolling functionality
+  const scrollAmount = 500;
+
+  rightArrow.addEventListener('click', async () => {
+      // Only fetch more users if the limit has not been reached
+      if (totalFetched < maxUsers) {
+          try {
+              const newTeachers = await fetchUsers();
+              const formattedTeachers: FormattedUser[] = formatUser(newTeachers);
+              teachers.push(...formattedTeachers); // Add the new teachers to the array
+              totalFetched += formattedTeachers.length; // Update the count of fetched users
+
+              // Recreate the teacher list with the updated teachers array
+              createTeachersList(teachers); // Call createTeachersList again to update the view
+
+          } catch (error) {
+              console.error('Error fetching more users:', error);
+          }
+      }
+      teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  leftArrow.addEventListener('click', () => {
+      teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+
+  // Star icon functionality
+  teachersList.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).classList.contains('star-icon')) {
+          const listItem = (e.target as HTMLElement).closest('.teacher-item');
+          const teacherIndex = parseInt((listItem as HTMLElement).dataset.index!, 10);
+          teachers[teacherIndex].favorite = !teachers[teacherIndex].favorite;
+          (e.target as HTMLElement).classList.toggle('visible', teachers[teacherIndex].favorite);
+          (e.target as HTMLElement).classList.toggle('hidden', !teachers[teacherIndex].favorite);
+      }
+  });
+}
+
+
 
 
   function addTeacherCartInfo(teachers: Array<FormattedUser>): void {
@@ -446,47 +492,74 @@ document.addEventListener("DOMContentLoaded", async () => {
   function addFavouriteTeacher(teachers: Array<FormattedUser>): void {
     const favTeachersContainer: Element | null = document.querySelector('.fav-teachers-list-container');
     if (!favTeachersContainer) return;
-  
+
     // Clear previous favorite teachers list
     favTeachersContainer.innerHTML = '';
-  
-    const teachersList: HTMLUListElement = document.createElement("ul");
+
+    const teachersWrapper = document.createElement("div");
+    teachersWrapper.classList.add("teachers-wrapper");
+
+    const teachersList = document.createElement("ul");
     teachersList.classList.add("teachers-list");
-  
-    const leftArrow: HTMLSpanElement = document.createElement("span");
-    leftArrow.classList.add("arrow", "left");
-    teachersList.appendChild(leftArrow);
-  
+
+    // Create the left arrow
+    const leftArrow = document.createElement("span");
+    leftArrow.classList.add("material-icons");
+    leftArrow.textContent = "arrow_back";
+
+    // Create the right arrow
+    const rightArrow = document.createElement("span");
+    rightArrow.classList.add("material-icons");
+    rightArrow.textContent = "arrow_forward";
+
+    // Create a list of favorite teachers
     const favTeachers: Array<HTMLLIElement> = teachers
-      .filter(teacher => teacher.favorite)
-      .map((teacher) => {
-        const listItem: HTMLLIElement = document.createElement("li");
-        listItem.classList.add("teacher-item");
-  
-        listItem.innerHTML = `
-          <div class="teacher-image-container">
-            <img src="./images/teacher.webp" alt="${teacher.full_name}" class="teacher-image" />
-          </div>
-          <div class="teacher-info-container">
-            <h3 class="teacher-name">${teacher.full_name}</h3>
-            <p class="teacher-country">${teacher.country}</p>
-          </div>
-        `;
-        return listItem;
-      });
-  
+        .filter(teacher => teacher.favorite)
+        .map((teacher) => {
+            const listItem: HTMLLIElement = document.createElement("li");
+            listItem.classList.add("teacher-item");
+
+            listItem.innerHTML = `
+                <div class="teacher-image-container">
+                    <img src='${teacher.picture_large}' alt="${teacher.full_name}" class="teacher-image" />
+                </div>
+                <div class="teacher-info-container">
+                    <h3 class="teacher-name">${teacher.full_name}</h3>
+                    <p class="teacher-country">${teacher.country}</p>
+                </div>
+            `;
+            return listItem;
+        });
+
+    // Append favorite teachers to the list
     favTeachers.forEach((listItem) => {
-      teachersList.appendChild(listItem);
-      document.querySelector('.star-icon')?.classList.add('visible');
+        teachersList.appendChild(listItem);
     });
-  
-    const rightArrow: HTMLSpanElement = document.createElement("span");
-    rightArrow.classList.add("arrow", "right");
-    teachersList.appendChild(rightArrow);
-  
-    favTeachersContainer.appendChild(teachersList);
-  }
-  
+
+    // Append the list and arrows to the wrapper
+    teachersWrapper.appendChild(leftArrow);
+    teachersWrapper.appendChild(teachersList);
+    teachersWrapper.appendChild(rightArrow);
+
+    // Append the wrapper to the favorites container
+    favTeachersContainer.appendChild(teachersWrapper);
+
+    // Add scrolling functionality
+    const scrollAmount = 300; // Adjust the amount to scroll
+    leftArrow.addEventListener('click', () => {
+        teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    rightArrow.addEventListener('click', () => {
+        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+
+    // Show star icons for favorites
+    document.querySelectorAll('.star-icon').forEach(icon => {
+        icon.classList.add('visible');
+    });
+}
+
   
   function dropdownOptions(teachers: FormattedUser[]): void {
     const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
@@ -878,34 +951,9 @@ function showNotification(message: string): void {
 
 
 
+let teachers: any[] = [];
 
-try {
-  // Fetch users
-  const teachers = await fetchUsers();
-  
-  
-  const formattedTeachers: FormattedUser[] = formatUser(teachers);
-
-  const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-
-  
-
-  dropdownOptions(sortedUsers);
-
-  filterTeachersByDropdown(sortedUsers);
-  createTeachersList(sortedUsers);
-  addFavouriteTeacher(sortedUsers);
-  sortUsersByAttribute(sortedUsers);
-  addTeacherCartInfo(sortedUsers);
-  searchForTeacher(sortedUsers);
-
-  addTeacherForm(sortedUsers);
-
-  //functionality on sorting, fi;tating etc
-
-} catch (error) {
-  console.error('Error fetching users:', error);
-}
+loadInitialTeachers();
 
   window.addEventListener('click', function () {
     const dropdowns: NodeListOf<Element> = document.querySelectorAll('.dropdown-content');
