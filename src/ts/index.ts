@@ -798,8 +798,8 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
           });
   
           paginationContainer.appendChild(pageButton);
-        }
 
+        }
 
         const rightArrow = document.createElement('button');
         rightArrow.textContent = '→';
@@ -961,61 +961,20 @@ function showNotification(message: string): void {
 
     if (!searchButton || !searchInput) return;
 
-    // Set to track already displayed users' full names
-    const displayedUsers = new Set<string>();
-
     const handleSearch = () => {
         const searchQuery = searchInput.value.trim();
+
+        // Create a regex pattern to match names starting with the search query (case insensitive)
+        const searchRegex = new RegExp(`^${searchQuery}`, 'i');
 
         let searchResults: FormattedUser[] = (!searchQuery || searchQuery === '*') 
             ? teachers 
             : teachers.filter(teacher => {
-                let matches = false;
-
-                const ageRegex = /([<>]=?)\s*(\d+)/;
-                const ageMatch = searchQuery.match(ageRegex);
-
-                if (ageMatch) {
-                    const operator = ageMatch[1];
-                    const age = Number(ageMatch[2]);
-                    switch (operator) {
-                        case '>':
-                            matches = teacher.age > age;
-                            break;
-                        case '>=':
-                            matches = teacher.age >= age;
-                            break;
-                        case '<':
-                            matches = teacher.age < age;
-                            break;
-                        case '<=':
-                            matches = teacher.age <= age;
-                            break;
-                    }
-                } else {
-                    const searchRegex = new RegExp(searchQuery, 'i');
-                    matches = searchRegex.test(teacher.full_name) || searchRegex.test(teacher.note);
-                }
-
-                // Only include this teacher if they haven't been displayed already
-                if (matches && !displayedUsers.has(teacher.full_name)) {
-                    displayedUsers.add(teacher.full_name);
-                    return true;
-                }
-
-                return false;
+                // Check if the teacher's full name matches the regex
+                return searchRegex.test(teacher.full_name);
             });
 
-        // Check if all search results are identical
-        if (searchResults.length > 1) {
-            const firstTeacher = JSON.stringify(searchResults[0]);
-            const allIdentical = searchResults.every(teacher => JSON.stringify(teacher) === firstTeacher);
-
-            if (allIdentical) {
-                searchResults = [searchResults[0]]; // Keep only one if all are identical
-            }
-        }
-
+        // Clear previous search results
         const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
         teachersContainers.forEach(container => {
             const existingList = container.querySelector('.teachers-list');
@@ -1024,8 +983,22 @@ function showNotification(message: string): void {
             }
         });
 
+        // Create the new list based on search results
         createTeachersList(searchResults);
         addTeacherCartInfo(teachers);
+        
+        // Hide arrows if less than 10 results found
+        const arrows = document.querySelectorAll('.material-icons');
+        if (searchResults.length < 10) {
+            arrows.forEach(arrow => {
+                arrow.classList.add('hidden');
+            });
+        } else {
+            arrows.forEach(arrow => {
+                arrow.classList.remove('hidden');
+            });
+        }
+
         console.log(searchResults);
     };
 
@@ -1037,6 +1010,8 @@ function showNotification(message: string): void {
 
     searchButton.addEventListener('click', handleSearch);
 }
+
+
 
 
 

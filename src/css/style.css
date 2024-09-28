@@ -527,4 +527,9 @@ li {
   max-width: 100em;
 }
 
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
 /*# sourceMappingURL=style.css.map */

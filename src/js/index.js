@@ -804,53 +804,17 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var searchInput = document.querySelector('.input-look-for-teacher');
         if (!searchButton || !searchInput)
             return;
-        // Set to track already displayed users' full names
-        var displayedUsers = new Set();
         var handleSearch = function () {
             var searchQuery = searchInput.value.trim();
+            // Create a regex pattern to match names starting with the search query (case insensitive)
+            var searchRegex = new RegExp("^".concat(searchQuery), 'i');
             var searchResults = (!searchQuery || searchQuery === '*')
                 ? teachers
                 : teachers.filter(function (teacher) {
-                    var matches = false;
-                    var ageRegex = /([<>]=?)\s*(\d+)/;
-                    var ageMatch = searchQuery.match(ageRegex);
-                    if (ageMatch) {
-                        var operator = ageMatch[1];
-                        var age = Number(ageMatch[2]);
-                        switch (operator) {
-                            case '>':
-                                matches = teacher.age > age;
-                                break;
-                            case '>=':
-                                matches = teacher.age >= age;
-                                break;
-                            case '<':
-                                matches = teacher.age < age;
-                                break;
-                            case '<=':
-                                matches = teacher.age <= age;
-                                break;
-                        }
-                    }
-                    else {
-                        var searchRegex = new RegExp(searchQuery, 'i');
-                        matches = searchRegex.test(teacher.full_name) || searchRegex.test(teacher.note);
-                    }
-                    // Only include this teacher if they haven't been displayed already
-                    if (matches && !displayedUsers.has(teacher.full_name)) {
-                        displayedUsers.add(teacher.full_name);
-                        return true;
-                    }
-                    return false;
+                    // Check if the teacher's full name matches the regex
+                    return searchRegex.test(teacher.full_name);
                 });
-            // Check if all search results are identical
-            if (searchResults.length > 1) {
-                var firstTeacher_1 = JSON.stringify(searchResults[0]);
-                var allIdentical = searchResults.every(function (teacher) { return JSON.stringify(teacher) === firstTeacher_1; });
-                if (allIdentical) {
-                    searchResults = [searchResults[0]]; // Keep only one if all are identical
-                }
-            }
+            // Clear previous search results
             var teachersContainers = document.querySelectorAll(".teachers-list-container");
             teachersContainers.forEach(function (container) {
                 var existingList = container.querySelector('.teachers-list');
@@ -858,8 +822,21 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     existingList.remove();
                 }
             });
+            // Create the new list based on search results
             createTeachersList(searchResults);
             addTeacherCartInfo(teachers);
+            // Hide arrows if less than 10 results found
+            var arrows = document.querySelectorAll('.material-icons');
+            if (searchResults.length < 10) {
+                arrows.forEach(function (arrow) {
+                    arrow.classList.add('hidden');
+                });
+            }
+            else {
+                arrows.forEach(function (arrow) {
+                    arrow.classList.remove('hidden');
+                });
+            }
             console.log(searchResults);
         };
         searchInput.addEventListener('keypress', function (event) {
