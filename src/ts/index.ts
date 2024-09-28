@@ -275,16 +275,14 @@ async function fetchUsers(): Promise<any[]> {
 document.addEventListener("DOMContentLoaded", async () => {
   async function loadInitialTeachers() {
     try {
-        // Fetch initial users
-        teachers = await fetchUsers();
-        totalFetched = teachers.length; // Update the total fetched count
 
-        // Format and sort users
+        teachers = await fetchUsers();
+        totalFetched = teachers.length;
+
+
         const formattedTeachers: FormattedUser[] = formatUser(teachers);
         const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-      
-        // Call your existing functions with sorted users
-
+    
      
         dropdownOptions(sortedUsers);
     
