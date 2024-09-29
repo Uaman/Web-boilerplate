@@ -258,9 +258,9 @@ let teachers: FormattedUser[] = [];
 let totalFetched = 0; 
 const maxUsers = 50; 
 
-async function fetchUsers(): Promise<any[]> {
+async function fetchUsers(count: number): Promise<any[]> {
     try {
-        const response = await fetch('https://randomuser.me/api/?results=50');
+        const response = await fetch(`https://randomuser.me/api/?results=${count}`);
         const data = await response.json();
         return data.results;
     } catch (error) {
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function loadInitialTeachers() {
     try {
 
-        teachers = await fetchUsers();
+        teachers = await fetchUsers(50);
         totalFetched = teachers.length;
 
 
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         sortUsersByAttribute(sortedUsers);
         addTeacherCartInfo(sortedUsers);
         searchForTeacher(sortedUsers);
-        filterTeachersByDropdown(sortedUsers);
+       // filterTeachersByDropdown(sortedUsers);
         addTeacherForm(sortedUsers);
 
 
@@ -352,10 +352,26 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   // Add scrolling functionality
   const scrollAmount = 500;
 
-  rightArrow.addEventListener('click', async () => {
-      teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-  });
+  let totalFetched = 0; // Загальна кількість викладачів, які були отримані
 
+  rightArrow.addEventListener('click', async () => {
+      try {
+          const newTeachers = await fetchUsers(10); // Запит на 10 нових викладачів
+          const formattedTeachers: FormattedUser[] = formatUser(newTeachers);
+          teachers.push(...formattedTeachers); // Додаємо нових викладачів до існуючого масиву
+          totalFetched += formattedTeachers.length; // Оновлюємо загальну кількість
+  
+          // Оновлюємо список викладачів та статистику
+          createTeachersList(teachers); 
+          addTeacherCartInfo(teachers);
+          populateStatistics(sortUsers(teachers, 'full_name', 'asc')); // Оновлюємо статистику
+  
+      } catch (error) {
+          console.error('Error fetching more users:', error);
+      }
+      teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' }); // Прокручуємо вправо
+  });
+  
   leftArrow.addEventListener('click', () => {
       teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
   });
@@ -764,7 +780,7 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
     const teachersPerPage = 10;
     let currentPage = 1;
   
-    // Розбити викладачів на сторінки
+
     function getPaginatedTeachers(page: number): FormattedUser[] {
       const startIndex = (page - 1) * teachersPerPage;
       return teachers.slice(startIndex, startIndex + teachersPerPage);
@@ -797,21 +813,21 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
     function createPagination() {
       if (paginationContainer) {
         paginationContainer.innerHTML = '';
-  
+    
         const totalPages = Math.ceil(teachers.length / teachersPerPage);
-  
-        const leftArrow = document.createElement('button');
-        leftArrow.textContent = '←';
-        leftArrow.disabled = currentPage === 1;
-        leftArrow.addEventListener('click', () => {
+    
+        const leftArrowButton = document.createElement('button');
+        leftArrowButton.textContent = '←';
+        leftArrowButton.disabled = currentPage === 1; // Вимкнення кнопки, якщо currentPage === 1
+        leftArrowButton.addEventListener('click', () => {
           if (currentPage > 1) {
             currentPage--;
             renderTable(currentPage);
             updatePagination();
           }
         });
-        paginationContainer.appendChild(leftArrow);
-
+        paginationContainer.appendChild(leftArrowButton);
+    
         for (let i = 1; i <= totalPages; i++) {
           const pageButton = document.createElement('button');
           pageButton.textContent = i.toString();
@@ -819,20 +835,19 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
           if (i === currentPage) {
             pageButton.classList.add('active');
           }
-  
+    
           pageButton.addEventListener('click', () => {
             currentPage = i;
             renderTable(currentPage);
             updatePagination();
           });
-  
+    
           paginationContainer.appendChild(pageButton);
-
         }
-
+    
         const rightArrow = document.createElement('button');
         rightArrow.textContent = '→';
-        rightArrow.disabled = currentPage === totalPages;
+        rightArrow.disabled = currentPage === totalPages; // Вимкнення кнопки, якщо currentPage === totalPages
         rightArrow.addEventListener('click', () => {
           if (currentPage < totalPages) {
             currentPage++;
@@ -841,18 +856,26 @@ function filterTeachersByDropdown(teachers: FormattedUser[]): void {
           }
         });
         paginationContainer.appendChild(rightArrow);
+    
+        // Оновлюємо пагінацію після створення
+        updatePagination();
       }
     }
-
+    
     function updatePagination() {
       const buttons = document.querySelectorAll('.page-button');
       buttons.forEach((button, index) => {
         button.classList.toggle('active', index + 1 === currentPage);
       });
+    
+      const leftArrowButton = paginationContainer.querySelector('button:nth-child(1)'); // Або за класом
+      (leftArrowButton as HTMLButtonElement).disabled = currentPage === 1; // Деактивуємо кнопку при поточній сторінці 1
     }
-
+    
+    // Виклик функцій для початкового рендерингу
     renderTable(currentPage);
     createPagination();
+    
   }
   
   

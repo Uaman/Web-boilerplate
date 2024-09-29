@@ -243,14 +243,14 @@ function calculataeMatchPercentage(users, matchedUsers) {
 var teachers = [];
 var totalFetched = 0;
 var maxUsers = 50;
-function fetchUsers() {
+function fetchUsers(count) {
     return __awaiter(this, void 0, void 0, function () {
         var response, data, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, fetch('https://randomuser.me/api/?results=50')];
+                    return [4 /*yield*/, fetch("https://randomuser.me/api/?results=".concat(count))];
                 case 1:
                     response = _a.sent();
                     return [4 /*yield*/, response.json()];
@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, fetchUsers()];
+                        return [4 /*yield*/, fetchUsers(50)];
                     case 1:
                         teachers = _a.sent();
                         totalFetched = teachers.length;
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         sortUsersByAttribute(sortedUsers);
                         addTeacherCartInfo(sortedUsers);
                         searchForTeacher(sortedUsers);
-                        filterTeachersByDropdown(sortedUsers);
+                        // filterTeachersByDropdown(sortedUsers);
                         addTeacherForm(sortedUsers);
                         return [3 /*break*/, 3];
                     case 2:
@@ -334,10 +334,32 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         });
         // Add scrolling functionality
         var scrollAmount = 500;
+        var totalFetched = 0; // Загальна кількість викладачів, які були отримані
         rightArrow.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
+            var newTeachers, formattedTeachers, error_3;
             return __generator(this, function (_a) {
-                teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, fetchUsers(10)];
+                    case 1:
+                        newTeachers = _a.sent();
+                        formattedTeachers = formatUser(newTeachers);
+                        teachers.push.apply(teachers, formattedTeachers); // Додаємо нових викладачів до існуючого масиву
+                        totalFetched += formattedTeachers.length; // Оновлюємо загальну кількість
+                        // Оновлюємо список викладачів та статистику
+                        createTeachersList(teachers);
+                        addTeacherCartInfo(teachers);
+                        populateStatistics(sortUsers(teachers, 'full_name', 'asc')); // Оновлюємо статистику
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_3 = _a.sent();
+                        console.error('Error fetching more users:', error_3);
+                        return [3 /*break*/, 3];
+                    case 3:
+                        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' }); // Прокручуємо вправо
+                        return [2 /*return*/];
+                }
             });
         }); });
         leftArrow.addEventListener('click', function () {
@@ -476,8 +498,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         dropdownOptions.forEach(function (option) {
             option.addEventListener('click', function () {
                 var button = this.closest('.dropdown').querySelector('.dropbtn');
-                // Set the button text to the clicked option's text
-                button.innerHTML = this.textContent || ''; // Using textContent instead of innerText for better compatibility
+                button.innerHTML = this.textContent || '';
                 this.parentElement.parentElement.classList.remove('show'); // Close the dropdown
                 filterTeachersByDropdown(teachers);
             });
@@ -497,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
     }
     function countriesToPopulate(teachers) {
         return __awaiter(this, void 0, void 0, function () {
-            var countriesDropdownULs, uniqueCountries, response, countriesData, countryMap_1, sortedCountries_1, error_3;
+            var countriesDropdownULs, uniqueCountries, response, countriesData, countryMap_1, sortedCountries_1, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -536,8 +557,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         addDropdownOptionListeners();
                         return [3 /*break*/, 5];
                     case 4:
-                        error_3 = _a.sent();
-                        console.error('Error fetching country data:', error_3);
+                        error_4 = _a.sent();
+                        console.error('Error fetching country data:', error_4);
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
@@ -549,9 +570,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         dropdownOptions.forEach(function (option) {
             option.addEventListener('click', function () {
                 var button = this.closest('.dropdown').querySelector('.dropbtn');
-                // Set the button text to the clicked option's text
-                button.innerHTML = this.textContent || ''; // Use textContent to get the text correctly
-                this.parentElement.parentElement.classList.remove('show'); // Close the dropdown
+                button.innerHTML = this.textContent || '';
+                this.parentElement.parentElement.classList.remove('show');
             });
         });
     }
@@ -638,7 +658,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var paginationContainer = document.querySelector('.pagination');
         var teachersPerPage = 10;
         var currentPage = 1;
-        // Розбити викладачів на сторінки
         function getPaginatedTeachers(page) {
             var startIndex = (page - 1) * teachersPerPage;
             return teachers.slice(startIndex, startIndex + teachersPerPage);
@@ -660,17 +679,17 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             if (paginationContainer) {
                 paginationContainer.innerHTML = '';
                 var totalPages_1 = Math.ceil(teachers.length / teachersPerPage);
-                var leftArrow = document.createElement('button');
-                leftArrow.textContent = '←';
-                leftArrow.disabled = currentPage === 1;
-                leftArrow.addEventListener('click', function () {
+                var leftArrowButton = document.createElement('button');
+                leftArrowButton.textContent = '←';
+                leftArrowButton.disabled = currentPage === 1; // Вимкнення кнопки, якщо currentPage === 1
+                leftArrowButton.addEventListener('click', function () {
                     if (currentPage > 1) {
                         currentPage--;
                         renderTable(currentPage);
                         updatePagination();
                     }
                 });
-                paginationContainer.appendChild(leftArrow);
+                paginationContainer.appendChild(leftArrowButton);
                 var _loop_1 = function (i) {
                     var pageButton = document.createElement('button');
                     pageButton.textContent = i.toString();
@@ -690,7 +709,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 }
                 var rightArrow = document.createElement('button');
                 rightArrow.textContent = '→';
-                rightArrow.disabled = currentPage === totalPages_1;
+                rightArrow.disabled = currentPage === totalPages_1; // Вимкнення кнопки, якщо currentPage === totalPages
                 rightArrow.addEventListener('click', function () {
                     if (currentPage < totalPages_1) {
                         currentPage++;
@@ -699,6 +718,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     }
                 });
                 paginationContainer.appendChild(rightArrow);
+                // Оновлюємо пагінацію після створення
+                updatePagination();
             }
         }
         function updatePagination() {
@@ -706,7 +727,10 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             buttons.forEach(function (button, index) {
                 button.classList.toggle('active', index + 1 === currentPage);
             });
+            var leftArrowButton = paginationContainer.querySelector('button:nth-child(1)'); // Або за класом
+            leftArrowButton.disabled = currentPage === 1; // Деактивуємо кнопку при поточній сторінці 1
         }
+        // Виклик функцій для початкового рендерингу
         renderTable(currentPage);
         createPagination();
     }
