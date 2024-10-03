@@ -1,3 +1,4 @@
+
 const testModules = require('./test-module.js');
 require('../css/app.css');
 //const sass = require('sass');
@@ -378,6 +379,10 @@ return percentage;
 //console.log(parameter_sort(processed_user_array, false, true, false, true, true));//name age b_date country ascending(t/f)
 //console.log(find_user(processed_user_array, 'old lady with a cats'));//name note age
 //console.log(calculate_statistics(processed_user_array,  55) + "%");//get percentage from total
+
+import testModules from './test-module.js';
+/** ******** Your code here! *********** */
+
 
 console.log(testModules.hello);
 
