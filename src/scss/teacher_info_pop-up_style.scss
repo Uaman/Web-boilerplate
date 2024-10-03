@@ -1,6 +1,6 @@
 $popup_header_color: rgb(70, 70, 70);
 $popup_border_radius: 3px;
-$popup_height: 50%;
+$popup_height: 40%;
 $popup_width: 60%;
 $popup_wrapper_color: rgba(0, 0, 0, 0.5);
 
@@ -18,8 +18,6 @@ $large_font_size: 14pt;
 $default_font_size: 10pt;
 $page_font: "Roboto";
 $generic_font: sans-serif;
-
-
 
 body {
   font: $default_font_size $page_font, $generic_font;
@@ -46,27 +44,52 @@ body {
 
 .popup-wrapper {
 //border: 1px solid #000;
-display: grid;
+ //display: none; //hidden by default (when i actually make it work from button press);
   width: 100%;
   height: 100%;
-  background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
-  //display: none; //hidden by default (when i actually ake it work from button press)
   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+    display: flex;
+  //align-items: center;
+     justify-content: center;
+visibility: hidden;
+}
+
+.popup-wrapper.show {
+            visibility: visible;
+        }
+
+.popup-wrapper.close {
+visibility: hidden;
+}
+
+.popup-bg {
+ background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
+opacity: 50%;
+width: 100%;
+height: 100%;
+position: absolute;
 }
 
 
 .popup-window-wide {
    width: $popup_width;
     height: auto;
-    margin: auto;
+    z-index: 5;
+    position: absolute;
+    margin-top: 10%;
+//border: 3px solid red;
 }
 
 .popup-content {
 //height: 100%;
+
   background-color: $color_secondary;
   border-bottom-right-radius: $popup_border_radius;
   border-bottom-left-radius: $popup_border_radius;
-  padding: $filters_padding * 2 $filters_padding * 3 $filters_padding $filters_padding * 3;
+  padding: calc($filters_padding * 2) calc($filters_padding * 3) $filters_padding calc($filters_padding * 3);
 
 //  div {
 //  border: 1px solid #000;
@@ -78,38 +101,45 @@ display: grid;
 }
 
 .teacher-info-card {
-
+//border: 1px solid red;
   display: flex;
+  justify-content: space-between;
   width: 100%;
-  float: left;
-margin: 0 0 $filters_margin / 2 $filters_margin / 2;
-  #teacher_fav {
-  top: 10px;
-  left: calc($popup_width - 10px);
-  }
+  height: 100%;
+  //float: left;
+  margin: 0 calc($filters_margin / 2) calc($filters_margin / 2) calc($filters_margin / 1.5);
+
 }
+
+#teacher_fav {
+  top: 10px;
+  //width: calc(popup_width / 3);
+
+  }
 
 .popup-item-third {
 //border: 1px solid #000;
 padding: 0;
 }
 
-h1 {
+#teacher_name {
+//border: 1px solid #000;
+width: 200%;
 margin-top: 0;
 font-size: calc($large_font_size + 8pt);
 }
 
-h3 {
+#teacher_speciality_full {
 font-size: $large_font_size;
 font-weight: bold;
-margin: calc($filters_margin / 2) 0 calc($filters_margin / 2) 0;
+margin: calc($filters_margin / 5) 0 calc($filters_margin / 4) 0;
 }
 
-h4 {
-margin: $filters_margin * 0.3 0 $filters_margin * 0.3 0;
+#teacher_region_full, #teacher_age_gender_full, #teacher_phone_full {
+margin: calc($filters_margin * 0.3) 0 calc($filters_margin * 0.3) 0;
 }
 
-.teacher-image-full {
+#teacher_image_full {
 height: 100%;
 width: $filters_margin * 5;
 float: inline-start;
@@ -118,14 +148,13 @@ float: inline-start;
 #teacher_info {
 //border: 1px solid #000;
 text-align: left;
-padding: 0 calc($popup_width * 0.6) 0 $filters_padding;
-margin: 0 $filters_margin / 2 0 $filters_margin / 2;
+padding: 0 calc($popup_width * 0.6) 0 0;
+margin: 0 calc($filters_margin / 2) 0 calc($filters_margin / 2);
 }
 
-
 #teacher_favorite_star {
-height: 30%;
-width: 60%;
+height: 100px;
+width: 100%;
 float: inline-end;
 }
 
@@ -134,6 +163,6 @@ text-align: left;
 }
 
 .popup-item-full {
-margin: $filters_margin / 2;
+margin: calc($filters_margin / 2);
 text-align: left;
 }

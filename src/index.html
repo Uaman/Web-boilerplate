@@ -11,7 +11,11 @@
     <title>Teachinder</title>
 
     <link rel="stylesheet" href="./css/app.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/teacher_info_pop-up_style.css">
+<!--    <link rel="stylesheet" href="./css/add_teacher_pop-up_style.css">-->
+
 
 </head>
 
@@ -19,14 +23,14 @@
 
 <script type="text/javascript" src="../build/app.js"></script>
 
-<header>
+<header >
 
     <div>
         <h1 class="main-header"><b>Teachinder</b></h1>
         <search class="search-combo">
             <form>
-                <input name="search_bar" class="input_search" placeholder="Name, note or age to search" type="search">
-                <button class="search_teacher_btn" type="button"><b>Search</b></button>
+                <input name="search_bar" class="input_search" id="search_field" placeholder="Name, note or age to search" type="search">
+                <button class="search_teacher_btn" type="button" id="search_btn" onclick="searchForTeacher()"><b>Search</b></button>
             </form>
         </search>
     </div>
@@ -40,12 +44,12 @@
                 <li><a class="link-navigation" href="#about">About</a></li>
             </ul>
         </nav>
-        <button class="add_teacher" type="button"><b>Add Teacher</b></button>
+        <button class="add_teacher" type="button" onclick="openAddTeacherPopup()"><b>Add Teacher</b></button>
     </div>
 </header>
 
 <!--TOP TEACHERS-->
-<div id="top_teachers" class="content-block">
+<div id="top_teachers" class="content-block" >
 
     <div class="section-header"><h2>Top teachers</h2></div>
 
@@ -53,33 +57,43 @@
         <!--AGE FILTER-->
         <span class="filter-control">
             <label for="age_control">Age</label>
-            <select name="filter-age" id="age_control">
-                <option value="1">18-31</option>
-                <option value="2">32-45</option>
-                 <option value="3">46-59</option>
+            <select name="filter-age" id="age_control" onchange="filterByOptions()">
+                <option value="1831">18-31</option>
+                <option value="3245">32-45</option>
+                 <option value="4659">46-59</option>
+                <option value="6099">60-99</option>
             </select>
         </span>
         <!--REGION FILTER-->
         <span class="filter-control">
             <label for="region_control">Region</label>
-            <select name="filter-region" id="region_control">
-               <option value="1">Europe</option>
-                  <option value="2">Asia</option>
-                  <option value="3">America</option>
-                  <option value="4">Australia</option>
-                  <option value="5">Africa</option>
-                  <option value="6">Other</option>
+            <select name="filter-region" id="region_control" onchange="filterByOptions()">
+               <option value="Australia">Australia</option>
+               <option value="Canada">Canada</option>
+               <option value="Denmark">Denmark</option>
+                <option value="Finland">Finland</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+                <option value="Iran">Iran</option>
+                <option value="Ireland">Ireland</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="New Zeland">New Zeland</option>
+                <option value="Norway">Norway</option>
+                <option value="Spain">Spain</option>
+                <option value="Switzerland">Switzerland</option>
+               <option value="Turkey">Turkey</option>
+                  <option value="United States">United States</option>
             </select>
         </span>
         <!--SEX FILTER-->
         <span class="filter-control">
                <label for="sex_control">Sex</label>
-               <select name="filter-sex" id="sex_control">
-                  <option value="1">Female</option>
-                  <option value="2">Male</option>
-                  <option value="3">N/A</option>
+               <select name="filter-sex" id="sex_control" onchange="filterByOptions()">
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
                </select>
             </span>
+
         <!--PHOTO TICK-->
         <span class="filter-control">
                <input type="checkbox" name="photo" id="photo_control"/>
@@ -87,165 +101,47 @@
             </span>
         <!--FAVORITE TICK-->
         <span class="filter-control">
-               <input type="checkbox" name="favorite" id="favorite_control"/>
+               <input type="checkbox" name="favorite" id="favorite_control" onchange="filterByOptions()"/>
                <label for="favorite_control" id="fav_ctrl_label">Only favorites</label>
             </span>
-
     </div>
 
     <!--RESULTING TEACHER LIST-->
-    <div class="searched-teacher-list">
-        <!--EXAMPLE TEACHER-->
-        <!--TODO: figure out how to actually filter teachers. DB??-->
-        <div class="teacher-item" id="teacher_1">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-        <div class="teacher-item" id="teacher_2">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-        <div class="teacher-item" id="teacher_3">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-        <div class="teacher-item" id="teacher_4">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-        <div class="teacher-item" id="teacher_5">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-        <div class="teacher-item" id="teacher_6">
-            <div>
-                <img class="teacher-image" src="images/dog.jpg">
-                <span class="teacher-initials">I.T</span>
-            </div>
-            <div class="teacher-item-info">
-                <p class="teacher-name">Ihor<br>Tkachuk</p>
-                <p class="teacher-spec">Chemistry</p>
-                <p class="teacher-region">Ukraine</p>
-            </div>
-        </div>
-    </div>
+    <div class="searched-teacher-list" id="top_teachers_list"></div>
+
+    <button class="search_teacher_btn" type="button" onclick="requestMoreTeachers()"><b>More</b></button>
 </div>
+
 
 <!--STATISTICS-->
 <div id="statistics" class="content-block">
     <div class="section-header"><h2>Statistics</h2></div>
 
     <div>
-        <table class="statistics-table">
+        <table class="statistics-table" id="table_id">
             <thead class="statistics-table-head">
             <tr>
-                <th>Name
-                    <button type="button" class="sort-arrow">v</button>
+                <th onclick="sortStats('byname')">Name
+                    <button type="button" class="sort-arrow"><img class="button-down" src="images/dwn_arrw.png"></button>
                 </th>
-                <th>Speciality
-                    <button type="button" class="sort-arrow">v</button>
+                <th onclick="sortStats('byspec')">Speciality
+                    <button type="button" class="sort-arrow"><img class="button-down" src="images/dwn_arrw.png"></button>
                 </th>
-                <th>Age
-                    <button type="button" class="sort-arrow">v</button>
+                <th onclick="sortStats('byage')">Age
+                    <button type="button" class="sort-arrow"><img class="button-down" src="images/dwn_arrw.png"></button>
                 </th>
                 <th>Gender
-                    <button type="button" class="sort-arrow">v</button>
+                    <button type="button" class="sort-arrow"><img class="button-down" src="images/dwn_arrw.png"></button>
                 </th>
-                <th>Nationality
-                    <button type="button" class="sort-arrow">v</button>
+                <th onclick="sortStats('bycountry')">Nationality
+                    <button type="button" class="sort-arrow"><img class="button-down" src="images/dwn_arrw.png"></button>
                 </th>
             </tr>
             </thead>
-            <tbody class="statistics-table-body">
-            <!--EXAMPLE TABLE CONTENTS-->
-            <!--TODO: figure out how to actually fill the table. DB??-->
-            <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
-                <td>Female</td>
-                <td>Vietnam</td>
-            </tr>
-            <tr>
-                <td>Julia Bradley</td>
-                <td>Math</td>
-                <td>26</td>
-                <td>Female</td>
-                <td>USA</td>
-            </tr>
-            <tr>
-                <td>Jonathan Jacobs</td>
-                <td>Math</td>
-                <td>32</td>
-                <td>Male</td>
-                <td>Enland</td>
-            </tr>
-            <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
-                <td>Female</td>
-                <td>Vietnam</td>
-            </tr>
-            <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
-                <td>Female</td>
-                <td>Vietnam</td>
-            </tr>
-            <tr>
-                <td>Daisy Alexander</td>
-                <td>Chemistry</td>
-                <td>28</td>
-                <td>Female</td>
-                <td>Vietnam</td>
-            </tr>
-            </tbody>
+            <tbody class="statistics-table-body" id="table_body_id"></tbody>
         </table>
+        <div class="table-navigation" id="stats_nav"></div>
 
-        <div class="table-navigation">
-            <button class="button-navigation" type="button">1</button>
-            <button class="button-navigation" type="button">2</button>
-            <button class="button-navigation" type="button">3</button>
-            <span class="separator-navigation">...</span>
-            <button class="button-navigation" type="button">Last</button>
-        </div>
     </div>
 </div>
 
@@ -272,7 +168,7 @@
         <!--TEACH2-->
         <div class="teacher-item" id="fav_teacher_2">
             <div class="teacher-image-container">
-                <img class="teacher-image" src="">
+                <img class="teacher-image" src="images/dog.jpg">
                 <span class="teacher-initials">A.M</span>
             </div>
             <div class="teacher-item-info">
@@ -336,7 +232,7 @@
     </div>
 </div>
 
-
+<!--FOOTER-->
 <footer>
     <div>
         <nav class="footer-navigation">
@@ -347,12 +243,138 @@
                 <li><a class="link-navigation" href="#about">About</a></li>
             </ul>
         </nav>
-        <button class="add_teacher" type="button"><b>Add teacher</b></button>
+        <button class="add_teacher" type="button" onclick="openAddTeacherPopup()"><b>Add teacher</b></button>
     </div>
 </footer>
 
 
-<script type="text/javascript" src="../build/app.js"></script>
+<!--INFO POP UP-->
+<div class="popup-wrapper" id="popup_id">
+    <div class="popup-bg"></div>
+    <div id="info_teacher_window" class="popup-window-wide">
+        <div class="popup-header"><h2>Teacher info</h2>
+            <button type="button" onclick="closeTeacherInfo()">X</button>
+        </div>
+        <div class="popup-content">
+            <div class="teacher-info-card">
+
+                <div class="popup-item-third" id="teacher_image">
+<!--                    <img class="teacher-image-full" src="./images/dog.jpg" alt="I.T" id="teacher_image_full">-->
+                </div>
+
+                <div class="popup-item-third" id="teacher_info">
+<!--                    <div id="teacher_name"></div>-->
+<!--                    <h3 class="teacher_speciality_full">Chemistry</h3>-->
+<!--                    <h4 class="teacher_region_full">Kyiv, Ukraine</h4>-->
+<!--                    <h4 class="teacher_age_gender_full">35, Male</h4>-->
+<!--                    <div class="teacher_email_full">-->
+<!--                        <address id="email_address"><a href="mailto:ihor_tkachuk@domain.com">ihor_tkachuk@domain.com</a></address>-->
+<!--                    </div>-->
+<!--                    <h4 class="teacher_phone_full">-->
+<!--                        +380964993252-->
+<!--                    </h4>-->
+                </div>
+                <div class="popup-item-third" id="teacher_fav" onclick="toggleFavorite()">
+                    <img alt="Fav?" src="./images/star.png" id="teacher_favorite_star"/>
+                </div>
+            </div>
+
+            <div class="popup-item-full" id="teacher_desc_box">
+<!--                <p id="teacher_description_full">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam aliquet-->
+<!--                    ultrices diam, ut tempus erat pellentesque eget. Fusce lobortis leo eget ante dictum varius at nec-->
+<!--                    tortor. Donec laoreet, ipsum in vestibulum fermentum, tortor quam dictum massa, in faucibus nibh-->
+<!--                    lacus quis nisl. Praesent vitae ultricies lacus. Maecenas a lorem nec diam convallis sollicitudin-->
+<!--                    posuere non massa. Proin at odio ac augue maximus semper. Maecenas elit metus, posuere vel egestas-->
+<!--                    eget, efficitur quis lorem. Curabitur commodo auctor justo a lobortis. Ut et nisl ornare, varius-->
+<!--                    magna at, tincidunt nisi. Fusce ultricies orci quis neque scelerisque venenatis.</p>-->
+            </div>
+            <div class="popup-item-full">
+                <a href="" class="teacher_map_full">Toggle map</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--ADD TEACHER POPUP-->
+
+    <div class="popup-wrapper" id="add_teacher_popup">
+        <div class="popup-addteach-bg"></div>
+        <div id="add_teacher_window" class="popup-window-high">
+            <div class="popup-header"><h2>Add a teacher</h2>
+                <button type="button" onclick="closeAddTeacherPopup()">X</button>
+            </div>
+            <div class="popup-content">
+                <form>
+                    <div class="popup-item-full">
+                        <label for="add_teacher_name">Name</label>
+                        <input name="teacher-name" type="text" id="add_teacher_name"/>
+                    </div>
+
+                    <div class="popup-item-full">
+                        <label for="add_teacher_spec">Speciality</label>
+                        <select name="teacher-speciality" id="add_teacher_spec">
+                            <option value="mathematics">Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="input-grid">
+                        <div class="popup-item-half">
+                            <label for="add_teacher_country">Country</label>
+                            <select name="teacher-country" id="add_teacher_country">
+                                <option value="ukraine">Ukraine</option>
+                            </select>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_city">City</label>
+                            <input name="teacher-city" type="text" id="add_teacher_city"/>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_email">Email</label>
+                            <input name="teacher-email" type="email" id="add_teacher_email"/>
+                        </div>
+
+                        <div class="popup-item-half">
+                            <label for="add_teacher_phone">Phone</label>
+                            <input name="teacher-phone" type="tel" id="add_teacher_phone"/>
+                        </div>
+                        <div class="popup-item-half">
+                            <label for="add_teacher_birthday">Date of birth</label>
+                            <input name="teacher-birthday" type="date" id="add_teacher_birthday"/>
+                        </div>
+                    </div>
+                    <div class="popup-item" id="sex-checkbox">
+                        <label id="sex_label">Sex</label>
+                        <label for="add_teacher_male">Male</label>
+                        <input name="teacher-male" type="radio" id="add_teacher_male"/>
+                        <label for="add_teacher_female">Female</label>
+                        <input name="teacher-female" type="radio" id="add_teacher_female"/>
+                    </div>
+                    <div class="popup-item" id="bg-slider">
+                        <label for="add_teacher_color">Background color</label>
+                        <input name="teacher-color" type="color" id="add_teacher_color"/>
+                    </div>
+                    <div class="popup-item-full">
+                        <label for="add_teacher_notes">Notes (optional)</label>
+                        <textarea name="teacher-notes" id="add_teacher_notes"></textarea>
+                    </div>
+                    <div>
+                        <button class="large-button" type="submit" onclick="addNewTeacher()">Add</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--<script src="../build/app.js"></script>-->
+<script type="text/javascript" src="js/app.js"></script>
+
 
 
 </body>
