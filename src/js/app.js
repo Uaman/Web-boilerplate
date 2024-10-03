@@ -265,21 +265,35 @@ function isValidEmail(email) {
 }
 
 //TASK 3: Filter objects by 4 parameters (&&)
-function parameter_filter(user_array, country, min_age, max_age, gender, favorite) {
+function parameter_filter(user_array, country, min_age, max_age, gender, favorite, withPhoto) {
 filtered_users = [];
-if(favorite) {
-filtered_users = user_array.filter(user => user.country === country
-&& (user.age >= min_age && user.age <= max_age)
-&& user.gender === gender
-&& user.favorite);
+if(favorite && withPhoto) {
+console.log("fav is true; photo is true");
+   filtered_users = user_array.filter(user => user.country === country
+      && (user.age >= min_age && user.age <= max_age)
+      && user.gender === gender
+      && user.favorite
+      && user.picture_thumbnail !== "");
+} else if (favorite && !withPhoto) {
+console.log("fav is true; photo is false");
+      filtered_users = user_array.filter(user => user.country === country
+      && (user.age >= min_age && user.age <= max_age)
+      && user.gender === gender
+      && user.favorite);
+} else if (!favorite && withPhoto) {
+console.log("fav is false; photo is true" );
+      filtered_users = user_array.filter(user => user.country === country
+      && (user.age >= min_age && user.age <= max_age)
+      && user.gender === gender
+      && user.picture_thumbnail !== "");
 } else {
-filtered_users = user_array.filter(user => user.country === country
-&& (user.age >= min_age && user.age <= max_age)
-&& user.gender === gender);
+console.log("fav is false; withPhoto is false");
+      filtered_users = user_array.filter(user => user.country === country
+      && (user.age >= min_age && user.age <= max_age)
+      && user.gender === gender);
+
 }
-
-console.log(filtered_users);
-
+//console.log(filtered_users);
 return filtered_users;
 }
 
@@ -660,19 +674,130 @@ favoriteControl = document.getElementById("favorite_control");
 tickFav = favoriteControl.checked;
 console.log(tickFav);
 
-console.log(parameter_filter(processed_user_array, optionRegion, ageMin, ageMax, optionSex, tickFav));
+photoControl = document.getElementById("photo_control");
+tickPhoto = photoControl.checked;
+console.log("tickphoto:" + tickPhoto);
+
+console.log(parameter_filter(processed_user_array, optionRegion, ageMin, ageMax, optionSex, tickFav, tickPhoto));
 cleanUpTeachers();
-loadUpTeachers(parameter_filter(processed_user_array, optionRegion, ageMin, ageMax, optionSex, tickFav));
+loadUpTeachers(parameter_filter(processed_user_array, optionRegion, ageMin, ageMax, optionSex, tickFav, tickPhoto));
+}
+
+function sexChange(sex) {
+    if(sex.id === 'add_teacher_male') {
+    document.getElementById('add_teacher_female').checked = false;
+    } else if (sex.id === 'add_teacher_female') {
+    document.getElementById('add_teacher_male').checked = false;
+    }
 }
 
 
-
-//
 ////add teacher popup button event
 function addNewTeacher() {
 
+newTeacherInputName = document.getElementById("add_teacher_name");
+newTeacherFullName = newTeacherInputName.value;
+console.log("name: " + newTeacherFullName);
+
+newTeacherInputSpecialty = document.getElementById("add_teacher_spec");
+newTeacherSpecialty = newTeacherInputSpecialty.options[newTeacherInputSpecialty.selectedIndex].innerText;
+console.log(newTeacherSpecialty);
+
+newTeacherInputCountry = document.getElementById("add_teacher_country");
+newTeacherCountry = newTeacherInputCountry.options[newTeacherInputCountry.selectedIndex].innerText;
+console.log(newTeacherCountry);
+
+newTeacherInputCity = document.getElementById("add_teacher_city");
+newTeacherCity = newTeacherInputCity.value;
+console.log("city: " + newTeacherCity);
+
+newTeacherInputEmail = document.getElementById("add_teacher_email");
+newTeacherEmail = newTeacherInputEmail.value;
+console.log("email: " + newTeacherEmail);
+
+newTeacherInputPhone = document.getElementById("add_teacher_phone");
+newTeacherPhone  = newTeacherInputPhone.value;
+console.log("phone: " + newTeacherPhone);
+
+newTeacherInputDoB = document.getElementById("add_teacher_birthday");
+newTeacherDoB  = new Date(newTeacherInputDoB.value);
+console.log("DoB: " + newTeacherDoB);
+
+newTeacherInputNote = document.getElementById("add_teacher_notes");
+newTeacherNote = newTeacherInputNote.value;
+console.log("note: " + newTeacherNote);
+
+newTeacherInputSex = document.getElementById("add_teacher_female");
+if(newTeacherInputSex.checked) {
+newTeacherSex = "female";
+newTeacherTitle = "Ms";
+console.log("sex: " + newTeacherSex);
+} else {
+newTeacherSex = "male";
+newTeacherTitle = "Mr";
+console.log("sex: " + newTeacherSex);
 }
 
+newTeacherInputColor = document.getElementById("add_teacher_color");
+newTeacherColor = newTeacherInputColor.value;
+console.log("color: " + newTeacherColor);
+
+user = {
+gender: newTeacherSex,
+title: newTeacherTitle,
+full_name: newTeacherFullName,
+b_day: newTeacherDoB,
+bg_color: newTeacherColor,
+city: newTeacherCity,
+country: newTeacherCountry,
+course: newTeacherSpecialty,
+email: newTeacherEmail,
+phone: newTeacherPhone,
+note: newTeacherNote,
+
+age: calculateAge(newTeacherDoB),
+favorite: false,
+
+picture_large: "",
+picture_thumbnail: "",
+}
+
+new_arr = [];
+console.log(user);
+new_arr.push(user);
+console.log(format_data([], new_arr));
+cleanUpTeachers();
+clearTable();
+
+const dataElement = document.querySelector('.searched-teacher-list');
+processed_user_array.map(user => {
+dataElement.insertAdjacentHTML('afterbegin', `
+
+        <div class="teacher-item" id=${user.id} onclick="openTeacherInfo(this.id)">
+            <div class="image-box">
+                <img class="teacher-image" src=${user.picture_thumbnail}>
+                <span class="teacher-initials">I.T</span>
+            </div>
+            <div class="teacher-item-info">
+                <p class="teacher-name">${user.full_name}</p>
+                <p class="teacher-spec">${user.course}</p>
+                <p class="teacher-region">${user.country}</p>
+            </div>
+        </div>
+`)
+})
+
+populateTable(processed_user_array, currentPage);
+
+}
+
+
+
+function calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
 
 
 //LAB 4

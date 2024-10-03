@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/normalize.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/teacher_info_pop-up_style.css">
-<!--    <link rel="stylesheet" href="./css/add_teacher_pop-up_style.css">-->
+<link rel="stylesheet" href="./css/add_teacher_pop-up_style.css">
 
 
 </head>
@@ -82,6 +82,7 @@
                 <option value="Spain">Spain</option>
                 <option value="Switzerland">Switzerland</option>
                <option value="Turkey">Turkey</option>
+               <option value="Ukraine">Ukraine</option>
                   <option value="United States">United States</option>
             </select>
         </span>
@@ -96,7 +97,7 @@
 
         <!--PHOTO TICK-->
         <span class="filter-control">
-               <input type="checkbox" name="photo" id="photo_control"/>
+               <input type="checkbox" name="photo" id="photo_control" onchange="filterByOptions()"/>
                <label for="photo_control" id="photo_ctrl_label">Only with photo</label>
             </span>
         <!--FAVORITE TICK-->
@@ -315,13 +316,39 @@
                         <label for="add_teacher_spec">Speciality</label>
                         <select name="teacher-speciality" id="add_teacher_spec">
                             <option value="mathematics">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="english">English</option>
+                            <option value="computer science">Computer Science</option>
+                            <option value="dancing">Dancing</option>
+                            <option value="chess">Chess</option>
+                            <option value="biology">Biology</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="law">Law</option>
+                            <option value="art">Art</option>
+                            <option value="medicine">Medicine</option>
+                            <option value="statistics">Statistics</option>
                         </select>
                     </div>
                     <div class="input-grid">
                         <div class="popup-item-half">
                             <label for="add_teacher_country">Country</label>
                             <select name="teacher-country" id="add_teacher_country">
-                                <option value="ukraine">Ukraine</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Iran">Iran</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zeland">New Zeland</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United States">United States</option>
                             </select>
                         </div>
 
@@ -346,10 +373,12 @@
                     </div>
                     <div class="popup-item" id="sex-checkbox">
                         <label id="sex_label">Sex</label>
-                        <label for="add_teacher_male">Male</label>
-                        <input name="teacher-male" type="radio" id="add_teacher_male"/>
+
                         <label for="add_teacher_female">Female</label>
-                        <input name="teacher-female" type="radio" id="add_teacher_female"/>
+                        <input name="teacher-female" type="radio" checked id="add_teacher_female" onclick="sexChange(this)"/>
+
+                        <label for="add_teacher_male">Male</label>
+                        <input name="teacher-male" type="radio" id="add_teacher_male" onclick="sexChange(this)"/>
                     </div>
                     <div class="popup-item" id="bg-slider">
                         <label for="add_teacher_color">Background color</label>
@@ -360,7 +389,7 @@
                         <textarea name="teacher-notes" id="add_teacher_notes"></textarea>
                     </div>
                     <div>
-                        <button class="large-button" type="submit" onclick="addNewTeacher()">Add</button>
+                        <button class="large-button" type="button" onclick="addNewTeacher()">Add</button>
                     </div>
                 </form>
         </div>
