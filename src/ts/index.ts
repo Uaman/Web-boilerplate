@@ -48,6 +48,8 @@ const europeanCountries = [
   'Finland', 'Sweden', 'Norway', 'Denmark', 'Iceland', 'Ireland', 'United Kingdom',
   'Netherlands', 'Belgium', 'Luxembourg', 'France', 'Spain', 'Portugal', 'Germany',
   'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
+  'Montenegro', 'Serbia', 'Albania', 'North Macedonia', 'Greece', 'Bulgaria', 'Romania',
+  'Moldova', 'Ukraine', 'Belarus', 'Russia', 'Turkey', 'Cyprus', 'Malta'
 ];
 
 
@@ -190,36 +192,55 @@ return users.sort((a, b) => {
   return direction === 'asc' ? comparison : -comparison;
 });
 }
-
 function filterUsers(users: FormattedUser[], filters: {
-  course?: string,
   age?: number | string,
   gender?: string,
   favorite?: boolean,
   region?: string,
   hasPhoto?: boolean
 }): FormattedUser[] {
-  return users.filter(user => {
-    const ageString = filters.age?.toString();
-    const [ageStart, ageEnd] = ageString && ageString.includes("-")
-      ? ageString.split("-").map(Number)
-      : [ageString ? Number(ageString) : undefined, ageString ? Number(ageString) : undefined];
 
-    if (filters.course && user.course !== filters.course) return false;
-    if (filters.age !== undefined && user.age !== undefined && !(user.age >= ageStart! && user.age <= ageEnd!)) return false;
-    if (filters.gender && user.gender.toLowerCase() !== filters.gender.toLowerCase()) return false;
-    if (filters.favorite !== undefined && user.favorite !== filters.favorite) return false;
-    if (filters.region && user.region !== filters.region) return false;
+  return users.filter(user => {
+    if (filters.age !== undefined) {
+      const ageString = filters.age.toString().trim();
+      if (ageString.includes('-')) {
+        const [min, max] = ageString.split('-').map(str => parseInt(str));
+        if ((min && user.age < min) || (max && user.age > max)) {
+          return false;
+        }
+      } else {
+        const age = parseInt(ageString);
+        if (!isNaN(age) && user.age !== age) {
+          return false;
+        }
+      }
+    }
+
+    if (filters.gender && filters.gender.trim().toLowerCase() !== user.gender.trim().toLowerCase()) {
+      return false;
+    }
+
+    if (filters.region && filters.region.trim().toLowerCase() !== user.region.trim().toLowerCase()) {
+      return false;
+    }
+
+    if (filters.favorite !== undefined && filters.favorite !== user.favorite) {
+      return false;
+    }
 
     if (filters.hasPhoto !== undefined) {
-      const userHasPhoto = user.picture_large !== undefined;
-      if (filters.hasPhoto && !userHasPhoto) return false;
-      if (!filters.hasPhoto && userHasPhoto) return false;
+      const userHasPhoto = user.picture_large !== null && user.picture_large.trim() !== '';
+      if (filters.hasPhoto !== userHasPhoto) {
+        return false;
+      }
     }
 
     return true;
   });
 }
+
+
+
 
 
 
@@ -271,6 +292,7 @@ async function fetchUsers(count: number): Promise<any[]> {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+
   async function loadInitialTeachers() {
     try {
 
@@ -280,30 +302,134 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const formattedTeachers: FormattedUser[] = formatUser(teachers);
         const sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
-    
+        document.querySelectorAll('.age-option').forEach(option => {
+          option.addEventListener('click', function() {
+              const ageButton = document.querySelector('#age-params-btn') as HTMLButtonElement;
+              ageButton.textContent = this.textContent?.trim() + ' ▼';
+              filterTeachers(sortedUsers); // Filter the teachers immediately after selecting an option
+          });
+        });
+        
+        document.querySelectorAll('.age-option, .region-option, .gender-option').forEach(option => {
+          option.addEventListener('click', () => {
+              filterTeachers(sortedUsers); 
+          });
+        });
+        
+        document.querySelectorAll('.input-checkbox').forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+              filterTeachers(sortedUsers);
+          });
+        });
      
        // populateDropDowns(sortedUsers);
         dropdownOptions(sortedUsers);
-    
         createTeachersList(sortedUsers);
         addFavouriteTeacher(sortedUsers);
+       filterTeachers(sortedUsers);
         sortUsersByAttribute(sortedUsers);
         addTeacherCartInfo(sortedUsers);
         searchForTeacher(sortedUsers);
-       // filterTeachersByDropdown(sortedUsers);
+       
+      
         addTeacherForm(sortedUsers);
+
+
+
 
 
     } catch (error) {
         console.error('Error fetching users:', error);
     }
 }
+function updateDisplayedUsers(users: FormattedUser[]) {
+  
+  const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
+  teachersContainers.forEach(container => {
+      const existingList = container.querySelector('.teachers-list');
+      if (existingList) {
+          existingList.remove(); 
+      }
+  });
+
+  createTeachersList(users);
+  addTeacherCartInfo(users);
+  populateStatistics(users);
+}
+
+
+
+function filterTeachers(teachers: FormattedUser[]): void {
+  
+  const selectedAgeRange = document.querySelector('#age-params-btn')?.textContent.trim() || '';
+  const selectedCountry = document.querySelector('#region-params-btn')?.textContent.trim() || '';
+  const selectedGender = (document.querySelector('#sex-params-btn')?.textContent.trim() || '').toLowerCase();
+  const onlyWithPhoto = (document.querySelector('#photoCheck') as HTMLInputElement).checked;
+  const onlyFavorites = (document.querySelector('#favCheck') as HTMLInputElement).checked;
+
+  // Filter the teachers based on selected criteria
+  const filteredTeachers = teachers.filter(teacher => {
+  
+      const age = teacher.age;
+      let ageMatch = false;
+      if (selectedAgeRange === '18-25') {
+          ageMatch = age >= 18 && age <= 25;
+      } else if (selectedAgeRange === '26-31') {
+          ageMatch = age >= 26 && age <= 31;
+      } else if (selectedAgeRange === '32-40') {
+          ageMatch = age >= 32 && age <= 40;
+      } else if (selectedAgeRange === '41 - 55') {
+        ageMatch = age >= 41 && age <= 55;
+      } else if (selectedAgeRange === '56+') {
+          ageMatch = age >= 56;
+      }
+       else {
+          ageMatch = true; // No age filter selected
+      }
+
+      // Check country
+      const countries = ['Ukraine', 'United States', 'Canada', 'UK', 'Germany', 'Sweden'];
+      const countryMatch = /*selectedCountry === 'Ukraine' ? teacher.country === 'Ukraine' :
+                           selectedCountry === 'United States' ? teacher.country === 'United States'  :
+                            selectedCountry === 'Canada' ? teacher.country === 'Canada' :
+                            selectedCountry === 'United Kingdom' ? teacher.country === 'UK' :
+                            selectedCountry === 'Germany' ? teacher.country === 'Germany' :
+                            selectedCountry === 'Sweden' ? teacher.country === 'Sweden' :*/
+                            selectedCountry === 'Europe' ? europeanCountries.includes(teacher.country) :
+                            selectedCountry === 'USA' ? teacher.country === 'United States' :
+                            selectedCountry === 'Other' ? !europeanCountries.includes(teacher.country) && teacher.country !== 'United States' : true; 
+     // const countryMatch = uniqueCountries.has(selectedCountry) ? teacher.country === selectedCountry : true;
+      //const countryMatch = countries.includes(selectedCountry) ? teacher.country === selectedCountry : false;
+
+      // Check gender 
+      const genderMatch = selectedGender === 'male' ? teacher.gender.toLowerCase() === 'male' :
+                          selectedGender === 'female' ? teacher.gender.toLowerCase() === 'female' :
+                          selectedGender === 'other' ? teacher.gender.toLowerCase() === 'other' :
+                          true; // No gender filter selected
+
+      // Check photo availability
+      const photoMatch = onlyWithPhoto ? teacher.picture_large !== undefined : true; // Check if the picture_large property exists
+
+      // Check favorites
+      const favoritesMatch = onlyFavorites ? teacher.favorite : true; // Check the favorite property
+
+      return ageMatch && countryMatch && genderMatch && photoMatch && favoritesMatch;
+  });
+
+  // Update the displayed users
+  updateDisplayedUsers(filteredTeachers);
+}
+
+
+
+
+
+
 
 function createTeachersList(teachers: Array<FormattedUser>): void {
   const teachersContainers = document.querySelectorAll(".teachers-list-container");
   if (teachersContainers.length === 0) return;
 
-  // Clear previous content
   teachersContainers.forEach(container => {
       container.innerHTML = '';
   });
@@ -567,107 +693,49 @@ function dropdownOptions(teachers: FormattedUser[]): void {
   const dropdownButtons: NodeListOf<Element> = document.querySelectorAll('.dropbtn');
 
   dropdownButtons.forEach(button => {
-      button.innerHTML = 'Select an option';
+    button.innerHTML = 'Select an option';
 
-      button.addEventListener('click', function (this: HTMLElement, event: Event) {
-          const dropdownContent: Element | null = this.nextElementSibling;
-          dropdownContent?.classList.toggle('show');
+    button.addEventListener('click', function (this: HTMLElement, event: Event) {
+      const dropdownContent: Element | null = this.nextElementSibling;
+      dropdownContent?.classList.toggle('show');
 
-          dropdownButtons.forEach(btn => {
-              const otherDropdown: Element | null = btn.nextElementSibling;
-              if (otherDropdown !== dropdownContent) {
-                  otherDropdown?.classList.remove('show');
-              }
-          });
-
-          event.stopPropagation();
+      dropdownButtons.forEach(btn => {
+        const otherDropdown: Element | null = btn.nextElementSibling;
+        if (otherDropdown !== dropdownContent) {
+          otherDropdown?.classList.remove('show');
+        }
       });
+
+      event.stopPropagation();
+    });
   });
 
   const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.dropdown-content li');
   dropdownOptions.forEach(option => {
-      option.addEventListener('click', function (this: HTMLElement) {
-          const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
+    option.addEventListener('click', function (this: HTMLElement) {
+      const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
 
-          button.innerHTML = this.textContent || ''; 
-          this.parentElement!.parentElement!.classList.remove('show'); // Close the dropdown
-          
-          filterTeachersByDropdown(teachers);
-      });
+      const filterValue = this.textContent || '';
+
+      button.innerHTML = filterValue;
+      this.parentElement!.parentElement!.classList.remove('show');
+      filterTeachers(teachers);
+    
+    });
   });
 
-  document.querySelectorAll('nav ul li').forEach(li => {
-      li.addEventListener('click', function (this: HTMLElement) {
-          document.querySelectorAll('nav ul li.active').forEach(li => {
-              li.classList.remove('active');
-          });
-          this.classList.add('active');
-      });
+  document.addEventListener('click', () => {
+    dropdownButtons.forEach(button => {
+      const dropdownContent: Element | null = button.nextElementSibling;
+      dropdownContent?.classList.remove('show');
+    });
   });
 }
+
 
 function populateDropDowns(teachers: FormattedUser[]): void {
-  countriesToPopulate(teachers);
   specialityToPopulate(teachers);
 }
-
-async function countriesToPopulate(teachers: FormattedUser[]): Promise<void> {
-  const countriesDropdownULs: NodeListOf<HTMLUListElement> = document.querySelectorAll('.countries-dropdown-to-populate');
-  const uniqueCountries = new Set<string>();
-
-  teachers.forEach(teacher => {
-    if (teacher.country) {
-      uniqueCountries.add(teacher.country);
-    }
-  });
-
-
-
-  try {
-    const response = await fetch('https://restcountries.com/v3.1/all');
-    const countriesData = await response.json();
-
-   
-    const countryMap = new Set<string>();
-    countriesData.forEach((country: any) => {
-      if ( country.name.common) {
-        countryMap.add(country.name.common); 
-      }
-    });
-
-    const sortedCountries = Array.from(countryMap).sort();
-    countriesDropdownULs.forEach(dropdown => {
-      dropdown.innerHTML = '';
-
-      sortedCountries.forEach(country => {
-        const li = document.createElement('li');
-        li.classList.add('region-option');
-        li.textContent = country;
-
-        dropdown.appendChild(li);
-      });
-    });
-
-    addDropdownOptionListeners();
-  } catch (error) {
-    console.error('Error fetching country data:', error);
-  }
-}
-
-function addDropdownOptionListeners(): void {
-  const dropdownOptions: NodeListOf<Element> = document.querySelectorAll('.countries-dropdown-to-populate li');
-  
-  dropdownOptions.forEach(option => {
-      option.addEventListener('click', function (this: HTMLElement) {
-          const button: HTMLElement = this.closest('.dropdown')!.querySelector('.dropbtn') as HTMLElement;
-          
-      
-          button.innerHTML = this.textContent || '';
-          this.parentElement!.parentElement!.classList.remove('show'); 
-      });
-  });
-}
-
 
 function specialityToPopulate(teachers: FormattedUser[]): void {  
   const specialityDropdownULs: NodeListOf<HTMLUListElement> = document.querySelectorAll('.speciality-dropdown-to-populate');
@@ -693,49 +761,7 @@ function specialityToPopulate(teachers: FormattedUser[]): void {
     });
   });
 }
-function filterTeachersByDropdown(teachers: FormattedUser[]): void {
 
-  const ageFilter = document.querySelector('#age-params-btn') as HTMLElement | null;
-  const regionParams = document.querySelector('#region-params-btn') as HTMLElement | null;
-  const sexParams = document.querySelector('#sex-params-btn') as HTMLElement | null;
-  const favCheck = document.querySelector('#favCheck') as HTMLInputElement | null;
-  const photoCheck = document.querySelector('#photoCheck') as HTMLInputElement | null;
-
-  if (!ageFilter || !regionParams || !sexParams) return;
-
-  const selectedRegion = regionParams.textContent?.trim();
-  const selectedGender = sexParams.textContent?.trim().toLowerCase();
-  const selectedAge = ageFilter.textContent?.trim().toLowerCase();
-
-  // Log for debugging
-  console.log('Region:', selectedRegion); 
-  console.log('Gender:', selectedGender); 
-  console.log('Age Filter:', selectedAge);
-
-  const filteredUsers: FormattedUser[] = filterUsers(teachers, {
-    age: selectedAge,
-    gender: selectedGender,
-    region: selectedRegion,
-    favorite: favCheck?.checked || false,
-    hasPhoto: photoCheck?.checked || false
-  });
-
- 
-  console.log('Filtered Users:', filteredUsers); 
-
-  // Remove existing list
-  const teachersContainers: NodeListOf<Element> = document.querySelectorAll(".teachers-list-container");
-  teachersContainers.forEach(container => {
-      const existingList = container.querySelector('.teachers-list');
-      if (existingList) {
-          existingList.remove(); 
-      }
-  });
-
- 
-  createTeachersList(filteredUsers);
-  addTeacherCartInfo(filteredUsers);
-}
 
 
 

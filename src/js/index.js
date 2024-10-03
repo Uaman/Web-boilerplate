@@ -73,6 +73,8 @@ var europeanCountries = [
     'Finland', 'Sweden', 'Norway', 'Denmark', 'Iceland', 'Ireland', 'United Kingdom',
     'Netherlands', 'Belgium', 'Luxembourg', 'France', 'Spain', 'Portugal', 'Germany',
     'Switzerland', 'Austria', 'Italy', 'Slovenia', 'Croatia', 'Bosnia and Herzegovina',
+    'Montenegro', 'Serbia', 'Albania', 'North Macedonia', 'Greece', 'Bulgaria', 'Romania',
+    'Moldova', 'Ukraine', 'Belarus', 'Russia', 'Turkey', 'Cyprus', 'Malta'
 ];
 function formatUser(users) {
     return users.map(function (user) { return ({
@@ -188,27 +190,35 @@ function sortUsers(users, sortBy, direction) {
 }
 function filterUsers(users, filters) {
     return users.filter(function (user) {
-        var _a;
-        var ageString = (_a = filters.age) === null || _a === void 0 ? void 0 : _a.toString();
-        var _b = ageString && ageString.includes("-")
-            ? ageString.split("-").map(Number)
-            : [ageString ? Number(ageString) : undefined, ageString ? Number(ageString) : undefined], ageStart = _b[0], ageEnd = _b[1];
-        if (filters.course && user.course !== filters.course)
+        if (filters.age !== undefined) {
+            var ageString = filters.age.toString().trim();
+            if (ageString.includes('-')) {
+                var _a = ageString.split('-').map(function (str) { return parseInt(str); }), min = _a[0], max = _a[1];
+                if ((min && user.age < min) || (max && user.age > max)) {
+                    return false;
+                }
+            }
+            else {
+                var age = parseInt(ageString);
+                if (!isNaN(age) && user.age !== age) {
+                    return false;
+                }
+            }
+        }
+        if (filters.gender && filters.gender.trim().toLowerCase() !== user.gender.trim().toLowerCase()) {
             return false;
-        if (filters.age !== undefined && user.age !== undefined && !(user.age >= ageStart && user.age <= ageEnd))
+        }
+        if (filters.region && filters.region.trim().toLowerCase() !== user.region.trim().toLowerCase()) {
             return false;
-        if (filters.gender && user.gender.toLowerCase() !== filters.gender.toLowerCase())
+        }
+        if (filters.favorite !== undefined && filters.favorite !== user.favorite) {
             return false;
-        if (filters.favorite !== undefined && user.favorite !== filters.favorite)
-            return false;
-        if (filters.region && user.region !== filters.region)
-            return false;
+        }
         if (filters.hasPhoto !== undefined) {
-            var userHasPhoto = user.picture_large !== undefined;
-            if (filters.hasPhoto && !userHasPhoto)
+            var userHasPhoto = user.picture_large !== null && user.picture_large.trim() !== '';
+            if (filters.hasPhoto !== userHasPhoto) {
                 return false;
-            if (!filters.hasPhoto && userHasPhoto)
-                return false;
+            }
         }
         return true;
     });
@@ -269,7 +279,7 @@ function fetchUsers(count) {
 document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
     function loadInitialTeachers() {
         return __awaiter(this, void 0, void 0, function () {
-            var formattedTeachers, sortedUsers, error_2;
+            var formattedTeachers, sortedUsers_1, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -279,16 +289,34 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         teachers = _a.sent();
                         totalFetched = teachers.length;
                         formattedTeachers = formatUser(teachers);
-                        sortedUsers = sortUsers(formattedTeachers, 'full_name', 'asc');
+                        sortedUsers_1 = sortUsers(formattedTeachers, 'full_name', 'asc');
+                        document.querySelectorAll('.age-option').forEach(function (option) {
+                            option.addEventListener('click', function () {
+                                var _a;
+                                var ageButton = document.querySelector('#age-params-btn');
+                                ageButton.textContent = ((_a = this.textContent) === null || _a === void 0 ? void 0 : _a.trim()) + ' ▼';
+                                filterTeachers(sortedUsers_1); // Filter the teachers immediately after selecting an option
+                            });
+                        });
+                        document.querySelectorAll('.age-option, .region-option, .gender-option').forEach(function (option) {
+                            option.addEventListener('click', function () {
+                                filterTeachers(sortedUsers_1);
+                            });
+                        });
+                        document.querySelectorAll('.input-checkbox').forEach(function (checkbox) {
+                            checkbox.addEventListener('change', function () {
+                                filterTeachers(sortedUsers_1);
+                            });
+                        });
                         // populateDropDowns(sortedUsers);
-                        dropdownOptions(sortedUsers);
-                        createTeachersList(sortedUsers);
-                        addFavouriteTeacher(sortedUsers);
-                        sortUsersByAttribute(sortedUsers);
-                        addTeacherCartInfo(sortedUsers);
-                        searchForTeacher(sortedUsers);
-                        // filterTeachersByDropdown(sortedUsers);
-                        addTeacherForm(sortedUsers);
+                        dropdownOptions(sortedUsers_1);
+                        createTeachersList(sortedUsers_1);
+                        addFavouriteTeacher(sortedUsers_1);
+                        filterTeachers(sortedUsers_1);
+                        sortUsersByAttribute(sortedUsers_1);
+                        addTeacherCartInfo(sortedUsers_1);
+                        searchForTeacher(sortedUsers_1);
+                        addTeacherForm(sortedUsers_1);
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -299,12 +327,78 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             });
         });
     }
+    function updateDisplayedUsers(users) {
+        var teachersContainers = document.querySelectorAll(".teachers-list-container");
+        teachersContainers.forEach(function (container) {
+            var existingList = container.querySelector('.teachers-list');
+            if (existingList) {
+                existingList.remove();
+            }
+        });
+        createTeachersList(users);
+        addTeacherCartInfo(users);
+        populateStatistics(users);
+    }
+    function filterTeachers(teachers) {
+        var _a, _b, _c;
+        var selectedAgeRange = ((_a = document.querySelector('#age-params-btn')) === null || _a === void 0 ? void 0 : _a.textContent.trim()) || '';
+        var selectedCountry = ((_b = document.querySelector('#region-params-btn')) === null || _b === void 0 ? void 0 : _b.textContent.trim()) || '';
+        var selectedGender = (((_c = document.querySelector('#sex-params-btn')) === null || _c === void 0 ? void 0 : _c.textContent.trim()) || '').toLowerCase();
+        var onlyWithPhoto = document.querySelector('#photoCheck').checked;
+        var onlyFavorites = document.querySelector('#favCheck').checked;
+        // Filter the teachers based on selected criteria
+        var filteredTeachers = teachers.filter(function (teacher) {
+            var age = teacher.age;
+            var ageMatch = false;
+            if (selectedAgeRange === '18-25') {
+                ageMatch = age >= 18 && age <= 25;
+            }
+            else if (selectedAgeRange === '26-31') {
+                ageMatch = age >= 26 && age <= 31;
+            }
+            else if (selectedAgeRange === '32-40') {
+                ageMatch = age >= 32 && age <= 40;
+            }
+            else if (selectedAgeRange === '41 - 55') {
+                ageMatch = age >= 41 && age <= 55;
+            }
+            else if (selectedAgeRange === '56+') {
+                ageMatch = age >= 56;
+            }
+            else {
+                ageMatch = true; // No age filter selected
+            }
+            // Check country
+            var countries = ['Ukraine', 'United States', 'Canada', 'UK', 'Germany', 'Sweden'];
+            var countryMatch = /*selectedCountry === 'Ukraine' ? teacher.country === 'Ukraine' :
+                                 selectedCountry === 'United States' ? teacher.country === 'United States'  :
+                                  selectedCountry === 'Canada' ? teacher.country === 'Canada' :
+                                  selectedCountry === 'United Kingdom' ? teacher.country === 'UK' :
+                                  selectedCountry === 'Germany' ? teacher.country === 'Germany' :
+                                  selectedCountry === 'Sweden' ? teacher.country === 'Sweden' :*/ selectedCountry === 'Europe' ? europeanCountries.includes(teacher.country) :
+                selectedCountry === 'USA' ? teacher.country === 'United States' :
+                    selectedCountry === 'Other' ? !europeanCountries.includes(teacher.country) && teacher.country !== 'United States' : true;
+            // const countryMatch = uniqueCountries.has(selectedCountry) ? teacher.country === selectedCountry : true;
+            //const countryMatch = countries.includes(selectedCountry) ? teacher.country === selectedCountry : false;
+            // Check gender 
+            var genderMatch = selectedGender === 'male' ? teacher.gender.toLowerCase() === 'male' :
+                selectedGender === 'female' ? teacher.gender.toLowerCase() === 'female' :
+                    selectedGender === 'other' ? teacher.gender.toLowerCase() === 'other' :
+                        true; // No gender filter selected
+            // Check photo availability
+            var photoMatch = onlyWithPhoto ? teacher.picture_large !== undefined : true; // Check if the picture_large property exists
+            // Check favorites
+            var favoritesMatch = onlyFavorites ? teacher.favorite : true; // Check the favorite property
+            return ageMatch && countryMatch && genderMatch && photoMatch && favoritesMatch;
+        });
+        // Update the displayed users
+        updateDisplayedUsers(filteredTeachers);
+    }
     function createTeachersList(teachers) {
         var _this = this;
         var teachersContainers = document.querySelectorAll(".teachers-list-container");
         if (teachersContainers.length === 0)
             return;
-        // Clear previous content
         teachersContainers.forEach(function (container) {
             container.innerHTML = '';
         });
@@ -498,82 +592,21 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         dropdownOptions.forEach(function (option) {
             option.addEventListener('click', function () {
                 var button = this.closest('.dropdown').querySelector('.dropbtn');
-                button.innerHTML = this.textContent || '';
-                this.parentElement.parentElement.classList.remove('show'); // Close the dropdown
-                filterTeachersByDropdown(teachers);
+                var filterValue = this.textContent || '';
+                button.innerHTML = filterValue;
+                this.parentElement.parentElement.classList.remove('show');
+                filterTeachers(teachers);
             });
         });
-        document.querySelectorAll('nav ul li').forEach(function (li) {
-            li.addEventListener('click', function () {
-                document.querySelectorAll('nav ul li.active').forEach(function (li) {
-                    li.classList.remove('active');
-                });
-                this.classList.add('active');
+        document.addEventListener('click', function () {
+            dropdownButtons.forEach(function (button) {
+                var dropdownContent = button.nextElementSibling;
+                dropdownContent === null || dropdownContent === void 0 ? void 0 : dropdownContent.classList.remove('show');
             });
         });
     }
     function populateDropDowns(teachers) {
-        countriesToPopulate(teachers);
         specialityToPopulate(teachers);
-    }
-    function countriesToPopulate(teachers) {
-        return __awaiter(this, void 0, void 0, function () {
-            var countriesDropdownULs, uniqueCountries, response, countriesData, countryMap_1, sortedCountries_1, error_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        countriesDropdownULs = document.querySelectorAll('.countries-dropdown-to-populate');
-                        uniqueCountries = new Set();
-                        teachers.forEach(function (teacher) {
-                            if (teacher.country) {
-                                uniqueCountries.add(teacher.country);
-                            }
-                        });
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
-                        return [4 /*yield*/, fetch('https://restcountries.com/v3.1/all')];
-                    case 2:
-                        response = _a.sent();
-                        return [4 /*yield*/, response.json()];
-                    case 3:
-                        countriesData = _a.sent();
-                        countryMap_1 = new Set();
-                        countriesData.forEach(function (country) {
-                            if (country.name.common) {
-                                countryMap_1.add(country.name.common);
-                            }
-                        });
-                        sortedCountries_1 = Array.from(countryMap_1).sort();
-                        countriesDropdownULs.forEach(function (dropdown) {
-                            dropdown.innerHTML = '';
-                            sortedCountries_1.forEach(function (country) {
-                                var li = document.createElement('li');
-                                li.classList.add('region-option');
-                                li.textContent = country;
-                                dropdown.appendChild(li);
-                            });
-                        });
-                        addDropdownOptionListeners();
-                        return [3 /*break*/, 5];
-                    case 4:
-                        error_4 = _a.sent();
-                        console.error('Error fetching country data:', error_4);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
-                }
-            });
-        });
-    }
-    function addDropdownOptionListeners() {
-        var dropdownOptions = document.querySelectorAll('.countries-dropdown-to-populate li');
-        dropdownOptions.forEach(function (option) {
-            option.addEventListener('click', function () {
-                var button = this.closest('.dropdown').querySelector('.dropbtn');
-                button.innerHTML = this.textContent || '';
-                this.parentElement.parentElement.classList.remove('show');
-            });
-        });
     }
     function specialityToPopulate(teachers) {
         var specialityDropdownULs = document.querySelectorAll('.speciality-dropdown-to-populate');
@@ -593,41 +626,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 dropdown.appendChild(li);
             });
         });
-    }
-    function filterTeachersByDropdown(teachers) {
-        var _a, _b, _c;
-        var ageFilter = document.querySelector('#age-params-btn');
-        var regionParams = document.querySelector('#region-params-btn');
-        var sexParams = document.querySelector('#sex-params-btn');
-        var favCheck = document.querySelector('#favCheck');
-        var photoCheck = document.querySelector('#photoCheck');
-        if (!ageFilter || !regionParams || !sexParams)
-            return;
-        var selectedRegion = (_a = regionParams.textContent) === null || _a === void 0 ? void 0 : _a.trim();
-        var selectedGender = (_b = sexParams.textContent) === null || _b === void 0 ? void 0 : _b.trim().toLowerCase();
-        var selectedAge = (_c = ageFilter.textContent) === null || _c === void 0 ? void 0 : _c.trim().toLowerCase();
-        // Log for debugging
-        console.log('Region:', selectedRegion);
-        console.log('Gender:', selectedGender);
-        console.log('Age Filter:', selectedAge);
-        var filteredUsers = filterUsers(teachers, {
-            age: selectedAge,
-            gender: selectedGender,
-            region: selectedRegion,
-            favorite: (favCheck === null || favCheck === void 0 ? void 0 : favCheck.checked) || false,
-            hasPhoto: (photoCheck === null || photoCheck === void 0 ? void 0 : photoCheck.checked) || false
-        });
-        console.log('Filtered Users:', filteredUsers);
-        // Remove existing list
-        var teachersContainers = document.querySelectorAll(".teachers-list-container");
-        teachersContainers.forEach(function (container) {
-            var existingList = container.querySelector('.teachers-list');
-            if (existingList) {
-                existingList.remove();
-            }
-        });
-        createTeachersList(filteredUsers);
-        addTeacherCartInfo(filteredUsers);
     }
     function sortUsersByAttribute(users) {
         var data_sort_elements = document.querySelectorAll('th[data-sort]');
