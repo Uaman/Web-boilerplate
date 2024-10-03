@@ -31,25 +31,41 @@ body {
 //   opacity: 30%;
 // }
 
+
+.popup-addteach-bg {
+ background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
+opacity: 50%;
+width: 100%;
+height: 100%;
+position: absolute;
+z-index: 3;
+}
+
 .popup-wrapper {
 //border: 1px solid #000;
+ position: fixed;
 display: grid;
   width: 100%;
   height: 100%;
-  background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
-  //display: none; //hidden by default (when i actually ake it work from button press)
-  position: fixed;
+
+//   background-color: $popup_wrapper_color;//MAKE OPACITY ~60% IN A SEPARATE THINGY {MEANING THERE IS ANOTHER LAYER THAT'S LIKE THIS COLOR AND IS NOT AT 100% OPACITY AND IT'S THERE TO COVER THE WHOLE PAGE BEHIND THE POP-UP}
+visibility: hidden;
 }
+
+.popup-wrapper.close {
+visibility: hidden;
+}
+
 
 .popup-window-high {
 //border: 1px solid #000;
+ position: absolute;
   width: $popup_width;
   height: auto;
-  margin: auto;
-
-}
-.popup-window-wide {
-  //width: $popup_width_wide;
+  top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+  z-index: 6;
 }
 
 .popup-header {

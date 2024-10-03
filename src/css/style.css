@@ -135,6 +135,7 @@ header div, footer div {
 
 .teacher-item {
   display: grid;
+  justify-content: center;
   margin: 0 20px 0 20px;
 }
 .teacher-item p {

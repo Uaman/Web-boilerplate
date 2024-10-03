@@ -697,7 +697,7 @@ do {
         return dummy_arr;
 }
 
-getResponse = getOurUsers(50);
+getResponse = getOurUsers(10);
 getResponse.then(function(arr) {
 acquired_users_array = format_data(arr, []);
 validate_users(acquired_users_array);
