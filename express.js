@@ -8,6 +8,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/favicon.ico', (req, res) => res.status(200).send());
+
 const jsonServerRouter = jsonServer.router('db.json');
 
 
@@ -59,4 +61,4 @@ app.post('/teachers', (req, res) => {
   res.send('Teacher added successfully');
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3001!'));
+app.listen(3001, () => console.log('Example app listening on port 3001!'));

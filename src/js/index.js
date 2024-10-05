@@ -316,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         sortUsersByAttribute(sortedUsers_1);
                         addTeacherCartInfo(sortedUsers_1);
                         searchForTeacher(sortedUsers_1);
+                        loadChartJS(createAllPieCharts(sortedUsers_1));
                         addTeacherForm(sortedUsers_1);
                         return [3 /*break*/, 3];
                     case 2:
@@ -439,12 +440,12 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     case 1:
                         newTeachers = _a.sent();
                         formattedTeachers = formatUser(newTeachers);
-                        teachers.push.apply(teachers, formattedTeachers); // Додаємо нових викладачів до існуючого масиву
-                        totalFetched += formattedTeachers.length; // Оновлюємо загальну кількість
-                        // Оновлюємо список викладачів та статистику
+                        teachers.push.apply(teachers, formattedTeachers);
+                        totalFetched += formattedTeachers.length;
                         createTeachersList(teachers);
                         addTeacherCartInfo(teachers);
-                        populateStatistics(sortUsers(teachers, 'full_name', 'asc')); // Оновлюємо статистику
+                        populateStatistics(sortUsers(teachers, 'full_name', 'asc'));
+                        createAllPieCharts(teachers);
                         return [3 /*break*/, 3];
                     case 2:
                         error_3 = _a.sent();
@@ -491,6 +492,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     overlay.classList.remove("hidden");
                     overlay.style.display = "block";
                     addTeacherInfoToCard(teacher, teachers);
+                    loadLeafletJS(initializeMap(teacher));
                 }
             });
         });
@@ -504,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var teacherInfoCard = document.querySelector(".teacher-info-card-main-container");
         if (!teacherInfoCard)
             return;
-        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n\n        <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n          <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n        <div class=\"with-star\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n             <div class=\"add-fav-button-container\">\n          <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n          </div>\n        </div>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n        </div>\n        \n     \n     \n      </div>\n    ");
+        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n\n        <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n          <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n        <div class=\"with-star\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n             <div class=\"add-fav-button-container\">\n          <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n          </div>\n        </div>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n\n        </div>\n        <div id=\"map\"></div>   \n     \n     \n      </div>\n    ");
         var addToFavButton = document.querySelector(".add-to-fav");
         if (addToFavButton) {
             addToFavButton.addEventListener("click", function () {
@@ -889,6 +891,113 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             }
         });
         searchButton.addEventListener('click', handleSearch);
+    }
+    function loadChartJS(callback) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+        script.onload = callback;
+        document.head.appendChild(script);
+    }
+    function loadLeafletJS(callback) {
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.onload = callback;
+        script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+        script.crossOrigin = '';
+        document.head.appendChild(script);
+    }
+    function initializeMap(teacher) {
+        // Ensure Leaflet is loaded
+        if (window.L) {
+            var L = window.L;
+            var map = L.map('map').setView([teacher.coordinates.latitude, teacher.coordinates.longitude], 5);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            L.marker([teacher.coordinates.latitude, teacher.coordinates.longitude]).addTo(map)
+                .bindPopup("".concat(teacher.state, ", ").concat(teacher.country))
+                .openPopup();
+        }
+        else {
+            console.error('Leaflet library is not loaded.');
+        }
+    }
+    function createPieChart(teachers, parameter, chartId, label) {
+        var parameterCount = {};
+        // Підрахунок кількості викладачів для кожного унікального значення параметра
+        teachers.forEach(function (teacher) {
+            var value;
+            // Group by specific age ranges if the parameter is "age"
+            if (parameter === "age") {
+                var age = teacher[parameter];
+                if (age >= 18 && age <= 25) {
+                    value = "18-25";
+                }
+                else if (age >= 26 && age <= 31) {
+                    value = "26-31";
+                }
+                else if (age >= 32 && age <= 40) {
+                    value = "32-40";
+                }
+                else if (age >= 41 && age <= 55) {
+                    value = "41-55";
+                }
+                else {
+                    value = "56+";
+                }
+            }
+            else {
+                // Otherwise, use the parameter value as-is
+                value = teacher[parameter];
+            }
+            if (parameterCount[value]) {
+                parameterCount[value]++;
+            }
+            else {
+                parameterCount[value] = 1;
+            }
+        });
+        // Підготовка даних для графіку
+        var labels = Object.keys(parameterCount);
+        var dataValues = Object.values(parameterCount);
+        // Дані для кругової діаграми
+        var data = {
+            labels: labels,
+            datasets: [{
+                    label: label,
+                    data: dataValues,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 159, 64)',
+                    ],
+                    hoverOffset: 4
+                }]
+        };
+        // Налаштування для діаграми
+        var config = {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+            },
+        };
+        // Створення діаграми в елементі з вказаним ID
+        var ctx = document.getElementById(chartId).getContext('2d');
+        if (ctx) {
+            new Chart(ctx, config);
+        }
+    }
+    function createAllPieCharts(teachers) {
+        createPieChart(teachers, 'age', 'agePieChart', 'Age of Teachers');
+        createPieChart(teachers, 'gender', 'genderPieChart', 'Sex ');
+        createPieChart(teachers, 'region', 'countryPieChart', 'Countries');
+        createPieChart(teachers, 'course', 'coursePieChart', 'Available Courses');
+        //createPieChart(teachers, 'b_date', 'bdatePieChart', 'B-days');
     }
     var teachers;
     return __generator(this, function (_a) {

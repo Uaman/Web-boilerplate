@@ -9,6 +9,9 @@
     <link rel="stylesheet" 
     href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
 
 
 </head>
@@ -33,7 +36,7 @@
             <nav id="desktop-nav">
                 <ul>
                     <li><a href="#teachers">Teachers</a></li>
-                    <li><a href="#statistics">Statistics</a></li>
+                    <li><a href="#myPieChart">Statistics</a></li>
                     <li><a href="#favourites">Favourites</a></li>
                     <li><a href="#">About</a></li>
                 </ul>
@@ -143,8 +146,16 @@
             <h1>Statistics</h1>
         </div>
 
-<div class="statistics-table-container" id="statistics">
-
+<div class="statistics-table-container" id="statistics"> 
+  <div>
+    <canvas id="coursePieChart" width="300" height="300"></canvas>
+    <canvas id="agePieChart" width="300" height="300"></canvas>
+    <canvas id="genderPieChart" width="300" height="300"></canvas>
+    <canvas id="countryPieChart" width="300" height="300"></canvas>
+    <canvas id="bdatePieChart" width="300" height="300"></canvas>
+  </div>
+</div> 
+<!----
     <table>
         <tr class="table-header">
           <thead class="table-header">
@@ -166,10 +177,10 @@
       <a href="#">3</a>
       <a class="dots">...</a> 
       <a href="#">Last</a> 
-
+    --->
      
     </div>
-    </section>
+  </div>
 
     <section class="favourites-container">
         <div class="header-section-container">
@@ -342,6 +353,13 @@
 </section>
 
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
 
 
   <script type="module" src="./js/index.js"></script>

@@ -291,7 +291,9 @@ async function fetchUsers(count: number): Promise<any[]> {
 }
 
 
+
 document.addEventListener("DOMContentLoaded", async () => {
+
 
   async function loadInitialTeachers() {
     try {
@@ -326,11 +328,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         dropdownOptions(sortedUsers);
         createTeachersList(sortedUsers);
         addFavouriteTeacher(sortedUsers);
-       filterTeachers(sortedUsers);
+        filterTeachers(sortedUsers);
         sortUsersByAttribute(sortedUsers);
         addTeacherCartInfo(sortedUsers);
         searchForTeacher(sortedUsers);
-       
+        loadChartJS(createAllPieCharts(sortedUsers));
       
         addTeacherForm(sortedUsers);
 
@@ -484,13 +486,14 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
       try {
           const newTeachers = await fetchUsers(10); // Запит на 10 нових викладачів
           const formattedTeachers: FormattedUser[] = formatUser(newTeachers);
-          teachers.push(...formattedTeachers); // Додаємо нових викладачів до існуючого масиву
-          totalFetched += formattedTeachers.length; // Оновлюємо загальну кількість
+          teachers.push(...formattedTeachers); 
+          totalFetched += formattedTeachers.length; 
   
-          // Оновлюємо список викладачів та статистику
+      
           createTeachersList(teachers); 
           addTeacherCartInfo(teachers);
-          populateStatistics(sortUsers(teachers, 'full_name', 'asc')); // Оновлюємо статистику
+          populateStatistics(sortUsers(teachers, 'full_name', 'asc')); 
+          createAllPieCharts(teachers);
   
       } catch (error) {
           console.error('Error fetching more users:', error);
@@ -543,6 +546,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
               (overlay as HTMLElement).style.display = "block";
   
               addTeacherInfoToCard(teacher, teachers);
+              loadLeafletJS(initializeMap(teacher));
           }
       });
   });
@@ -588,13 +592,14 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   
         <div class="teacher-info-card-map">
           <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
+
         </div>
-        
+        <div id="map"></div>   
      
      
       </div>
     `;
-  
+
     const addToFavButton = document.querySelector(".add-to-fav") as HTMLButtonElement | null;
     if (addToFavButton) {
       addToFavButton.addEventListener("click", function () {
@@ -614,7 +619,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
     }
   }
   
-  
+
   
   function addFavouriteTeacher(teachers: Array<FormattedUser>): void {
     const favTeachersContainer: Element | null = document.querySelector('.fav-teachers-list-container');
@@ -812,15 +817,15 @@ function specialityToPopulate(teachers: FormattedUser[]): void {
       return teachers.slice(startIndex, startIndex + teachersPerPage);
     }
   
-    // Оновити відображення таблиці викладачів
+
     function renderTable(page: number) {
       if (tbody) {
-        tbody.innerHTML = ''; // Очищення попереднього вмісту таблиці
+        tbody.innerHTML = ''; 
       }
   
       const paginatedTeachers = getPaginatedTeachers(page);
   
-      // Заповнити таблицю відсортованими даними
+   
       paginatedTeachers.forEach((teacher) => {
         const tr: HTMLTableRowElement = document.createElement('tr');
         tr.innerHTML = `
@@ -1010,7 +1015,6 @@ function specialityToPopulate(teachers: FormattedUser[]): void {
         }
     });
 }
-// Function to show notification
 function showNotification(message: string): void {
     const notification: HTMLElement | null = document.querySelector('#notification');
     if (notification) {
@@ -1096,8 +1100,132 @@ function showNotification(message: string): void {
 
 let teachers: any[] = [];
 
-loadInitialTeachers();
 
+
+function loadChartJS(callback) {
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+  script.onload = callback; 
+  
+  document.head.appendChild(script);
+}
+
+function loadLeafletJS( callback): void {
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+  script.onload = callback; 
+  script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+  script.crossOrigin = '';
+  document.head.appendChild(script);
+
+  
+
+
+}
+function initializeMap(teacher: FormattedUser): void {
+  // Ensure Leaflet is loaded
+  if ((window as any).L) {
+    const L = (window as any).L;
+
+  
+    const map = L.map('map').setView([teacher.coordinates.latitude, teacher.coordinates.longitude], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+    L.marker([teacher.coordinates.latitude, teacher.coordinates.longitude]).addTo(map)
+      .bindPopup(`${teacher.state}, ${teacher.country}`)
+      .openPopup();
+  } else {
+    console.error('Leaflet library is not loaded.');
+  }
+}
+
+
+function createPieChart(teachers: FormattedUser[], parameter: keyof FormattedUser, chartId: string, label: string): void {
+  const parameterCount: { [key: string]: number } = {};
+
+  // Підрахунок кількості викладачів для кожного унікального значення параметра
+  teachers.forEach(teacher => {
+    let value: string;
+
+    // Group by specific age ranges if the parameter is "age"
+    if (parameter === "age") {
+      const age = teacher[parameter] as number;
+      if (age >= 18 && age <= 25) {
+        value = "18-25";
+      } else if (age >= 26 && age <= 31) {
+        value = "26-31";
+      } else if (age >= 32 && age <= 40) {
+        value = "32-40";
+      } else if (age >= 41 && age <= 55) {
+        value = "41-55";
+      } else {
+        value = "56+";
+      }
+    } else {
+      // Otherwise, use the parameter value as-is
+      value = teacher[parameter] as string;
+    }
+
+    if (parameterCount[value]) {
+      parameterCount[value]++;
+    } else {
+      parameterCount[value] = 1;
+    }
+  });
+
+  const labels = Object.keys(parameterCount);
+  const dataValues = Object.values(parameterCount);
+
+
+  const data = {
+    labels: labels,
+    datasets: [{
+      label: label,
+      data: dataValues,
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(153, 102, 255)',
+        'rgb(255, 159, 64)',
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  // Налаштування для діаграми
+  const config = {
+    type: 'pie',
+    data: data,
+    options: {
+      responsive: false,
+      maintainAspectRatio: false,
+    },
+  };
+
+  // Створення діаграми в елементі з вказаним ID
+  const ctx = (document.getElementById(chartId) as HTMLCanvasElement).getContext('2d');
+  if (ctx) {
+    new Chart(ctx, config);
+  }
+}
+
+
+function createAllPieCharts(teachers: FormattedUser[]): void {
+  createPieChart(teachers, 'age', 'agePieChart', 'Age of Teachers');
+  createPieChart(teachers, 'gender', 'genderPieChart', 'Sex ');
+  createPieChart(teachers, 'region', 'countryPieChart', 'Countries');
+  
+  createPieChart(teachers, 'course', 'coursePieChart', 'Available Courses');
+  //createPieChart(teachers, 'b_date', 'bdatePieChart', 'B-days');
+}
+
+loadInitialTeachers();
   window.addEventListener('click', function () {
     const dropdowns: NodeListOf<Element> = document.querySelectorAll('.dropdown-content');
     dropdowns.forEach(dropdown => {
