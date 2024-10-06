@@ -171,51 +171,37 @@ function sortUsers(users, sortBy, direction) {
     if (direction === void 0) { direction = 'asc'; }
     if (sortBy === undefined)
         return users;
-    return users.sort(function (a, b) {
-        var comparison = 0;
-        // Ensure properties exist before comparing
-        if (a[sortBy] !== undefined && b[sortBy] !== undefined) {
-            if (sortBy === 'full_name' || sortBy === 'country' || sortBy === 'gender' || sortBy === 'course') {
-                comparison = a[sortBy].toLowerCase().localeCompare(b[sortBy].toLowerCase());
-            }
-            else if (sortBy === 'age') {
-                comparison = a.age - b.age;
-            }
-            else if (sortBy === 'b_date') {
-                comparison = new Date(a.b_date).getTime() - new Date(b.b_date).getTime();
-            }
-        }
-        return direction === 'asc' ? comparison : -comparison;
-    });
+    var sortedUsers = _.orderBy(users, [sortBy], [direction]);
+    return sortedUsers;
 }
 function filterUsers(users, filters) {
-    return users.filter(function (user) {
-        if (filters.age !== undefined) {
-            var ageString = filters.age.toString().trim();
-            if (ageString.includes('-')) {
-                var _a = ageString.split('-').map(function (str) { return parseInt(str); }), min = _a[0], max = _a[1];
+    return _.filter(users, function (user) {
+        if (!_.isUndefined(filters.age)) {
+            var ageString = _.toString(filters.age).trim();
+            if (_.includes(ageString, '-')) {
+                var _a = _.map(_.split(ageString, '-'), _.parseInt), min = _a[0], max = _a[1];
                 if ((min && user.age < min) || (max && user.age > max)) {
                     return false;
                 }
             }
             else {
-                var age = parseInt(ageString);
-                if (!isNaN(age) && user.age !== age) {
+                var age = _.parseInt(ageString);
+                if (!_.isNaN(age) && user.age !== age) {
                     return false;
                 }
             }
         }
-        if (filters.gender && filters.gender.trim().toLowerCase() !== user.gender.trim().toLowerCase()) {
+        if (filters.gender && _.toLower(_.trim(filters.gender)) !== _.toLower(_.trim(user.gender))) {
             return false;
         }
-        if (filters.region && filters.region.trim().toLowerCase() !== user.region.trim().toLowerCase()) {
+        if (filters.region && _.toLower(_.trim(filters.region)) !== _.toLower(_.trim(user.region))) {
             return false;
         }
-        if (filters.favorite !== undefined && filters.favorite !== user.favorite) {
+        if (!_.isUndefined(filters.favorite) && filters.favorite !== user.favorite) {
             return false;
         }
-        if (filters.hasPhoto !== undefined) {
-            var userHasPhoto = user.picture_large !== null && user.picture_large.trim() !== '';
+        if (!_.isUndefined(filters.hasPhoto)) {
+            var userHasPhoto = !_.isEmpty(_.trim(user.picture_large));
             if (filters.hasPhoto !== userHasPhoto) {
                 return false;
             }
@@ -223,6 +209,13 @@ function filterUsers(users, filters) {
         return true;
     });
 }
+// Приклад використання:
+var users = [
+    { age: 25, gender: 'male', favorite: true, region: 'US', picture_large: 'photo.jpg' },
+    { age: 30, gender: 'female', favorite: false, region: 'UK', picture_large: '' }
+];
+var filters = { age: '20-30', gender: 'male', hasPhoto: true };
+console.log(filterUsers(users, filters));
 function searchForUser(users, searchBy) {
     return users.filter(function (user) {
         var _a;
@@ -276,10 +269,16 @@ function fetchUsers(count) {
         });
     });
 }
+function loadLodash(callback) {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js';
+    script.onload = callback;
+    document.head.appendChild(script);
+}
 document.addEventListener("DOMContentLoaded", function () { return __awaiter(_this, void 0, void 0, function () {
     function loadInitialTeachers() {
         return __awaiter(this, void 0, void 0, function () {
-            var formattedTeachers, sortedUsers_1, error_2;
+            var formattedTeachers_1, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -288,36 +287,21 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     case 1:
                         teachers = _a.sent();
                         totalFetched = teachers.length;
-                        formattedTeachers = formatUser(teachers);
-                        sortedUsers_1 = sortUsers(formattedTeachers, 'full_name', 'asc');
-                        document.querySelectorAll('.age-option').forEach(function (option) {
-                            option.addEventListener('click', function () {
-                                var _a;
-                                var ageButton = document.querySelector('#age-params-btn');
-                                ageButton.textContent = ((_a = this.textContent) === null || _a === void 0 ? void 0 : _a.trim()) + ' ▼';
-                                filterTeachers(sortedUsers_1); // Filter the teachers immediately after selecting an option
-                            });
+                        formattedTeachers_1 = formatUser(teachers);
+                        loadLodash(function () {
+                            var sortedUsers = sortUsers(formattedTeachers_1, 'full_name', 'asc');
+                            setupFilterEventListeners(sortedUsers);
+                            console.log(sortedUsers[0]);
+                            dropdownOptions(sortedUsers);
+                            createTeachersList(sortedUsers);
+                            addFavouriteTeacher(sortedUsers);
+                            filterTeachers(sortedUsers);
+                            sortUsersByAttribute(sortedUsers);
+                            addTeacherCartInfo(sortedUsers);
+                            searchForTeacher(sortedUsers);
+                            loadChartJS(function () { return createAllPieCharts(sortedUsers); });
+                            addTeacherForm(sortedUsers);
                         });
-                        document.querySelectorAll('.age-option, .region-option, .gender-option').forEach(function (option) {
-                            option.addEventListener('click', function () {
-                                filterTeachers(sortedUsers_1);
-                            });
-                        });
-                        document.querySelectorAll('.input-checkbox').forEach(function (checkbox) {
-                            checkbox.addEventListener('change', function () {
-                                filterTeachers(sortedUsers_1);
-                            });
-                        });
-                        // populateDropDowns(sortedUsers);
-                        dropdownOptions(sortedUsers_1);
-                        createTeachersList(sortedUsers_1);
-                        addFavouriteTeacher(sortedUsers_1);
-                        filterTeachers(sortedUsers_1);
-                        sortUsersByAttribute(sortedUsers_1);
-                        addTeacherCartInfo(sortedUsers_1);
-                        searchForTeacher(sortedUsers_1);
-                        loadChartJS(createAllPieCharts(sortedUsers_1));
-                        addTeacherForm(sortedUsers_1);
                         return [3 /*break*/, 3];
                     case 2:
                         error_2 = _a.sent();
@@ -325,6 +309,26 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
+            });
+        });
+    }
+    function setupFilterEventListeners(sortedUsers) {
+        document.querySelectorAll('.age-option').forEach(function (option) {
+            option.addEventListener('click', function () {
+                var _a;
+                var ageButton = document.querySelector('#age-params-btn');
+                ageButton.textContent = ((_a = this.textContent) === null || _a === void 0 ? void 0 : _a.trim()) + ' ▼';
+                filterTeachers(sortedUsers);
+            });
+        });
+        document.querySelectorAll('.age-option, .region-option, .gender-option').forEach(function (option) {
+            option.addEventListener('click', function () {
+                filterTeachers(sortedUsers);
+            });
+        });
+        document.querySelectorAll('.input-checkbox').forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                filterTeachers(sortedUsers);
             });
         });
     }
@@ -342,57 +346,36 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
     }
     function filterTeachers(teachers) {
         var _a, _b, _c;
-        var selectedAgeRange = ((_a = document.querySelector('#age-params-btn')) === null || _a === void 0 ? void 0 : _a.textContent.trim()) || '';
-        var selectedCountry = ((_b = document.querySelector('#region-params-btn')) === null || _b === void 0 ? void 0 : _b.textContent.trim()) || '';
-        var selectedGender = (((_c = document.querySelector('#sex-params-btn')) === null || _c === void 0 ? void 0 : _c.textContent.trim()) || '').toLowerCase();
-        var onlyWithPhoto = document.querySelector('#photoCheck').checked;
-        var onlyFavorites = document.querySelector('#favCheck').checked;
-        // Filter the teachers based on selected criteria
-        var filteredTeachers = teachers.filter(function (teacher) {
-            var age = teacher.age;
-            var ageMatch = false;
-            if (selectedAgeRange === '18-25') {
-                ageMatch = age >= 18 && age <= 25;
-            }
-            else if (selectedAgeRange === '26-31') {
-                ageMatch = age >= 26 && age <= 31;
-            }
-            else if (selectedAgeRange === '32-40') {
-                ageMatch = age >= 32 && age <= 40;
-            }
-            else if (selectedAgeRange === '41 - 55') {
-                ageMatch = age >= 41 && age <= 55;
-            }
-            else if (selectedAgeRange === '56+') {
-                ageMatch = age >= 56;
-            }
-            else {
-                ageMatch = true; // No age filter selected
-            }
-            // Check country
-            var countries = ['Ukraine', 'United States', 'Canada', 'UK', 'Germany', 'Sweden'];
-            var countryMatch = /*selectedCountry === 'Ukraine' ? teacher.country === 'Ukraine' :
-                                 selectedCountry === 'United States' ? teacher.country === 'United States'  :
-                                  selectedCountry === 'Canada' ? teacher.country === 'Canada' :
-                                  selectedCountry === 'United Kingdom' ? teacher.country === 'UK' :
-                                  selectedCountry === 'Germany' ? teacher.country === 'Germany' :
-                                  selectedCountry === 'Sweden' ? teacher.country === 'Sweden' :*/ selectedCountry === 'Europe' ? europeanCountries.includes(teacher.country) :
-                selectedCountry === 'USA' ? teacher.country === 'United States' :
-                    selectedCountry === 'Other' ? !europeanCountries.includes(teacher.country) && teacher.country !== 'United States' : true;
-            // const countryMatch = uniqueCountries.has(selectedCountry) ? teacher.country === selectedCountry : true;
-            //const countryMatch = countries.includes(selectedCountry) ? teacher.country === selectedCountry : false;
-            // Check gender 
-            var genderMatch = selectedGender === 'male' ? teacher.gender.toLowerCase() === 'male' :
-                selectedGender === 'female' ? teacher.gender.toLowerCase() === 'female' :
-                    selectedGender === 'other' ? teacher.gender.toLowerCase() === 'other' :
-                        true; // No gender filter selected
-            // Check photo availability
-            var photoMatch = onlyWithPhoto ? teacher.picture_large !== undefined : true; // Check if the picture_large property exists
-            // Check favorites
-            var favoritesMatch = onlyFavorites ? teacher.favorite : true; // Check the favorite property
+        var selectedAgeRange = _.trim((_a = document.querySelector('#age-params-btn')) === null || _a === void 0 ? void 0 : _a.textContent) || '';
+        var selectedCountry = _.trim((_b = document.querySelector('#region-params-btn')) === null || _b === void 0 ? void 0 : _b.textContent) || '';
+        var selectedGender = (_.trim((_c = document.querySelector('#sex-params-btn')) === null || _c === void 0 ? void 0 : _c.textContent) || '').toLowerCase();
+        var onlyWithPhoto = _.get(document.querySelector('#photoCheck'), 'checked', false);
+        var onlyFavorites = _.get(document.querySelector('#favCheck'), 'checked', false);
+        var filteredTeachers = _.filter(teachers, function (teacher) {
+            var ageMatch = (function () {
+                var age = teacher.age;
+                switch (selectedAgeRange) {
+                    case '18-25': return age >= 18 && age <= 25;
+                    case '26-31': return age >= 26 && age <= 31;
+                    case '32-40': return age >= 32 && age <= 40;
+                    case '41 - 55': return age >= 41 && age <= 55;
+                    case '56+': return age >= 56;
+                    default: return true;
+                }
+            })();
+            var countryMatch = (function () {
+                switch (selectedCountry) {
+                    case 'Europe': return _.includes(europeanCountries, teacher.country);
+                    case 'USA': return teacher.country === 'United States';
+                    case 'Other': return !_.includes(europeanCountries, teacher.country) && teacher.country !== 'United States';
+                    default: return true;
+                }
+            })();
+            var genderMatch = selectedGender ? _.toLower(teacher.gender) === selectedGender : true;
+            var photoMatch = onlyWithPhoto ? !_.isUndefined(teacher.picture_large) : true;
+            var favoritesMatch = onlyFavorites ? teacher.favorite : true;
             return ageMatch && countryMatch && genderMatch && photoMatch && favoritesMatch;
         });
-        // Update the displayed users
         updateDisplayedUsers(filteredTeachers);
     }
     function createTeachersList(teachers) {
@@ -400,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var teachersContainers = document.querySelectorAll(".teachers-list-container");
         if (teachersContainers.length === 0)
             return;
-        teachersContainers.forEach(function (container) {
+        _.forEach(teachersContainers, function (container) {
             container.innerHTML = '';
         });
         var teachersWrapper = document.createElement("div");
@@ -413,8 +396,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var rightArrow = document.createElement("span");
         rightArrow.classList.add("material-icons");
         rightArrow.textContent = "arrow_forward";
-        // Create and append teacher list items
-        teachers.forEach(function (teacher, index) {
+        _.forEach(teachers, function (teacher, index) {
             var listItem = document.createElement("li");
             listItem.classList.add("teacher-item");
             listItem.dataset.index = index.toString();
@@ -424,12 +406,11 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         teachersWrapper.appendChild(leftArrow);
         teachersWrapper.appendChild(teachersList);
         teachersWrapper.appendChild(rightArrow);
-        teachersContainers.forEach(function (teachersContainer) {
+        _.forEach(teachersContainers, function (teachersContainer) {
             teachersContainer.appendChild(teachersWrapper);
         });
-        // Add scrolling functionality
         var scrollAmount = 500;
-        var totalFetched = 0; // Загальна кількість викладачів, які були отримані
+        var totalFetched = 0;
         rightArrow.addEventListener('click', function () { return __awaiter(_this, void 0, void 0, function () {
             var newTeachers, formattedTeachers, error_3;
             return __generator(this, function (_a) {
@@ -452,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         console.error('Error fetching more users:', error_3);
                         return [3 /*break*/, 3];
                     case 3:
-                        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' }); // Прокручуємо вправо
+                        teachersList.scrollBy({ left: scrollAmount, behavior: 'smooth' });
                         return [2 /*return*/];
                 }
             });
@@ -460,7 +441,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         leftArrow.addEventListener('click', function () {
             teachersList.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
         });
-        // Star icon functionality
         teachersList.addEventListener('click', function (e) {
             if (e.target.classList.contains('star-icon')) {
                 var listItem = e.target.closest('.teacher-item');
@@ -485,14 +465,13 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 if (clickedItem) {
                     var teacherIndex = clickedItem.dataset.index;
                     console.log("Clicked index: ".concat(teacherIndex)); // Log the index to debug
-                    var teacher = teachers[parseInt(teacherIndex)];
-                    console.log("Selected Teacher: ".concat(teacher.full_name)); // Debug output for selected teacher
-                    // Now proceed to show the info card
+                    var teacher_1 = teachers[parseInt(teacherIndex)];
+                    console.log("Selected Teacher: ".concat(teacher_1.full_name)); // Debug output for selected teacher
                     teacherInfoCardContainer.classList.remove("hidden");
                     overlay.classList.remove("hidden");
                     overlay.style.display = "block";
-                    addTeacherInfoToCard(teacher, teachers);
-                    loadLeafletJS(initializeMap(teacher));
+                    addTeacherInfoToCard(teacher_1, teachers);
+                    loadLeafletJS(function () { return initializeMap(teacher_1); });
                 }
             });
         });
@@ -662,13 +641,11 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             var startIndex = (page - 1) * teachersPerPage;
             return teachers.slice(startIndex, startIndex + teachersPerPage);
         }
-        // Оновити відображення таблиці викладачів
         function renderTable(page) {
             if (tbody) {
-                tbody.innerHTML = ''; // Очищення попереднього вмісту таблиці
+                tbody.innerHTML = '';
             }
             var paginatedTeachers = getPaginatedTeachers(page);
-            // Заповнити таблицю відсортованими даними
             paginatedTeachers.forEach(function (teacher) {
                 var tr = document.createElement('tr');
                 tr.innerHTML = "\n          <td>".concat(teacher.full_name, "</td>\n          <td>").concat(teacher.course, "</td>\n          <td>").concat(teacher.age, "</td>\n          <td>").concat(teacher.gender, "</td>\n          <td>").concat(teacher.country, "</td>\n          <td>").concat(teacher.b_date, "</td>\n        ");
@@ -825,7 +802,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             }
         });
     }
-    // Function to show notification
     function showNotification(message) {
         var notification = document.querySelector('#notification');
         if (notification) {
@@ -852,15 +828,10 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             return;
         var handleSearch = function () {
             var searchQuery = searchInput.value.trim();
-            // Create a regex pattern to match names starting with the search query (case insensitive)
             var searchRegex = new RegExp("^".concat(searchQuery), 'i');
-            var searchResults = (!searchQuery || searchQuery === '*')
+            var searchResults = _.isEmpty(searchQuery) || searchQuery === '*'
                 ? teachers
-                : teachers.filter(function (teacher) {
-                    // Check if the teacher's full name matches the regex
-                    return searchRegex.test(teacher.full_name);
-                });
-            // Clear previous search results
+                : _.filter(teachers, function (teacher) { return searchRegex.test(teacher.full_name); });
             var teachersContainers = document.querySelectorAll(".teachers-list-container");
             teachersContainers.forEach(function (container) {
                 var existingList = container.querySelector('.teachers-list');
@@ -868,18 +839,16 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     existingList.remove();
                 }
             });
-            // Create the new list based on search results
             createTeachersList(searchResults);
             addTeacherCartInfo(teachers);
-            // Hide arrows if less than 10 results found
             var arrows = document.querySelectorAll('.material-icons');
             if (searchResults.length < 10) {
-                arrows.forEach(function (arrow) {
+                _.forEach(arrows, function (arrow) {
                     arrow.classList.add('hidden');
                 });
             }
             else {
-                arrows.forEach(function (arrow) {
+                _.forEach(arrows, function (arrow) {
                     arrow.classList.remove('hidden');
                 });
             }
@@ -899,22 +868,29 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         document.head.appendChild(script);
     }
     function loadLeafletJS(callback) {
-        var script = document.createElement('script');
-        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        script.onload = callback;
-        script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
-        script.crossOrigin = '';
-        document.head.appendChild(script);
+        if (window.L) {
+            callback();
+        }
+        else {
+            var script = document.createElement('script');
+            script.src = 'https://unpkg.com/leaflet/dist/leaflet.js';
+            script.onload = function () {
+                callback();
+            };
+            document.head.appendChild(script);
+        }
     }
     function initializeMap(teacher) {
-        // Ensure Leaflet is loaded
         if (window.L) {
             var L = window.L;
-            var map = L.map('map').setView([teacher.coordinates.latitude, teacher.coordinates.longitude], 5);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            var latitude = parseFloat(teacher.coordinates.latitude);
+            var longitude = parseFloat(teacher.coordinates.longitude);
+            console.log("Latitude: ".concat(latitude, ", Longitude: ").concat(longitude));
+            var map = L.map('map').setView([latitude, longitude], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
-            L.marker([teacher.coordinates.latitude, teacher.coordinates.longitude]).addTo(map)
+            L.marker([latitude, longitude]).addTo(map)
                 .bindPopup("".concat(teacher.state, ", ").concat(teacher.country))
                 .openPopup();
         }
@@ -924,10 +900,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
     }
     function createPieChart(teachers, parameter, chartId, label) {
         var parameterCount = {};
-        // Підрахунок кількості викладачів для кожного унікального значення параметра
         teachers.forEach(function (teacher) {
             var value;
-            // Group by specific age ranges if the parameter is "age"
             if (parameter === "age") {
                 var age = teacher[parameter];
                 if (age >= 18 && age <= 25) {
@@ -947,7 +921,6 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 }
             }
             else {
-                // Otherwise, use the parameter value as-is
                 value = teacher[parameter];
             }
             if (parameterCount[value]) {
@@ -957,10 +930,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                 parameterCount[value] = 1;
             }
         });
-        // Підготовка даних для графіку
         var labels = Object.keys(parameterCount);
         var dataValues = Object.values(parameterCount);
-        // Дані для кругової діаграми
         var data = {
             labels: labels,
             datasets: [{
@@ -974,30 +945,41 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         'rgb(153, 102, 255)',
                         'rgb(255, 159, 64)',
                     ],
-                    hoverOffset: 4
+                    hoverOffset: 0 // Прибирає зменшення при наведенні
                 }]
         };
-        // Налаштування для діаграми
         var config = {
             type: 'pie',
             data: data,
             options: {
                 responsive: false,
                 maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 18 // Збільшує шрифт підписів легенди
+                            }
+                        }
+                    },
+                    tooltip: {
+                        bodyFont: {
+                            size: 16 // Збільшує шрифт тексту підказок
+                        }
+                    }
+                }
             },
         };
-        // Створення діаграми в елементі з вказаним ID
         var ctx = document.getElementById(chartId).getContext('2d');
         if (ctx) {
             new Chart(ctx, config);
         }
     }
     function createAllPieCharts(teachers) {
-        createPieChart(teachers, 'age', 'agePieChart', 'Age of Teachers');
-        createPieChart(teachers, 'gender', 'genderPieChart', 'Sex ');
-        createPieChart(teachers, 'region', 'countryPieChart', 'Countries');
+        createPieChart(teachers, 'age', 'agePieChart', 'Teachers in Such Age Groups:');
+        createPieChart(teachers, 'gender', 'genderPieChart', 'Teachers: ');
+        createPieChart(teachers, 'region', 'countryPieChart', 'Teachers from These Countries:');
         createPieChart(teachers, 'course', 'coursePieChart', 'Available Courses');
-        //createPieChart(teachers, 'b_date', 'bdatePieChart', 'B-days');
     }
     var teachers;
     return __generator(this, function (_a) {
