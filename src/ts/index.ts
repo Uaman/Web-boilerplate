@@ -1,3 +1,6 @@
+
+
+
 type FormattedUser = {
   id: number,
   gender: string,
@@ -314,6 +317,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         sortUsersByAttribute(sortedUsers);
         addTeacherCartInfo(sortedUsers);
         searchForTeacher(sortedUsers);
+       
         loadChartJS(() => createAllPieCharts(sortedUsers));
         addTeacherForm(sortedUsers);
       });
@@ -521,6 +525,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   
               addTeacherInfoToCard(teacher, teachers);
               loadLeafletJS(() => initializeMap(teacher)); 
+             // loadDayJS(() => daysUntilNextBirthday(teacher));
           }
       });
   });
@@ -537,62 +542,67 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   function addTeacherInfoToCard(teacher: FormattedUser, teachers: Array<FormattedUser>): void {
     const teacherInfoCard: Element | null = document.querySelector(".teacher-info-card-main-container");
     if (!teacherInfoCard) return;
-  
-    teacherInfoCard.innerHTML = `
-      <div class="teacher-info-card-main">
 
-        <div class="teacher-info-card-image-container" data-id="${teacher.id}">
-          <img src='${teacher.picture_large}' alt="${teacher.full_name}" class="teacher-info-card-image" />
-        </div>
-        <div class="teacher-info-card-details">
-        <div class="with-star">
-          <h2 class="teacher-name">${teacher.full_name}</h2>
-             <div class="add-fav-button-container">
-          <p class="add-to-fav">${teacher.favorite ? '⭐️' : '⚝'}</p>
+    loadDayJS(() => {
+        const daysLeft = daysUntilNextBirthday(teacher); // Отримуємо кількість днів до наступного дня народження
+
+        teacherInfoCard.innerHTML = `
+          <div class="teacher-info-card-main">
+
+            <div class="teacher-info-card-image-container" data-id="${teacher.id}">
+              <img src='${teacher.picture_large}' alt="${teacher.full_name}" class="teacher-info-card-image" />
+            </div>
+            <div class="teacher-info-card-details">
+              <div class="with-star">
+                <h2 class="teacher-name">${teacher.full_name}</h2>
+                <div class="add-fav-button-container">
+                  <p class="add-to-fav">${teacher.favorite ? '⭐️' : '⚝'}</p>
+                </div>
+              </div>
+              <h3 class="teacher-info-card-subject">${teacher.course}</h3>
+              <p>${teacher.city}, ${teacher.country}</p>
+              <p>${teacher.age}, ${teacher.gender}</p>
+              <a href="mailto:${teacher.email}" class="link-teacher-info">${teacher.email}</a>
+              <a href="phoneto:${teacher.phone}">${teacher.phone}</a>
+              <div>
+              <h3>Days left to next birthday:  </h3>
+              <p class="daysToNextBd">${daysLeft}</p> 
+            </div>
+            </div>
+         
           </div>
-        </div>
-          <h3 class="teacher-info-card-subject">${teacher.course}</h3>
-          <p>${teacher.city}, ${teacher.country}</p>
-          <p>${teacher.age}, ${teacher.gender}</p>
-          <a href="mailto:${teacher.email}" class="link-teacher-info">${teacher.email}</a>
-          <p>${teacher.phone}</p>
-        </div>
-      </div>
-  
-      <div class="teacher-info-card-footer-container">
-        <div class="description-container">
-          <p>${teacher.note}</p>
-        </div>
-  
-        <div class="teacher-info-card-map">
-          <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
 
-        </div>
-        <div id="map"></div>   
-     
-     
-      </div>
-    `;
+          <div class="teacher-info-card-footer-container">
+            <div class="description-container">
+              <p>${teacher.note}</p>
+            </div>
 
-    const addToFavButton = document.querySelector(".add-to-fav") as HTMLButtonElement | null;
-    if (addToFavButton) {
-      addToFavButton.addEventListener("click", function () {
-        teacher.favorite = !teacher.favorite; 
-        addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
-     
-        //Star
-        const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
-        const starIcon = teacherItem?.querySelector('.star-icon');
-        if (starIcon) {
-          starIcon.classList.toggle('visible', teacher.favorite);
-          starIcon.classList.toggle('hidden', !teacher.favorite);
+            <div class="teacher-info-card-map">
+              <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
+            </div>
+            <div id="map"></div>   
+          </div>
+        `;
+
+        const addToFavButton = document.querySelector(".add-to-fav") as HTMLButtonElement | null;
+        if (addToFavButton) {
+          addToFavButton.addEventListener("click", function () {
+            teacher.favorite = !teacher.favorite; 
+            addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
+
+            const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
+            const starIcon = teacherItem?.querySelector('.star-icon');
+            if (starIcon) {
+              starIcon.classList.toggle('visible', teacher.favorite);
+              starIcon.classList.toggle('hidden', !teacher.favorite);
+            }
+
+            addFavouriteTeacher(teachers);
+          });
         }
-      
-        addFavouriteTeacher(teachers);
-      });
-    }
-  }
-  
+    });
+}
+
 
   
   function addFavouriteTeacher(teachers: Array<FormattedUser>): void {
@@ -1089,6 +1099,30 @@ function loadLeafletJS(callback: () => void): void {
     document.head.appendChild(script);
   }
 }
+function loadDayJS(callback: () => void): void {
+  if ((window as any).dayjs) {
+      callback();
+  } else {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/dayjs@latest/dayjs.min.js';
+      script.onload = () => {
+          callback();
+      };
+      document.head.appendChild(script);
+  }
+}
+
+
+
+function daysUntilNextBirthday(teacher: FormattedUser): number {
+  const today = (window as any).dayjs(); // Отримуємо dayjs з глобального об'єкта window
+  const birthdayThisYear = (window as any).dayjs(teacher.b_date).year(today.year());
+
+  const nextBirthday = birthdayThisYear.isBefore(today) ? birthdayThisYear.add(1, 'year') : birthdayThisYear;
+
+  return nextBirthday.diff(today, 'day');
+}
+
 
 function initializeMap(teacher: FormattedUser): void {
   

@@ -23,23 +23,3 @@
     margin-top: 2em;
   }
 }
-
-#map { height: 180px; }
-canvas {
-  height: 20em;
-  width: 20em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-#statistics div{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap:wrap;
-  gap: 2em;
-  padding: 0;
-}

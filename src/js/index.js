@@ -472,6 +472,7 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                     overlay.style.display = "block";
                     addTeacherInfoToCard(teacher_1, teachers);
                     loadLeafletJS(function () { return initializeMap(teacher_1); });
+                    // loadDayJS(() => daysUntilNextBirthday(teacher));
                 }
             });
         });
@@ -485,22 +486,24 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         var teacherInfoCard = document.querySelector(".teacher-info-card-main-container");
         if (!teacherInfoCard)
             return;
-        teacherInfoCard.innerHTML = "\n      <div class=\"teacher-info-card-main\">\n\n        <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n          <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n        </div>\n        <div class=\"teacher-info-card-details\">\n        <div class=\"with-star\">\n          <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n             <div class=\"add-fav-button-container\">\n          <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n          </div>\n        </div>\n          <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n          <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n          <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n          <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n          <p>").concat(teacher.phone, "</p>\n        </div>\n      </div>\n  \n      <div class=\"teacher-info-card-footer-container\">\n        <div class=\"description-container\">\n          <p>").concat(teacher.note, "</p>\n        </div>\n  \n        <div class=\"teacher-info-card-map\">\n          <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n\n        </div>\n        <div id=\"map\"></div>   \n     \n     \n      </div>\n    ");
-        var addToFavButton = document.querySelector(".add-to-fav");
-        if (addToFavButton) {
-            addToFavButton.addEventListener("click", function () {
-                teacher.favorite = !teacher.favorite;
-                addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
-                //Star
-                var teacherItem = document.querySelector(".teacher-item[data-index=\"".concat(teachers.indexOf(teacher), "\"]"));
-                var starIcon = teacherItem === null || teacherItem === void 0 ? void 0 : teacherItem.querySelector('.star-icon');
-                if (starIcon) {
-                    starIcon.classList.toggle('visible', teacher.favorite);
-                    starIcon.classList.toggle('hidden', !teacher.favorite);
-                }
-                addFavouriteTeacher(teachers);
-            });
-        }
+        loadDayJS(function () {
+            var daysLeft = daysUntilNextBirthday(teacher); // Отримуємо кількість днів до наступного дня народження
+            teacherInfoCard.innerHTML = "\n          <div class=\"teacher-info-card-main\">\n\n            <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n              <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n            </div>\n            <div class=\"teacher-info-card-details\">\n              <div class=\"with-star\">\n                <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n                <div class=\"add-fav-button-container\">\n                  <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n                </div>\n              </div>\n              <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n              <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n              <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n              <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n              <a href=\"phoneto:").concat(teacher.phone, "\">").concat(teacher.phone, "</a>\n              <div>\n              <h3>Days left to next birthday:  </h3>\n              <p class=\"daysToNextBd\">").concat(daysLeft, "</p> \n            </div>\n            </div>\n         \n          </div>\n\n          <div class=\"teacher-info-card-footer-container\">\n            <div class=\"description-container\">\n              <p>").concat(teacher.note, "</p>\n            </div>\n\n            <div class=\"teacher-info-card-map\">\n              <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n            </div>\n            <div id=\"map\"></div>   \n          </div>\n        ");
+            var addToFavButton = document.querySelector(".add-to-fav");
+            if (addToFavButton) {
+                addToFavButton.addEventListener("click", function () {
+                    teacher.favorite = !teacher.favorite;
+                    addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
+                    var teacherItem = document.querySelector(".teacher-item[data-index=\"".concat(teachers.indexOf(teacher), "\"]"));
+                    var starIcon = teacherItem === null || teacherItem === void 0 ? void 0 : teacherItem.querySelector('.star-icon');
+                    if (starIcon) {
+                        starIcon.classList.toggle('visible', teacher.favorite);
+                        starIcon.classList.toggle('hidden', !teacher.favorite);
+                    }
+                    addFavouriteTeacher(teachers);
+                });
+            }
+        });
     }
     function addFavouriteTeacher(teachers) {
         var favTeachersContainer = document.querySelector('.fav-teachers-list-container');
@@ -879,6 +882,25 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
             };
             document.head.appendChild(script);
         }
+    }
+    function loadDayJS(callback) {
+        if (window.dayjs) {
+            callback();
+        }
+        else {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/dayjs@latest/dayjs.min.js';
+            script.onload = function () {
+                callback();
+            };
+            document.head.appendChild(script);
+        }
+    }
+    function daysUntilNextBirthday(teacher) {
+        var today = window.dayjs(); // Отримуємо dayjs з глобального об'єкта window
+        var birthdayThisYear = window.dayjs(teacher.b_date).year(today.year());
+        var nextBirthday = birthdayThisYear.isBefore(today) ? birthdayThisYear.add(1, 'year') : birthdayThisYear;
+        return nextBirthday.diff(today, 'day');
     }
     function initializeMap(teacher) {
         if (window.L) {

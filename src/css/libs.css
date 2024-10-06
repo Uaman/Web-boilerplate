@@ -1,0 +1,27 @@
+a {
+    color:  rgb(97, 200, 255);
+    margin-bottom: 10px;
+}
+
+#map { height: 180px; }
+canvas {
+  height: 20em;
+  width: 20em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+#statistics div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap:wrap;
+  gap: 2em;
+  padding: 0;
+}
+.daysToNextBd {
+    margin-top: 5px;
+}
