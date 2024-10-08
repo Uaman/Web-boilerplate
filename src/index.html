@@ -1,21 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    <title>Teachinder</title>
+    <link rel="stylesheet" href="./css/app.css">
+    <link rel="stylesheet" 
+    href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/lodash@latest/lodash.min.js"></script>
 
-      <title>Project</title>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+   
+</head>
+<body itemscope itemtype="http://schema.org/WebPage">
+  
 
-      <link rel="stylesheet" href="./css/app.css">
+    <section class="body">
+        <header>   
+            <div class="header-container">
+                <div class="teachinder-font">
+                    <h1 class="teachinder-font-bottom">Teachinder</h1>
+                    <h1 class="teachinder-font-top">Teachinder</h1>
+                </div>
+        
+                <div class="search">
+                    <input type="text" placeholder="Name, note or age to search" class="input-look-for-teacher">
+                    <button class="search-btn">Search</button>
+                </div>
+            </div>
+        
+            <nav class="navigation-and-button">
+            <nav id="desktop-nav">
+                <ul>
+                    <li><a href="#teachers">Teachers</a></li>
+                    <li><a href="#myPieChart">Statistics</a></li>
+                    <li><a href="#favourites">Favourites</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+               
+            </nav>
+            
+         
+                <section id="hamburger-nav"> 
+                
+                    <section class="hamburger-menu">
+                        <section class="hamburger-icon"  onclick='toggleMenu()'>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </section>  
+            
+                        <ul class="menu-links">
+                            <li><a href="#teachers" onclick="toggleMenu()">Teachers</a></li>
+                            <li><a href="#statistics"   onclick="toggleMenu()" >Statistics</a></li>
+                            <li><a href="#favourites"  onclick="toggleMenu()" >Favourites</a></li>
+                            <li><a href="#"  onclick="toggleMenu()" >About</a></li>
+                        </ul>
+                    </section>
+                </section>
+                <button id="add-teacher-btn">Add Teacher</button>
+            </nav>
+        </header>
+        
 
-   </head>
+    <main>
+      <section class="teachers-container" id="teachers"> 
+        <div class="header-section-container">
+            <h1>Top Teachers</h1>
+        </div>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
+        <div class="teacher-parametrs-container" >
+          <div class="params-container">
+              <p>Age</p>
+              <div class="dropdown">
+                  <button class="dropbtn" id="age-params-btn">
+                      18-25 <span class="arrow-down">&#9662;</span>
+                  </button>
+                  <div class="dropdown-content">
+                      <ul>
+                          <li  class="age-option">18-25</li>
+                          <li  class="age-option">26-31</li>
+                          <li  class="age-option">32-40</li>
+                          <li class="age-option"> 41 - 55</li>
+                          <li class="age-option"> 56+ </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
       
-  </body>
+          <div class="params-container" id="region-params">
+              <p>Country</p> <!---Region-->
+              <div class="dropdown">
+                  <button class="dropbtn" id="region-params-btn">
+                      Ukraine <span class="arrow-down">&#9662;</span>
+                  </button>
+                  <div class="dropdown-content">
+                    <ul class="countries-dropdown-to-populate scroll">
+                         <li class="region-option">Europe</li>
+                          <li class="region-option">USA</li>
+                          <li class="region-option">Other</li>
+                        
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      
+          <div class="params-container" id="sex-params">
+              <p>Sex</p>
+              <div class="dropdown">
+                  <button class="dropbtn" id="sex-params-btn">
+                      Male <span class="arrow-down">&#9662;</span>
+                  </button>
+                  <div class="dropdown-content">
+                      <ul>
+                          <li  class="gender-option"> Male</li>
+                          <li  class="gender-option" > Female</li>
+                          <li  class="gender-option" >Other</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      
+          <div class="checkbox-container">
+              <input type="checkbox" class="input-checkbox" id="photoCheck"> 
+              <label for="photoCheck">Only with photo</label>
+          </div>
+      
+          <div class="checkbox-container">
+              <input type="checkbox" class="input-checkbox" id="favCheck">
+              <label for="favCheck">Only favourites</label>
+          </div>
+
+    
+      </div>
+      
+
+        <div class="teachers-list-container"> </div>
+    </section> 
+
+    <section class="statistics-container">
+        <div class="header-section-container">
+            <h1>Statistics</h1>
+        </div>
+
+<div class="statistics-table-container" id="statistics"> 
+  <div>
+    <canvas id="coursePieChart" width="300" height="300"></canvas>
+    <canvas id="agePieChart" width="300" height="300"></canvas>
+    <canvas id="genderPieChart" width="300" height="300"></canvas>
+    <canvas id="countryPieChart" width="300" height="300"></canvas>
+    <canvas id="bdatePieChart" width="300" height="300"></canvas>
+  </div>
+</div> 
+<!----
+    <table>
+        <tr class="table-header">
+          <thead class="table-header">
+            <th data-sort="full_name">Name <span class="arrow">↓</span></th>
+            <th data-sort="course">Speciality  <span class="arrow">↓</span> </th>
+            <th data-sort="age">Age  <span class="arrow">↓</span></th>
+            <th  data-sort="gender">Gender  <span class="arrow">↓</span></th>
+            <th  data-sort="country">Country  <span class="arrow">↓</span></th>
+            <th data-sort="b_date">B-day  <span class="arrow">↓</span></th>
+          </thead>
+    
+        </tr>
+       
+    </table>
+    <div class="pagination">
+       
+      <a href="#"  class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a class="dots">...</a> 
+      <a href="#">Last</a> 
+    --->
+     
+    </div>
+  </div>
+
+    <section class="favourites-container">
+        <div class="header-section-container">
+            <h1>Favourites</h1>
+        </div>
+        <div class="fav-teachers-list-container" id="favourites"> </div>
+    </section>
+    </main>
+
+
+    <footer>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia tempora id eligendi at aut impedit numquam, vitae nihil facilis veritatis cupiditate earum beatae aliquam temporibus. Accusantium minus perferendis voluptatem eius.</p>
+       
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventore ipsum odio officiis omnis quisquam sed tempora? </p>
+  
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedita id iusto mollitia, odit sint ullam veritatis</p>
+        <nav id="dekstop-nav">
+            <ul>
+                <li><a href="#teachers">Teachers</a></li>
+                <li><a href="#statistics">Statistics</a></li>
+                <li><a href="#favourites">Favourites</a></li>
+                <li><a>About</a></li>
+            </ul>
+            <button id="add-teacher-btn"> Add Teacher</button>
+        </nav>
+    </footer>
+    <div class="overlay hidden"></div>
+</section>
+<section class="teacher-info-card-container hidden">
+    <section class="teacher-info-card">
+        <div class="teacher-info-card-header-container">
+            <div class="teacher-info-card-header">
+                <div class="teacher-info-card-header-text">
+                    Teacher Info
+                </div>
+                <div class="teacher-info-card-header-close-btn">
+                    <button class="close-btn">X</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="teacher-info-card-main-container"> </div>
+    </section>
+</section>
+
+<div class="overlay"></div> 
+<div id="notification" class="notification hidden"></div>
+
+
+<section class="add-teacher-form-container hidden">
+  <section class="add-teacher-form">
+    <div class="teacher-info-card-header-container">
+      <div class="teacher-info-card-header">
+        <div class="teacher-info-card-header-text">
+          Add Teacher
+        </div>
+        <div class="teacher-info-card-header-close-btn">
+          <button class="close-btn close-form-btn">X</button>
+        </div>
+      </div>
+    </div>
+
+    <form class="add-teacher-form-main-container" method="post"> 
+      <div class="add-teacher-form-element-container">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="full_name" placeholder="Enter name" required> 
+
+      <div class="add-form-speciality-and-country-container">
+        <div class="add-teacher-form-speciality-container">
+          <p>Speciality</p>
+          <div class="params-container">
+            <div class="dropdown">
+              <button class="dropbtn" type="button" id="speciality">Mathematics <span class="arrow-down">&#9662;</span></button>
+              <div class="dropdown-content" scroll>
+                <ul class="speciality-dropdown-to-populate scroll">
+                  <li >Physics</li>
+                  <li>English</li>
+                  <li>Geography</li>
+                  <li>Computer Science</li>
+                  <li>Dancing</li>
+                  <li>Chemistry</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="add-teacher-form-location-container">
+          <div class="add-teacher-form-country">
+            <p>Country</p>
+            <div class="params-container">
+              <div class="dropdown">
+                <button class="dropbtn" type="button" id="country">Ukraine <span class="arrow-down">&#9662;</span></button>
+                <div class="dropdown-content" >
+                  <ul class="countries-dropdown-to-populate scroll">
+                   <!--- <li>England</li>
+                    <li>USA</li>
+                    <li>Sweden</li>
+                    <li>France</li>
+                    <li>Ukraine</li>
+                    --->
+                    
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="add-teacher-form-element-container">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" placeholder="" required> 
+          </div>
+        </div>
+      </div>
+
+      <div class="add-teacher-form-contacts-container">
+        <div class="add-teacher-form-element-container">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="" required> 
+        </div>
+        <div class="add-teacher-form-element-container">
+          <label for="phone">Phone:</label>
+          <input type="tel" id="phone" name="phone" placeholder="" required> 
+        </div>
+      </div>
+
+      <div class="add-teacher-form-date-of-birth-container">
+        <div class="add-teacher-form-element-container">
+          <label for="date">Date of birth:</label>
+          <input type="date" id="date" name="b_date" required>
+        </div>
+      </div>
+
+      <div class="add-teacher-form-sex-container">
+        <p>Sex</p>
+        <ul class="sex-container">
+          <li>
+            <input type="radio" id="male" name="gender" value="male"> 
+            <label for="male" class="sex-label">Male</label>
+          </li>
+          <li>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female" class="sex-label">Female</label>
+          </li>
+          <li>
+            <input type="radio" id="other" name="gender" value="other">
+            <label for="other" class="sex-label">Other</label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="add-teacher-form-background-color-container">
+        <div class="background-color-chooser">
+          <label for="favcolor" id="favcolor">Background color:</label>
+          <span>🎨</span>
+          <input type="color" id="favcolor" name="favcolor" value="#ff0000"> 
+        </div>
+      </div>
+
+      <div class="add-teacher-form-element-container">
+        <label for="notes">Notes (optional):</label>
+        <textarea name="notes" id="notes" cols="30" rows="10" placeholder=""></textarea>
+      </div>
+
+      <div class="add-teacher-form-button-container">
+        <button type="submit" class="add-teacher-form-button">Add</button> 
+      </div>
+    </form>
+  </section>
+</section>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
+
+
+  <script type="module" src="./js/index.js"></script>
+</body>
 </html>

@@ -1,0 +1,171 @@
+$color-white: rgb(250, 247, 247);
+$link-color: rgb(97, 200, 255);
+
+$font-stack:  "Rubik", sans-serif;
+$color-red: rgb(234, 87, 53);
+$color-grey:  rgb(167, 159, 159);
+$darker-grey: rgb(108, 103, 103);
+
+@mixin button-style() {
+  background-color: $color-white;
+  color: $color-red;
+  border: 1px solid $color-red;
+  padding: 1em 1.5em;
+  font-weight: bold;
+}
+@mixin hover-btn {
+  background-color: $color-red;
+  color: $color-white;
+  cursor: pointer;
+}
+.teacher-info-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0;
+    margin-top: 0;
+    gap: 2em;
+    z-index: 1;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 5em;
+    text-align:left;
+
+}
+.teacher-info-card {
+    margin-top: 50%;
+    width: 60vh;
+    height: max-content;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.608);
+    background-color: $color-white;
+}
+
+.teacher-info-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5em;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    background-color:rgba(32, 26, 26, 0.633);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+.hidden {
+  display: none;
+}
+.show {
+    display: block;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(100%); 
+    z-index: 0;
+    display: none; 
+  }
+  
+  .teacher-info-card-container {
+    position: relative; 
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100; 
+   
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  .teacher-info-card-main {
+    display: flex; 
+    gap: 20px; 
+    align-items: flex-start; 
+    margin: 2em;
+  }
+  
+  .teacher-info-card-image-container {
+ 
+    overflow: hidden;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2em;
+    margin-top: 1em;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.608);
+  
+  }
+  
+  .teacher-info-card-details {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+    margin-top: 1em;
+    
+  }
+  .teacher-name  {
+    margin-bottom: 0.2em;
+  }
+
+  .description-container {
+    flex-wrap: wrap;
+    margin: 1em;
+  }
+  .teacher-info-card-footer-container {
+    margin: 1em;
+  }
+  .teacher-info-card-map a {
+    margin-left: 1em;
+    margin-bottom: 1em;
+    text-decoration: none;
+    border-bottom: 1px dashed $link-color;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+.link-teacher-info {
+    text-decoration: none;
+    color: $link-color;
+  }
+  .link-teacher-info:hover {
+    color: #0056b3;
+    border-bottom: 0.5px solid #0056b3;
+  }
+
+  
+  .add-to-fav:hover {
+
+    cursor: pointer;
+  }
+  .with-star {
+    display: flex;
+    justify-content: space-between;
+  }
+  .teacher-info-card-details,
+  .teacher-name {
+    text-align: left;
+  }
+  .teacher-name {
+    font-style: bold;
+    font-size: 1.5em;
+  }

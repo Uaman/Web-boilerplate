@@ -11,12 +11,20 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 const devMode = process.env.NODE_ENV !== "production";
 
 const CONFIG = {
-  entry: "./src/js/app.js",
+  entry: "./src/js/index.js",
   mode: process.env.NODE_ENV,
   devtool: "cheap-module-source-map",
   output: {
     path: path.resolve(__dirname, "./build"),
     filename: "app.js",
+  },
+  resolve: {
+    extensions: [".js", ".jsx", ".json", ".css", ".scss", '.ts', '.tsx'], 
+    
+    alias: {
+      // Add any aliases for easier imports
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -31,11 +39,11 @@ const CONFIG = {
     new HtmlReplaceWebpackPlugin([
       {
         pattern:
-          '<script type="text/javascript" src="../build/app.js"></script>',
+          '<script type="text/javascript" src="../build/index.js"></script>',
         replacement: "",
       },
       {
-        pattern: '<link rel="stylesheet" href="./css/app.css">',
+        pattern: '<link rel="stylesheet" href="./css/style.css">',
         replacement: "",
       },
     ]),

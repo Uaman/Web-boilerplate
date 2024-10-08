@@ -1,0 +1,25 @@
+
+  /* Media query for responsiveness */
+@media screen and (max-width: 768px) {
+  #desktop-nav {
+    display: none;
+  }
+  
+  #hamburger-nav {
+      display: flex;
+  }
+
+  #dekstop-nav {
+    font-size:0.9em;
+    }
+}
+
+
+
+@media screen and (min-width: 768px) {
+  #add-teacher-btn {
+    height: 15%;
+    width: max-content;
+    margin-top: 2em;
+  }
+}
