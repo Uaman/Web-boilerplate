@@ -25,3 +25,10 @@ canvas {
 .daysToNextBd {
     margin-top: 5px;
 }
+.hiddenMap {
+  display: none;
+}
+a:hover {
+  cursor: pointer;
+  color: blue;
+}

@@ -487,8 +487,8 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
         if (!teacherInfoCard)
             return;
         loadDayJS(function () {
-            var daysLeft = daysUntilNextBirthday(teacher); // Отримуємо кількість днів до наступного дня народження
-            teacherInfoCard.innerHTML = "\n          <div class=\"teacher-info-card-main\">\n\n            <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n              <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n            </div>\n            <div class=\"teacher-info-card-details\">\n              <div class=\"with-star\">\n                <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n                <div class=\"add-fav-button-container\">\n                  <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n                </div>\n              </div>\n              <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n              <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n              <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n              <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n              <a href=\"phoneto:").concat(teacher.phone, "\">").concat(teacher.phone, "</a>\n              <div>\n              <h3>Days left to next birthday:  </h3>\n              <p class=\"daysToNextBd\">").concat(daysLeft, "</p> \n            </div>\n            </div>\n         \n          </div>\n\n          <div class=\"teacher-info-card-footer-container\">\n            <div class=\"description-container\">\n              <p>").concat(teacher.note, "</p>\n            </div>\n\n            <div class=\"teacher-info-card-map\">\n              <a href=\"https://www.google.com/maps?q=").concat(teacher.city, "\" target=\"_blank\" class=\"map-link link-teacher-info\">toggle map</a>\n            </div>\n            <div id=\"map\"></div>   \n          </div>\n        ");
+            var daysLeft = daysUntilNextBirthday(teacher);
+            teacherInfoCard.innerHTML = "\n          <div class=\"teacher-info-card-main\">\n\n            <div class=\"teacher-info-card-image-container\" data-id=\"".concat(teacher.id, "\">\n              <img src='").concat(teacher.picture_large, "' alt=\"").concat(teacher.full_name, "\" class=\"teacher-info-card-image\" />\n            </div>\n            <div class=\"teacher-info-card-details\">\n              <div class=\"with-star\">\n                <h2 class=\"teacher-name\">").concat(teacher.full_name, "</h2>\n                <div class=\"add-fav-button-container\">\n                  <p class=\"add-to-fav\">").concat(teacher.favorite ? '⭐️' : '⚝', "</p>\n                </div>\n              </div>\n              <h3 class=\"teacher-info-card-subject\">").concat(teacher.course, "</h3>\n              <p>").concat(teacher.city, ", ").concat(teacher.country, "</p>\n              <p>").concat(teacher.age, ", ").concat(teacher.gender, "</p>\n              <a href=\"mailto:").concat(teacher.email, "\" class=\"link-teacher-info\">").concat(teacher.email, "</a>\n              <a href=\"phoneto:").concat(teacher.phone, "\">").concat(teacher.phone, "</a>\n              <div>\n              <h3>Days left to next birthday:  </h3>\n              <p class=\"daysToNextBd\">").concat(daysLeft, "</p> \n            </div>\n            </div>\n         \n          </div>\n\n          <div class=\"teacher-info-card-footer-container\">\n            <div class=\"description-container\">\n              <p>").concat(teacher.note, "</p>\n            </div>\n\n            <div class=\"teacher-info-card-map\">\n              <a class=\"toggle-map-link\">toggle map</a> <!-- \u0414\u043E\u0434\u0430\u0454\u043C\u043E \u043A\u043B\u0430\u0441 \u0434\u043B\u044F \u043F\u043E\u0441\u0438\u043B\u0430\u043D\u043D\u044F -->\n            </div>\n            <div id=\"map\" class=\"hiddenMap\"></div> <!-- \u041A\u0430\u0440\u0442\u0430 \u0441\u0445\u043E\u0432\u0430\u043D\u0430 -->\n          </div>\n        ");
             var addToFavButton = document.querySelector(".add-to-fav");
             if (addToFavButton) {
                 addToFavButton.addEventListener("click", function () {
@@ -501,6 +501,16 @@ document.addEventListener("DOMContentLoaded", function () { return __awaiter(_th
                         starIcon.classList.toggle('hidden', !teacher.favorite);
                     }
                     addFavouriteTeacher(teachers);
+                });
+            }
+            var toggleMapLink = document.querySelector(".toggle-map-link");
+            var mapElement = document.getElementById("map");
+            if (toggleMapLink && mapElement) {
+                toggleMapLink.addEventListener("click", function () {
+                    mapElement.classList.toggle("hiddenMap"); // Тогл класу, щоб показати чи сховати карту
+                    if (!mapElement.classList.contains("hiddenMap")) {
+                        loadLeafletJS(function () { return initializeMap(teacher); }); // Ініціалізуємо карту при показі
+                    }
                 });
             }
         });

@@ -508,6 +508,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
   
     teacherListContainers.forEach(teacherListContainer => {
       teacherListContainer.addEventListener("click", function (event) {
+          
           const mouseEvent = event as MouseEvent;
           const clickedItem: Element | null = (mouseEvent.target as HTMLElement).closest(".teacher-item");
   
@@ -524,6 +525,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
               (overlay as HTMLElement).style.display = "block";
   
               addTeacherInfoToCard(teacher, teachers);
+              
               loadLeafletJS(() => initializeMap(teacher)); 
              // loadDayJS(() => daysUntilNextBirthday(teacher));
           }
@@ -544,7 +546,7 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
     if (!teacherInfoCard) return;
 
     loadDayJS(() => {
-        const daysLeft = daysUntilNextBirthday(teacher); // Отримуємо кількість днів до наступного дня народження
+        const daysLeft = daysUntilNextBirthday(teacher);
 
         teacherInfoCard.innerHTML = `
           <div class="teacher-info-card-main">
@@ -578,16 +580,17 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
             </div>
 
             <div class="teacher-info-card-map">
-              <a href="https://www.google.com/maps?q=${teacher.city}" target="_blank" class="map-link link-teacher-info">toggle map</a>
+              <a class="toggle-map-link">toggle map</a> <!-- Додаємо клас для посилання -->
             </div>
-            <div id="map"></div>   
+            <div id="map" class="hiddenMap"></div> <!-- Карта схована -->
           </div>
         `;
 
+      
         const addToFavButton = document.querySelector(".add-to-fav") as HTMLButtonElement | null;
         if (addToFavButton) {
           addToFavButton.addEventListener("click", function () {
-            teacher.favorite = !teacher.favorite; 
+            teacher.favorite = !teacher.favorite;
             addToFavButton.textContent = teacher.favorite ? '⭐️' : '⚝';
 
             const teacherItem = document.querySelector(`.teacher-item[data-index="${teachers.indexOf(teacher)}"]`);
@@ -598,6 +601,19 @@ function createTeachersList(teachers: Array<FormattedUser>): void {
             }
 
             addFavouriteTeacher(teachers);
+          });
+        }
+
+       
+        const toggleMapLink = document.querySelector(".toggle-map-link");
+        const mapElement = document.getElementById("map");
+
+        if (toggleMapLink && mapElement) {
+          toggleMapLink.addEventListener("click", () => {
+            mapElement.classList.toggle("hiddenMap"); // Тогл класу, щоб показати чи сховати карту
+            if (!mapElement.classList.contains("hiddenMap")) {
+              loadLeafletJS(() => initializeMap(teacher)); // Ініціалізуємо карту при показі
+            }
           });
         }
     });
