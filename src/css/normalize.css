@@ -1,4 +1,9 @@
 /* stylelint-disable */
+html {
+    display: flex;
+    justify-content: center;
+}
+
 html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, address,
 big, code, del, dfn, em, img, q, s, samp, small, strong, sub, sup, tt, var, b, u, i, dl,
 dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr,
@@ -13,7 +18,6 @@ main, nav, output, section, summary, time, mark, audio, video {
 }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-  display: block;
   margin: 0;
 }
 

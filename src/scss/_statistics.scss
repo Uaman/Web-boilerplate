@@ -1,0 +1,108 @@
+.statistics-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 35px;
+  transition: 0.2s;
+
+  &-head-arrow {
+    display: none;
+    margin-left: 10px;
+    height: 17px;
+    width: 7px;
+  }
+
+  th {
+    text-align: start;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px 0;
+    position: relative;
+  }
+
+  th::after {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: #000;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  th:hover &-head-arrow {
+    display: inline;
+    transition: 0.2s;
+  }
+
+  th:hover:after {
+    height: 5px;
+    transition: 0.2s;
+  }
+
+  th:not(:first-child) {
+    text-align: center;
+  }
+
+  th:first-child {
+    padding-left: 30px;
+  }
+
+  td {
+    text-align: start;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+  }
+
+  td:not(:first-child) {
+    text-align: center;
+  }
+
+  tbody {
+    tr {
+      padding: 10px;
+    }
+
+    tr:nth-child(even) {
+      background-color: $table-grey-color;
+    }
+  }
+}
+
+.teachers-table-pagination {
+  width: 100%;
+
+  ul {
+    display: flex;
+    gap: 1rem;
+  }
+
+  a {
+    text-decoration: none;
+
+    li {
+      display: inline;
+      font-size: 16px;
+      text-decoration: none;
+      text-decoration: none;
+      font-weight: 500;
+      color: #1ab7d9;
+    }
+
+    li:hover {
+      color: #10616d;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+  }
+
+  &-selected-page-number {
+    li {
+      color: #222222 !important;
+    }
+
+    li:hover {
+      color: #222222 !important;
+    }
+  }
+}
