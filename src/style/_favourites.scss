@@ -1,0 +1,45 @@
+.pseudo-carousel-list {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 152px);
+  gap: 50px;
+}
+
+.pseudo-carousel {
+  --pseudo-carousel-height: 236px;
+  height: var(--pseudo-carousel-height);
+}
+
+.pseudo-carousel button {
+  border: none;
+  appearance: none;
+  background-color: transparent;
+  cursor: pointer;
+  height: 80px;
+  margin-top: calc((var(--pseudo-carousel-height) - 80px) / 2);
+}
+
+.pseudo-carousel button:hover img{
+  opacity: 1;
+}
+
+.pseudo-carousel button img {
+  height: 100%;
+  opacity: 0.4;
+}
+
+#carousel-button-prev-image {
+  transform: rotate(180deg);
+}
+
+.carousel-button-next {
+  float: right;
+}
+
+.carousel-button-prev {
+  float: left
+}
+
+.favourites {
+  margin-bottom: 80px;
+}

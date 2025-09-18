@@ -1,0 +1,231 @@
+.modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+}
+
+.modal-blur {
+  position: fixed;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: color-mix(in srgb, var(--alternative-color) 30%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.modal {
+  border-radius: 3px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 10001;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
+  top: 50vh;
+  transform: translateY(-50%);
+  margin-top: 100px;
+  box-shadow: 0 24px 64px color-mix(in srgb, var(--alternative-color) 30%, transparent),
+              0 2px 12px color-mix(in srgb, var(--alternative-color) 15%, transparent);
+}
+
+.add-teacher-modal {
+  width: 564px;
+  height: 894px;
+  background-color: var(--main-color);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: color-mix(in srgb, var(--alternative-color) 80%, var(--main-color));
+  padding: 12px 24px 12px 24px;
+}
+
+.modal-title {
+  color: var(--main-color);
+  margin: 0;
+  font-weight: 400;
+}
+
+.modal-close-button {
+  appearance: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  object-fit: contain;
+  height: 20px;
+  width: 20px;
+}
+
+.modal-close-button img {
+  height: 20px;
+  width: 20px;
+  transform: translateX(-50%)
+}
+
+.add-teacher-form-wrapper {
+  padding: 30px 40px 30px 40px;
+}
+
+.add-teacher-form {
+  color: var(--alternative-color);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.add-teacher-form label {
+  color: color-mix(in srgb, var(--alternative-color) 60%, transparent);
+  font-weight: 400;
+}
+
+.add-teacher-form input {
+  color: var(--alternative-color);
+  height: 36px;
+  width: calc(100% - 20px);
+  padding: 0 10px 0 10px;
+  margin: 0;
+  font-size: 18px;
+}
+
+.add-teacher-form select {
+  color: var(--alternative-color);
+  height: 36px;
+  width:calc(100% + 4px);
+  padding: 0 10px 0 10px;
+  font-size: 18px;
+}
+
+.add-teacher-form [type="radio"] {
+  height: 16px;
+  width: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.add-teacher-form [type="color"] {
+  width: 52px;
+  height: 26px;
+  padding: 6px;
+  margin-right: 20px;
+}
+
+.add-teacher-form [type="date"] {
+  width: calc(100% - 37px);
+}
+
+.add-teacher-form textarea {
+  height: 130px;
+}
+
+.add-teacher-input-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+}
+
+.add-teacher-margin-wrapper {
+  margin: 10px 0 10px 0;
+}
+
+.add-teacher-sex-input {
+  color: color-mix(in srgb, var(--alternative-color) 60%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 6px;
+}
+
+.add-teacher-sex-input span {
+  margin-right: 40px;
+}
+
+.add-teacher-vertical-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.add-teacher-half-wrapper {
+  width: 50%;
+}
+
+.add-teacher-modal-button {
+  height: 64px;
+  font-size: 28px;
+  font-weight: 500;
+  margin-top: 55px;
+}
+
+.teacher-info-modal {
+  width: 950px;
+  height: 558px;
+  display: flex;
+  flex-direction: column;
+}
+
+.teacher-info-modal-body {
+  height: 100%;
+  max-width: 100%;
+  background-color: var(--main-color);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.teacher-info-modal-body p {
+  width: calc(100% - 40px);
+  margin-top: 40px;
+}
+
+.toggle-map-modal {
+  color: var(--tiffany-blue);
+  text-decoration-style: dashed;
+  margin-top: auto;
+}
+
+.teacher-card-modal-wrapper {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  gap: 42px;
+}
+
+.teacher-photo-modal {
+  width: 320px;
+  height: 320px;
+}
+
+.teacher-name {
+  font-size: 42px;
+  font-weight: 400;
+  margin: 6px 0 24px 0;
+}
+
+.teacher-info-modal-wrapper .teacher-subject-modal {
+  font-size: 24px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+
+.teacher-info-modal-wrapper p {
+  font-size: 16px;
+  margin: 15px 0 15px 0;
+}
+
+.teacher-info-modal-wrapper a {
+  font-size: 18px;
+  color: var(--tiffany-blue);
+  text-decoration: none;
+  margin: 15px 0 15px 0;
+}

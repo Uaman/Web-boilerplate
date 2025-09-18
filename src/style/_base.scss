@@ -1,0 +1,55 @@
+html, body {
+  height: 100%;
+}
+
+html {
+  display: table;
+  margin: auto;
+}
+
+body {
+  background-color: var(--main-color);
+  font-family: Conamore, serif;
+  font-weight: 300;
+  padding: 0 120px 0 120px;
+  max-width: 1200px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+p, h1, h2 {
+  color: var(--alternative-color);
+}
+
+.standard-button {
+  appearance: none;
+  background-color: var(--main-color);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+  font-family: Conamore, serif;
+  font-weight: 500;
+  cursor: pointer;
+  padding-left: 23px;
+  padding-right: 23px;
+}
+
+.standard-button:hover {
+  background-color: var(--accent-color);
+  color: var(--main-color);
+}
+
+hr {
+  width: 500px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+footer {
+  margin: 0 0 40px 0;
+}
+
+.section-heading {
+  font-size: 48px;
+  text-align: center;
+  margin: 0 0 40px 0;
+}

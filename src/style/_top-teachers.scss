@@ -1,0 +1,134 @@
+.top-teachers-filters {
+  display: flex;
+  justify-content: left;
+  align-items: stretch;
+  gap: 21px;
+  margin-bottom: 60px;
+  height: 32px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.filter-group:hover label {
+  color: var(--alternative-color);
+}
+
+.top-teachers-filters label {
+  color: color-mix(in srgb, var(--alternative-color) 60%, transparent);
+  font-weight: 400;
+}
+
+.top-teachers-filters select {
+  height: 100%;
+  padding: 0 18px 0 6px;
+  font-size: 14px;
+}
+
+.vertical-separator {
+  align-self: stretch;
+  width: 0;
+  border-left: 2px dotted currentColor;
+  color: color-mix(in srgb, var(--alternative-color) 60%, transparent);
+}
+
+.top-teachers-list {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 152px);
+  gap: 50px;
+}
+
+.teacher-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.teacher-avatar-wrapper {
+  position: relative;
+  text-align: center;
+  width: 144px;
+  height: 144px;
+  border-radius: 50%;
+  border: color-mix(in srgb, var(--accent-color) 60%, transparent) solid 4px;
+}
+
+.teacher-photo-clipper {
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.teacher-card:hover .teacher-avatar-wrapper {
+  border: var(--accent-color-hover) solid 4px;
+}
+
+.teacher-star {
+  position: absolute;
+  height: 32px;
+  width: 32px;
+  top: 18px;
+  left: 130px;
+}
+
+.teacher-card:hover .teacher-photo-avatar {
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+.teacher-card:hover .teacher-text-avatar {
+  color: var(--accent-color-hover);
+  font-size: 46px;
+}
+
+.teacher-photo-avatar {
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.teacher-text-avatar {
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 38px;
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+.teacher-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.teacher-name p {
+  font-weight: 400;
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.teacher-subject {
+  margin-top: 16px;
+  margin-bottom: 0;
+  color: color-mix(in srgb, var(--alternative-color) 60%, transparent);
+}
+
+.teacher-country {
+  font-size: 12px;
+  margin-top: 6px;
+  margin-bottom: 0;
+}

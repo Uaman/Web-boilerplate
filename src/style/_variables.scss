@@ -1,0 +1,28 @@
+@font-face {
+  font-family: Conamore;
+  src: url('../static/fonts/Conamore Medium.otf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Conamore;
+  src: url('../static/fonts/Conamore Regular.otf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Conamore;
+  src: url('../static/fonts/Conamore Light.otf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+:root {
+  --main-color: #ffffff;
+  --alternative-color: #222222;
+  --accent-color: #f75c49;
+  --accent-color-hover: color-mix(in srgb, var(--accent-color) 80%, var(--alternative-color));
+  --tiffany-blue: #1ab7d9;
+}
