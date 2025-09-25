@@ -1,21 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+<head itemscope itemtype="http://schema.org/WebSite">
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="utf-8">
+   <meta http-equiv="x-ua-compatible" content="ie=edge">
+   <meta name="msapplication-tap-highlight" content="no">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <title>Project</title>
+   <title>Teachinder</title>
 
-      <link rel="stylesheet" href="./css/app.css">
+   <link rel="stylesheet" href="./css/app.css">
+   <script type="module" src="./js/app.js" defer></script>
+   <script type="module" src="./js/script.js" defer></script>
+   <script type="module" src="./js/lalala.js" defer></script>
+</head>
 
-   </head>
+<body itemscope itemtype="http://schema.org/WebPage">
+   <header>
+      <div class="search-panel">
+         <h1 class="logo">Teachinder</h1>
+         <form>
+            <div>
+               <input id="search-input" type="text" placeholder="Name, note or age to search">
+               <button id="search-btn" type="button">Search</button>
+            </div>
+         </form>
+      </div>
+      <nav>
+         <ul>
+            <li><a href="#">Teachers</a></li>
+            <li><a href="#">Statistics</a></li>
+            <li><a href="#">Favorites</a></li>
+            <li><a href="#">About</a></li>
+         </ul>
+         <button class="add-teacher">Add teacher</button>
+      </nav>
+   </header>
+   <hr>
+   <div id="search-results" class="hidden">
+      <h1>Search results</h1>
+      <ul id="search-results-grid"></ul>
+      <button id="exit-search-btn">Exit search</button>
+   </div>
+   <main>
+      <section class="top-teachers">
+         <h1>Top Teachers</h1>
+         <ul id="filters">
+            <li class="select">
+               <label for="age">Age</label>
+               <select name="age" id="age" class="filter">
+                  <option value="18-25">18–25</option>
+                  <option value="26-31">26–31</option>
+                  <option value="32-40">32–40</option>
+                  <option value="41-55">41–55</option>
+                  <option value="56-75">56-75</option>
+               </select>
+            </li>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+            <li class="select">
+               <label for="country">Country</label>
+               <select name="country" id="country" class="filter">
+                  <option value="Australia">Australia</option>
+                  <option value="Canada">Canada</option>
+                  <option value="Denmark">Denmark</option>
+                  <option value="Finland">Finland</option>
+                  <option value="France">France</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Iran">Iran</option>
+                  <option value="Ireland">Ireland</option>
+                  <option value="Netherlands">Netherlands</option>
+                  <option value="New Zealand">New Zealand</option>
+                  <option value="Norway">Norway</option>
+                  <option value="Poland">Poland</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Switzerland">Switzerland</option>
+                  <option value="Turkey">Turkey</option>
+                  <option value="Ukraine">Ukraine</option>
+                  <option value="United States">United States</option>
+               </select>
+            </li>
+
+            <li class="select">
+               <label for="sex">Sex</label>
+               <select name="sex" id="sex" class="filter">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+               </select>
+            </li>
+
+            <li class="checkbox photo">
+               <input type="checkbox" id="photo" class="filter" checked>
+               <label for="photo"></label>
+            </li>
+
+            <li class="checkbox">
+               <input type="checkbox" id="favorites" class="filter" checked>
+               <label for="favorites"></label>
+            </li>
+         </ul>
+         <div class="teachers-list">
+            <ul id="teachers-grid"></ul>
+         </div>
+      </section>
+      <hr>
+      <section class="statistics">
+         <h1>Statistics</h1>
+         <table>
+            <thead>
+               <tr>
+                  <th id="full_name" class="sort" data-order="asc">Name</th>
+                  <th id="course" class="sort" data-order="asc">Speciality</th>
+                  <th id="age" class="sort" data-order="asc">Age</th>
+                  <th id="b_date" class="sort" data-order="asc">Birthday</th>
+                  <th id="country" class="sort" data-order="asc">Country</th>
+               </tr>
+            </thead>
+            <tbody>
+            </tbody>
+         </table>
+         <div>
+            <ul id="table-navigation"></ul>
+         </div>
+      </section>
+      <hr>
+      <section class="favorites">
+         <h1>Favorites</h1>
+         <div class="carousel carousel--scroll-buttons"></div>
+      </section>
+      <hr>
+      <section class="about">
+         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla odit quaerat voluptatum animi veritatis
+            possimus aspernatur ad ratione distinctio maiores rerum tenetur, ipsam asperiores eos pariatur qui saepe
+            dolorum sequi! Nobis autem sed a vitae doloribus, deleniti minima praesentium,
+            vero maiores, ex ea</p>
+         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, molestias eaque aut earum odio nisi
+            dolorum, est, porro alias eos labore quasi? Ex dolorum necessitatibus debitis inventore, dolores quod
+            beatae?</p>
+         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus aut laudantium temporibus, veritatis
+            praesentium necessitatibus repellat debitis!</p>
+      </section>
+   </main>
+
+   <footer>
+      <nav>
+         <ul>
+            <li><a href="#">Teachers</a></li>
+            <li><a href="#">Statistics</a></li>
+            <li><a href="#">Favorites</a></li>
+            <li><a href="#">About</a></li>
+         </ul>
+         <button class="add-teacher">Add teacher</button>
+      </nav>
+   </footer>
+
+   <dialog id="add-teacher-dialog">
+      <div class="dialog-panel">
+         <h2>Add teacher</h2>
+         <button class="close-dialog" aria-label="Close dialog">x</button>
+      </div>
+      <form>
+         <div class="input-container">
+            <label for="teacher-name">Name</label>
+            <input id="teacher-name" name="teacher-name" placeholder="Enter name" type="text" required>
+         </div>
+
+         <div class="input-container">
+            <label for="speciality">Speciality</label>
+            <select id="speciality" name="speciality" required>
+               <option value="">Select speciality</option>
+               <option value="Mathematics">Mathematics</option>
+               <option value="Physics">Physics</option>
+               <option value="English">English</option>
+               <option value="Computer Science">Computer Science</option>
+               <option value="Dancing">Dancing</option>
+               <option value="Chess">Chess</option>
+               <option value="Biology">Biology</option>
+               <option value="Chemistry">Chemistry</option>
+               <option value="Law">Law</option>
+               <option value="Art">Art</option>
+            </select>
+         </div>
+
+         <div class="additional-info">
+
+            <div class="input-container">
+               <label for="teacher-country">Country</label>
+               <select name="teacher-country" id="teacher-country" required>
+                  <option value="">Select country</option>
+                  <option value="Ukraine">Ukraine</option>
+                  <option value="United States">United States</option>
+                  <option value="Canada">Canada</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Germany">Germany</option>
+                  <option value="France">France</option>
+                  <option value="Italy">Italy</option>
+                  <option value="Spain">Spain</option>
+                  <option value="Australia">Australia</option>
+                  <option value="India">India</option>
+                  <option value="China">China</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="South Africa">South Africa</option>
+               </select>
+            </div>
+
+            <div class="input-container">
+               <label for="teacher-city">City</label>
+               <input type="text" name="teacher-city" id="teacher-city" required>
+            </div>
+
+            <div class="input-container">
+               <label for="teacher-email">Email</label>
+               <input type="email" name="teacher-email" id="teacher-email" required>
+            </div>
+
+            <div class="input-container">
+               <label for="teacher-phone">Phone</label>
+               <input type="tel" name="teacher-phone" id="teacher-phone" required>
+            </div>
+
+            <div class="input-container">
+               <label for="teacher-birth">Date of birth</label>
+               <input type="date" name="teacher-birth" id="teacher-birth" required>
+            </div>
+
+            <div class="input-container invisible">
+               <label for="teacher-birth-hidden">Date of birth</label>
+               <input type="date" name="teacher-birth-hidden" id="teacher-birth-hidden">
+            </div>
+
+            <div class="input-container row">
+               <label class="margin-right">Sex</label>
+               <label for="male" >Male</label>
+               <input value="male" type="radio" name="teacher-sex" id="male" required>
+               <label for="female">Female</label>
+               <input value="female" type="radio" name="teacher-sex" id="female" required>
+            </div>
+
+            <div class="input-container row invisible">
+               <label for="teacher-sex-hidden">Sex</label>
+               <label for="Male-hidden" class="sex">Male
+                  <input type="radio" name="teacher-sex-hidden" id="Male-hidden" value="Male">
+               </label>
+               <label for="Female-hidden" class="sex">Female
+                  <input type="radio" name="teacher-sex-hidden" id="Female-hidden" value="Female">
+               </label>
+            </div>
+
+            <div class="input-container row">
+               <label for="teacher-color">Background color</label>
+               <input type="color" name="teacher-color" id="teacher-color" required>
+            </div>
+
+            <div class="input-container row invisible">
+               <label for="teacher-color-hidden">Background color</label>
+               <input type="color" name="teacher-color-hidden" id="teacher-color-hidden">
+            </div>
+         </div>
+
+         <div class="input-container">
+            <label for="teacher-notes">Notes(optional)</label>
+            <textarea name="teacher-notes" id="teacher-notes" rows="10"></textarea>
+         </div>
+
+         <button id="add-teacher" type="button">Add</button>
+      </form>
+   </dialog>
+
+   <dialog id="teacher-info">
+      <div class="dialog-panel">
+         <h2>Teacher info</h2>
+         <button class="close-card">x</button>
+      </div>
+      <div class="flex">
+         <img src="images/man2.png" alt="teacher">
+         <div class="side-info">
+            <h2 class="teacher-name">Ihor Tkachuk</h2>
+            <p class="teacher-speciality">Math</p>
+            <p class="teacher-origin">Kyiv, Ukraine</p>
+            <p class="teacher-age">35, male</p>
+            <p class="teacher-email blue">ihor_tka4@example.com</p>
+            <p class="teacher-phone">+380661234567</p>
+         </div>
+      </div>
+
+      <div class="bottom-info">
+         <p class="teacher-notes align-left">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
+         </p>
+         <p class="teacher-favorite align-left" data-favorite="true"></p>
+      </div>
+
+   </dialog>
+
+</body>
+
 </html>
