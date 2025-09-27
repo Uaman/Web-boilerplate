@@ -1,0 +1,57 @@
+@media (max-width: 768px) {
+    body {
+        position: static;
+        left: auto;
+        padding: 0 16px;
+        max-width: none;
+    }
+
+    hr {
+        width: 100%;
+    }
+
+    .section-title {
+        font-size: 36px;
+        margin-bottom: 24px;
+    }
+
+    .header-top,
+    .header-bottom {
+        gap: 12px;
+    }
+
+    #search-input {
+        width: 160px;
+    }
+    #search-input:hover {
+        width: 220px;
+    }
+
+    .filters {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 14px 18px;
+        align-items: center;
+    }
+
+    .filters .separator {
+        display: none;
+    }
+
+    .filters .filter-group:has(select) {
+        order: 1;
+    }
+
+    .filters .filter-group:has(input[type="checkbox"]) {
+        order: 2;
+    }
+
+    .filters .filter-group {
+        min-width: max-content;
+    }
+
+    .teachers-list {
+        grid-template-columns: repeat(3, 152px);
+        gap: 32px;
+    }
+}

@@ -1,0 +1,73 @@
+.statistics-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.statistics-table thead {
+    border-bottom: 1px solid var(--alternative-color);
+}
+
+.statistics-table th {
+    position: relative;
+    cursor: pointer;
+}
+
+.statistics-table th:hover {
+    box-shadow: inset 0 -4px 0 0 var(--alternative-color);
+    background-color: color-mix(in srgb, var(--alternative-color) 3%, transparent);
+}
+
+.statistics-table th:hover::after {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    content: "↑";
+    color: var(--tiffany-blue);
+    margin-left: 10px;
+}
+
+.statistics-table thead th {
+    font-size: 20px;
+    font-weight: 300;
+    padding: 8px 0 16px 0;
+}
+
+.statistics-table thead th:first-child {
+    text-align: left;
+    padding-left: 44px;
+}
+
+.statistics-table tbody td {
+    text-align: center;
+    padding: 6px 22px 6px 22px;
+}
+
+.statistics-table tbody td:first-child {
+    text-align: left;
+}
+
+.statistics-table tbody tr:nth-of-type(even) {
+    background-color: color-mix(in srgb, var(--alternative-color) 3%, transparent);
+}
+
+.navigation-buttons {
+    padding-left: 22px;
+}
+
+.navigation-buttons ul {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: start;
+    gap: 24px;
+}
+
+.navigation-buttons a {
+    text-decoration: none;
+    color: var(--tiffany-blue);
+    font: inherit;
+}
+
+.navigation-buttons a:hover {
+    color: color-mix(in srgb, var(--tiffany-blue) 30%, var(--alternative-color));
+}

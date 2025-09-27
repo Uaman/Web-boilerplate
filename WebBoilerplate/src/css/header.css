@@ -1,0 +1,108 @@
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo {
+    font-size: 24px;
+    font-family: Roboto, serif;
+    position: relative;
+    display: inline-block;
+    align-items: center;
+}
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#layer-1 {
+    color: var(--main-color);
+    position: relative;
+    z-index: 9999;
+}
+
+#layer-2 {
+    color: var(--accent-color);
+    position: absolute;
+    transform: translate(-2px, -1px);
+    z-index: 9998;
+}
+
+#layer-3 {
+    color: var(--alternative-color);
+    position: absolute;
+    transform: translate(2px, 1px);
+    z-index: 9997;
+}
+
+.header-logo:hover #layer-2 {
+    transform: translate(-3px, -1px);
+}
+
+.header-logo:hover #layer-3 {
+    transform: translate(3px, 1px);
+}
+
+.search-field {
+    display: flex;
+    align-items: stretch;
+    height: 42px;
+    --search-field-font-size: 14px;
+}
+
+.search-field button {
+    font-size: var(--search-field-font-size);
+}
+
+#search-input {
+    width: 220px;
+    border: 1px solid var(--alternative-color);
+    margin-right: 20px;
+    padding-left: 10px;
+    font-size: var(--search-field-font-size);
+}
+
+#search-input:hover {
+    width: 400px;
+}
+
+.header-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 54px;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.add-teacher-button {
+    font-size: inherit;
+    height: 100%;
+}
+
+.navigation {
+    font-family: Roboto, serif;
+    font-weight: 500;
+}
+
+.nav-list {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: start;
+    color: var(--accent-color);
+    gap: 42px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: inherit;
+    font: inherit;
+}
+
+.nav-list a:hover {
+    color: var(--accent-color-hover);
+}

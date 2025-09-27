@@ -1,0 +1,14 @@
+@font-face {
+    font-family: Roboto;
+    src: url('../static/fonts/Roboto.css');
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --main-color: #ffffff;
+    --alternative-color: #222222;
+    --accent-color: #f75c49;
+    --accent-color-hover: color-mix(in srgb, var(--accent-color) 80%, var(--alternative-color));
+    --tiffany-blue: #1ab7d9;
+}

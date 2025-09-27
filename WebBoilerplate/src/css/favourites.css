@@ -1,0 +1,45 @@
+.favourites-list {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(5, 152px);
+    gap: 50px;
+}
+
+.favourites-section {
+    --pseudo-carousel-height: 236px;
+    height: var(--pseudo-carousel-height);
+}
+
+.favourites-section button {
+    border: none;
+    appearance: none;
+    background-color: transparent;
+    cursor: pointer;
+    height: 80px;
+    margin-top: calc((var(--pseudo-carousel-height) - 80px) / 2);
+}
+
+.favourites-section button:hover img{
+    opacity: 1;
+}
+
+.favourites-section button img {
+    height: 100%;
+    opacity: 0.4;
+}
+
+#list-prev-button-image {
+    transform: rotate(180deg);
+}
+
+.list-prev-button {
+    float: left
+}
+
+.list-next-button {
+    float: right;
+}
+
+.favourites {
+    margin-bottom: 80px;
+}
