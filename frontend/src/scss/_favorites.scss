@@ -1,0 +1,27 @@
+.favorites-slider {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    scrollbar-width: none;
+
+    &-grid {
+        display: flex;
+        flex-grow: 1;
+        gap: 4rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+}
+
+.arrow {
+    opacity: 0.5;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 1;
+        transition: 0.2s;
+    }
+}

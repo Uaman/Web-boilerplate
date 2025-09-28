@@ -1,0 +1,182 @@
+dialog {
+    padding: 0px;
+    border: none;
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+}
+
+::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+}
+
+.close-popup-button {
+    cursor: pointer;
+}
+
+/* Add Teacher Popup */
+
+.add-teacher-popup {
+    height: 94vh;
+}
+
+.popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: #464547;
+    color: white;
+}
+
+.add-teacher-form {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    font-size: 14px;
+    text-align: start;
+    color: $secondary-color;
+
+    &-input {
+        width: 100%;
+        height: 33px;
+        padding: 0 10px;
+        border: 1px solid $secondary-color;
+    }
+
+    textarea {
+        width: 100%;
+        height: 90px;
+        padding: 10px;
+        border: 1px solid $secondary-color;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 30px;
+    }
+}
+
+.form-row-with-two-fields {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    div {
+        width: 48%;
+    }
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+/* Teacher Info Popup */
+
+.teacher-info-popup {
+    width: 60vw;
+}
+
+.teacher-info-details-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 20px;
+    text-align: start;
+}
+
+.teacher-info-contact-details {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: start;
+    gap: 6%;
+
+    img {
+        width: 320px;
+        height: 320px;
+        object-fit: cover;
+    }
+
+    article {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        gap: 0.5rem;
+        justify-content: space-between;
+
+        font-size: 14px;
+        font-weight: 400;
+
+        h4 {
+            margin: 1rem 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        a {
+            color: #1a9cb0;
+            text-decoration: none;
+        }
+    }
+}
+
+.headline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+        font-size: 36px;
+        font-weight: 500;
+    }
+
+    .favorite-icon {
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+    }
+}
+
+.teacher-info-toggle-map {
+    font-weight: 400;
+    font-size: 14px;
+    color: #1a9cb0;
+    text-decoration-style: dashed;
+    text-underline-offset: 4px;
+}
+
+@media screen and (max-width: 1200px) {
+    .teacher-info-popup {
+        width: fit-content;
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .teacher-info-contact-details {
+        flex-direction: column;
+        gap: 1rem;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        article {
+            width: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .add-teacher-popup {
+        width: fit-content;
+    }
+}
