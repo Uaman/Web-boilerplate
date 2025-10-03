@@ -1,21 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+<head itemscope itemtype="http://schema.org/WebSite">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teachinder</title>
 
-      <title>Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-      <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/app.css">
+</head>
 
-   </head>
+<body itemscope itemtype="http://schema.org/WebPage">
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-top">
+      <div class="logo">Teachinder</div>
+
+      <div class="search-box">
+        <input type="text" placeholder="Name, note or age to search">
+        <button class="btn-outline">Search</button>
+      </div>
+    </div>
+
+    <div class="container header-bottom">
+      <nav class="nav">
+        <a href="#teachers">Teachers</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#favorites">Favorites</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="btn-outline big">Add teacher</button>
+    </div>
+  </header>
+
+  <main class="main container">
+
+    <!-- Top Teachers -->
+    <section id="teachers" class="top-teachers">
+      <h2>Top Teachers</h2>
+
+      <!-- Filters -->
+      <div class="filters">
+        <div class="filter-item">
+          <span>Age</span>
+          <select>
+            <option>18-31</option>
+            <option>32-45</option>
+            <option>46+</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <span>Region</span>
+          <select>
+            <option>Europe</option>
+            <option>Asia</option>
+            <option>America</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <span>Sex</span>
+          <select>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label><input type="checkbox"> Only with photo</label>
+        </div>
+
+        <div class="filter-item">
+          <label><input type="checkbox"> Only favorites</label>
+        </div>
+      </div>
+
+      <!-- Teachers list -->
+      <div class="teachers-list">
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/1.jpg" alt="Ihor Tkachuk">
+          </div>
+          <h3>Ihor Tkachuk</h3>
+          <p>Chemistry<br>Ukraine</p>
+        </div>
+
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/2.jpg" alt="Pragg Rameshbabu">
+          </div>
+          <h3>Pragg Rameshbabu</h3>
+          <p>Chess<br>India</p>
+        </div>
+
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/3.jpg" alt="Floor Jansen">
+            <span class="star">★</span>
+          </div>
+          <h3>Floor Jansen</h3>
+          <p>Vocal<br>Denmark</p>
+        </div>
+
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/6.jpg" alt="John Burke">
+          </div>
+          <h3>John Burke</h3>
+          <p>Computer Science<br>Belgium</p>
+        </div>
+
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/4.jpg" alt="Ari Tang">
+            <span class="star">★</span>
+          </div>
+          <h3>Ari Tang</h3>
+          <p>Biology<br>China</p>
+        </div>
+
+        <div class="teacher">
+          <div class="avatar">
+            <img src="images/5.jpg" alt="Rachel Andrew">
+          </div>
+          <h3>Rachel Andrew</h3>
+          <p>Medicine<br>UK</p>
+        </div>
+
+        <div class="teacher circle">
+          <div class="initials">A.M</div>
+          <h3>Anna Muzychuk</h3>
+          <p>Chess<br>Belarus</p>
+        </div>
+
+        <div class="teacher circle">
+          <div class="initials">R.L</div>
+          <h3>Radoslaw Ljubojevic</h3>
+          <p>Physics<br>Poland</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics -->
+    <section id="statistics" class="statistics">
+      <h2>Statistics</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Speciality</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Nationality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Daisy Alexander</td><td>Chemistry</td><td>28</td><td>Female</td><td>Vietnam</td></tr>
+          <tr><td>Julia Bradley</td><td>Math</td><td>26</td><td>Female</td><td>USA</td></tr>
+          <tr><td>Rita Hart</td><td>Art</td><td>41</td><td>Female</td><td>Ireland</td></tr>
+          <tr><td>Jonathan Jacobs</td><td>Math</td><td>32</td><td>Male</td><td>England</td></tr>
+          <tr><td>Nathaniel White</td><td>Computer Science</td><td>37</td><td>Male</td><td>Austria</td></tr>
+          <tr><td>Frank Medina</td><td>English</td><td>43</td><td>Male</td><td>Italy</td></tr>
+          <tr><td>Ella Curtis</td><td>Chess</td><td>34</td><td>Female</td><td>USA</td></tr>
+          <tr><td>Claire Simmons</td><td>Art</td><td>38</td><td>Female</td><td>Netherlands</td></tr>
+          <tr><td>Benjamin Knight</td><td>Biology</td><td>44</td><td>Male</td><td>Scotland</td></tr>
+          <tr><td>Norma Rose</td><td>Statistics</td><td>36</td><td>Female</td><td>France</td></tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">Last</a>
+      </div>
+    </section>
+
+    <!-- Favorites -->
+    <section id="favorites" class="favorites">
+      <h2>Favorites</h2>
+      <div class="favorites-wrapper">
+        <button class="scroll-btn left">&#10094;</button>
+
+        <div class="favorites-list scrollable">
+          <div class="teacher"><img src="images/1.jpg" alt="Ihor"><h3>Ihor Tkachuk</h3><p>Ukraine</p></div>
+          <div class="teacher circle">
+            <div class="initials">A.M</div>
+            <h3>Anna Muzychuk</h3>
+            <p>Chess<br>Belarus</p>
+          </div>
+          <div class="teacher circle">
+            <div class="initials">R.L</div>
+            <h3>Radoslaw Ljubojevic</h3>
+            <p>Physics<br>Poland</p>
+          </div>
+          <div class="teacher"><img src="images/6.jpg" alt="John"><h3>John Burke</h3><p>Belgium</p></div>
+          <div class="teacher"><img src="images/4.jpg" alt="Ari"><h3>Ari Tang</h3><p>China</p></div>
+          <div class="teacher"><img src="images/5.jpg" alt="Floor"><h3>Floor Jansen</h3><p>Denmark</p></div>
+          <div class="teacher"><img src="images/2.jpg" alt="Pragg"><h3>Pragg Rameshbabu</h3><p>India</p></div>
+          <div class="teacher"><img src="images/3.jpg" alt="Rachel"><h3>Rachel Andrew</h3><p>UK</p></div>
+        </div>
+
+        <button class="scroll-btn right">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Info text -->
+    <section id="about" class="info-text">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec tortor nec felis pellentesque aliquam vitae ac nisl...</p>
+      <p>Phasellus pulvinar est ut nisl cursus feugiat. In ut lectus laoreet, lobortis urna a, porttitor sapien...</p>
+      <p>Nulla et suscipit eros. Nulla sit amet auctor erat, at laoreet metus. Integer egestas justo nunc...</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <nav class="nav footer-nav">
+        <a href="#teachers">Teachers</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#favorites">Favorites</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="btn-outline big">Add teacher</button>
+    </div>
+  </footer>
+
+  <!-- Add Teacher -->
+  <div id="addTeacherModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Teacher</h3>
+        <span class="close">&times;</span>
+      </div>
+      <form class="modal-form">
+        <label>Name</label>
+        <input type="text" placeholder="Enter name">
+
+        <label>Speciality</label>
+        <select>
+          <option>Mathematics</option>
+          <option>Physics</option>
+          <option>Chemistry</option>
+          <option>Biology</option>
+        </select>
+
+        <div class="form-row">
+          <div>
+            <label>Country</label>
+            <select>
+              <option>Ukraine</option>
+              <option>USA</option>
+              <option>Poland</option>
+            </select>
+          </div>
+          <div>
+            <label>City</label>
+            <input type="text" placeholder="City">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Email</label>
+            <input type="email" placeholder="Email">
+          </div>
+          <div>
+            <label>Phone</label>
+            <input type="tel" placeholder="Phone">
+          </div>
+        </div>
+
+        <label>Date of birth</label>
+        <input type="date">
+
+        <label>Sex</label>
+        <div class="radio-group">
+          <label><input type="radio" name="sex"> Male</label>
+          <label><input type="radio" name="sex"> Female</label>
+        </div>
+
+        <label>Background color</label>
+        <input type="color">
+
+        <label>Notes (optional)</label>
+        <textarea rows="3"></textarea>
+
+        <button type="submit" class="btn-submit">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Teacher Details -->
+  <div id="teacherDetailsModal" class="modal">
+    <div class="modal-content teacher-modal">
+      <div class="modal-header dark">
+        <h3>Teacher Info</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="teacher-profile">
+        <div class="teacher-photo">
+          <img id="teacherPhoto" src="images/default.png" alt="Teacher Photo">
+        </div>
+        <div class="teacher-data">
+          <div class="teacher-name-row">
+            <h2 id="teacherName">Ihor Tkachuk</h2>
+            <span id="teacherStar" class="star" style="display:none;">★</span>
+          </div>
+          <p><strong id="teacherSpeciality">Chemistry</strong></p>
+          <p id="teacherLocation">Kyiv, Ukraine</p>
+          <p id="teacherExtra">35, Male</p>
+          <p><a href="#" id="teacherEmail">ihor_tkachuk@domain.com</a></p>
+          <p id="teacherPhone">+380964993252</p>
+        </div>
+      </div>
+      <div class="teacher-description">
+        <p id="teacherNotes">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+        <a href="#" class="map-link">toggle map</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    //FAVORITES SCROLL
+    const leftBtn = document.querySelector('.scroll-btn.left');
+    const rightBtn = document.querySelector('.scroll-btn.right');
+    const favoritesList = document.querySelector('.favorites-list.scrollable');
+
+    if (leftBtn && rightBtn && favoritesList) {
+      leftBtn.addEventListener('click', () => {
+        favoritesList.scrollBy({ left: -200, behavior: 'smooth' });
+      });
+
+      rightBtn.addEventListener('click', () => {
+        favoritesList.scrollBy({ left: 200, behavior: 'smooth' });
+      });
+    }
+
+    //STATISTICS SORT
+    const table = document.querySelector(".statistics table");
+    if (table) {
+      const headers = table.querySelectorAll("th");
+
+      headers.forEach(header => {
+        header.addEventListener("click", () => {
+          const isActive = header.classList.contains("active");
+          const isAsc = header.classList.contains("asc");
+
+          if (isActive && isAsc) {
+            header.classList.remove("active", "asc");
+            header.removeAttribute("data-order");
+            return;
+          }
+
+          headers.forEach(h => h.classList.remove("active", "asc"));
+          header.classList.add("active");
+
+          if (isActive && !isAsc) {
+            header.classList.add("asc");
+          }
+        });
+      });
+    }
+
+    //ADD TEACHER MODAL
+    const addTeacherModal = document.getElementById("addTeacherModal");
+    const openBtns = document.querySelectorAll(".btn-outline.big");
+    const addTeacherClose = addTeacherModal ? addTeacherModal.querySelector(".close") : null;
+
+    if (addTeacherModal && openBtns.length > 0) {
+      openBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          addTeacherModal.style.display = "flex";
+        });
+      });
+
+      if (addTeacherClose) {
+        addTeacherClose.addEventListener("click", () => {
+          addTeacherModal.style.display = "none";
+        });
+      }
+
+      window.addEventListener("click", (e) => {
+        if (e.target === addTeacherModal) {
+          addTeacherModal.style.display = "none";
+        }
+      });
+    }
+
+    //TEACHER DETAILS MODAL
+    const teacherModal = document.getElementById("teacherDetailsModal");
+    const teacherClose = teacherModal ? teacherModal.querySelector(".close") : null;
+    const teacherBlocks = document.querySelectorAll(".teachers-list .teacher, .favorites-list .teacher");
+
+    if (teacherModal && teacherBlocks.length > 0) {
+      teacherBlocks.forEach(block => {
+        block.addEventListener("click", () => {
+          const img = block.querySelector("img");
+          const name = block.querySelector("h3")?.innerText || "Unknown Teacher";
+          const infoLines = block.querySelector("p")?.innerText.split("\n") || [];
+          const hasStar = !!block.querySelector(".star");
+
+          const speciality = infoLines[0] || "Unknown Speciality";
+          const location = infoLines[1] || "Unknown Location";
+
+          document.getElementById("teacherPhoto").src = img ? img.src : "images/default.png";
+          document.getElementById("teacherName").innerText = name;
+          document.getElementById("teacherSpeciality").innerText = speciality;
+          document.getElementById("teacherLocation").innerText = location;
+
+          const starEl = document.getElementById("teacherStar");
+          if (hasStar) {
+            starEl.style.display = "inline";
+          } else {
+            starEl.style.display = "none";
+          }
+
+          document.getElementById("teacherExtra").innerText = "35, Male";
+          document.getElementById("teacherEmail").innerText = "ihor_tkachuk@domain.com";
+          document.getElementById("teacherEmail").href = "mailto:ihor_tkachuk@domain.com";
+          document.getElementById("teacherPhone").innerText = "+380964993252";
+          document.getElementById("teacherNotes").innerText =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ab autem consectetur culpa cumque...";
+
+          teacherModal.style.display = "flex";
+        });
+      });
+
+      if (teacherClose) {
+        teacherClose.addEventListener("click", () => {
+          teacherModal.style.display = "none";
+        });
+      }
+
+      window.addEventListener("click", (e) => {
+        if (e.target === teacherModal) {
+          teacherModal.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
 </html>
