@@ -1,30 +1,16 @@
+import { setUpPagination } from '../setUpPagination';
 import { StoredUser } from '../types/FormattedUser';
 
 export function renderTable(users: StoredUser[]): void {
-	const tableBody = document.getElementById('statistics-table-body');
+	const userMap = createUserMap(users, 10);
+	setUpPagination(userMap, 1);
+}
 
-	if (!tableBody) {
-		console.error('Table body not found');
-		return;
+function createUserMap(users: StoredUser[], usersPerPage: number): Map<number, StoredUser[]> {
+	const userMap = new Map();
+	for (let i = 0; i < users.length; i += usersPerPage) {
+		const pageUsers = users.slice(i, i + usersPerPage);
+		userMap.set(Math.floor(i / usersPerPage) + 1, pageUsers);
 	}
-
-	tableBody.innerHTML = '';
-
-	const rowsFragment = document.createDocumentFragment();
-
-	users.forEach((user) => {
-		const userElement = document.createElement('tr');
-
-		userElement.innerHTML = `
-			<td>${user.full_name}</td>
-            <td>${user.course}</td>
-			<td>${user.age}</td>
-			<td>${user.gender}</td>
-			<td>${user.country}</td>
-		`;
-
-		rowsFragment.appendChild(userElement);
-	});
-
-	tableBody.appendChild(rowsFragment);
+	return userMap;
 }

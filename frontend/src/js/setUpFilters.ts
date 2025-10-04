@@ -1,16 +1,19 @@
-import { renderUsers } from './render/renderUsers';
-import { StoredUser } from './types/FormattedUser';
+import { GlobalService } from './service/service';
 import { UserFilters } from './types/UserFilters';
+import { filterUsers } from './utils/filterUsers';
 
-export function setUpFilters(
-	users: StoredUser[],
-	applyFilters: (users: StoredUser[], filters: UserFilters) => StoredUser[],
-) {
+export function applyFilters() {
+	const filters = getCurrentFilters();
+	const filterResult = filterUsers(GlobalService.users, filters);
+	GlobalService.displayedUsers = filterResult;
+}
+
+export function setUpFilters() {
 	const filtersForm = document.getElementById('filters-form');
 	const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
 
-	function populateRegionFilter(users: StoredUser[]) {
-		const uniqueCountries = Array.from(new Set(users.map((user) => user.country)));
+	function populateRegionFilter() {
+		const uniqueCountries = Array.from(new Set(GlobalService.users.map((user) => user.country)));
 
 		const fragment = document.createDocumentFragment();
 
@@ -30,30 +33,27 @@ export function setUpFilters(
 		regionFilter.appendChild(fragment);
 	}
 
-	function getCurrentFilters(): UserFilters {
-		const ageFilter = document.getElementById('age-filter') as HTMLSelectElement;
-		const sexFilter = document.getElementById('gender-filter') as HTMLSelectElement;
-		const withPhotoOnly = document.getElementById('with-photo-only') as HTMLInputElement;
-		const favoritesOnly = document.getElementById('favorites-only') as HTMLInputElement;
-
-		const [min, max] = ageFilter.value.split('-').map(Number);
-
-		return {
-			age: { min, max },
-			country: regionFilter.value.length > 0 ? regionFilter.value : undefined,
-			gender: sexFilter.value === 'Male' || sexFilter.value === 'Female' ? sexFilter.value : undefined,
-			picture_large: withPhotoOnly.checked ? true : undefined,
-			favorite: favoritesOnly.checked ? true : undefined,
-		};
-	}
-
-	populateRegionFilter(users);
+	populateRegionFilter();
 
 	if (filtersForm) {
-		filtersForm.addEventListener('input', () => {
-			const filters = getCurrentFilters();
-			console.log(filters);
-			renderUsers(applyFilters(users, filters));
-		});
+		filtersForm.addEventListener('input', GlobalService.applyRestrictions);
 	}
+}
+
+function getCurrentFilters(): UserFilters {
+	const regionFilter = document.getElementById('region-filter') as HTMLSelectElement;
+	const ageFilter = document.getElementById('age-filter') as HTMLSelectElement;
+	const sexFilter = document.getElementById('gender-filter') as HTMLSelectElement;
+	const withPhotoOnly = document.getElementById('with-photo-only') as HTMLInputElement;
+	const favoritesOnly = document.getElementById('favorites-only') as HTMLInputElement;
+
+	const [min, max] = ageFilter.value.split('-').map(Number);
+
+	return {
+		age: { min, max },
+		country: regionFilter.value.length > 0 ? regionFilter.value : undefined,
+		gender: sexFilter.value === 'Male' || sexFilter.value === 'Female' ? sexFilter.value : undefined,
+		picture_large: withPhotoOnly.checked ? true : undefined,
+		favorite: favoritesOnly.checked ? true : undefined,
+	};
 }

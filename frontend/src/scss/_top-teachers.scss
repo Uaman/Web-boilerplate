@@ -49,20 +49,24 @@
   align-items: center;
 }
 
+.load-more-section {
+  margin-top: 4rem;
+}
+
 .teacher-card {
   text-align: center;
   position: relative;
   width: 150px;
 
   &.favorite::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 5%;
     right: 0;
     width: 30px;
     height: 30px;
-    background-image: url("../images/star.png");
+    background-image: url('../images/star.png');
     background-size: cover;
     background-repeat: no-repeat;
   }

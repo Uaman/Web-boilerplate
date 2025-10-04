@@ -1,8 +1,5 @@
+import { GlobalService } from '../service/service';
 import { StoredUser } from '../types/FormattedUser';
-import { parsePhoneNumberFromString, CountryCode } from 'libphonenumber-js';
-import countries from 'i18n-iso-countries';
-
-countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 
 export function handleAddUsersPopup(): void {
 	const addTeacherBtns = document.querySelectorAll(
@@ -50,7 +47,8 @@ export function handleAddUsersPopup(): void {
 				console.log('Teacher added successfully');
 				addTeacherPopup.close();
 				form.reset();
-				location.reload();
+				formObject._id = (await response.json()).userId;
+				GlobalService.users = [formObject as StoredUser, ...GlobalService.users];
 			} else {
 				const errorData = await response.json();
 				console.error('Failed to add teacher:', errorData);

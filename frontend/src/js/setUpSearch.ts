@@ -1,14 +1,16 @@
-import { renderUsers } from './render/renderUsers';
-import { StoredUser } from './types/FormattedUser';
+import { GlobalService } from './service/service';
+import { findUsers } from './utils/findUsers';
 
-export function setUpSearch(users: StoredUser[], search: (users: StoredUser[], searchValue: string) => StoredUser[]) {
-	const searchInput = document.getElementById('search-field') as HTMLInputElement;
+export function setUpSearch() {
 	const searchButton = document.getElementById('search-button');
 
-	searchButton?.addEventListener('click', (event) => {
-		const searchValue = searchInput.value;
-		const searchResults = search(users, searchValue);
-		console.log(searchResults);
-		renderUsers(searchResults);
-	});
+	searchButton?.addEventListener('click', GlobalService.applyRestrictions);
+}
+
+export function applySearch() {
+	const searchInput = document.getElementById('search-field') as HTMLInputElement;
+
+	const searchValue = searchInput.value;
+	const searchResults = findUsers(GlobalService.displayedUsers, searchValue);
+	GlobalService.displayedUsers = searchResults;
 }

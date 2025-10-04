@@ -7,9 +7,19 @@ export const initDB = (database: Db) => {
   db = database;
 };
 
-export const getUsers = async (_req: Request, res: Response): Promise<void> => {
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await db.collection('users').find().toArray();
+    const limit = parseInt(req.query.limit as string) || 50;
+    const skip = parseInt(req.query.skip as string) || 0;
+
+    const users = await db
+      .collection('users')
+      .find()
+      .sort({picture_large: 1})
+      .skip(skip)
+      .limit(limit)
+      .toArray();
+
     res.status(200).json(users);
   } catch (error) {
     console.error(error);

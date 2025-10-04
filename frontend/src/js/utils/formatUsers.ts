@@ -1,11 +1,11 @@
-import { FormattedUser } from '../types/FormattedUser';
-import { RandomUser } from '../types/RandomUser';
+import { FormattedUser, StoredUser } from '../types/FormattedUser.js';
+import { RandomUser } from '../types/RandomUser.js';
 
 function capitalizeFirstLetter(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function formatRandomUsers(randomUsers: RandomUser[]): Partial<FormattedUser>[] {
+function formatRandomUsers(randomUsers: RandomUser[]): Partial<StoredUser>[] {
 	return randomUsers.map((user) => ({
 		gender: user.gender,
 		title: user.name.title,
@@ -26,9 +26,9 @@ function formatRandomUsers(randomUsers: RandomUser[]): Partial<FormattedUser>[] 
 }
 
 function mergeUsers(
-	formattedRandomUsers: Partial<FormattedUser>[],
-	additionalUsers: Partial<FormattedUser>[],
-): Partial<FormattedUser>[] {
+	formattedRandomUsers: Partial<StoredUser>[],
+	additionalUsers: Partial<StoredUser>[],
+): Partial<StoredUser>[] {
 	const combinedUsers = [...formattedRandomUsers, ...additionalUsers];
 	const uniqueUsersMap = new Map();
 
@@ -39,7 +39,7 @@ function mergeUsers(
 	return Array.from(uniqueUsersMap.values());
 }
 
-function assignAdditionalFields(users: Partial<FormattedUser>[]): FormattedUser[] {
+function assignAdditionalFields(users: Partial<FormattedUser>[]): StoredUser[] {
 	const courses = [
 		'Mathematics',
 		'Physics',
@@ -58,15 +58,15 @@ function assignAdditionalFields(users: Partial<FormattedUser>[]): FormattedUser[
 	return users.map((user, index) => ({
 		...user,
 		gender: capitalizeFirstLetter(user.gender),
-		// id: user.id || `user-${index + 1}`,
+		// _id: user.id || `user-${index + 1}`,
 		favorite: user.favorite ?? false,
 		course: user.course || courses[Math.floor(Math.random() * courses.length)],
 		bg_color: user.bg_color || '#ffffff',
 		note: user.note || 'Note not provided',
-	})) as FormattedUser[];
+	})) as StoredUser[];
 }
 
-export function processUsers(randomUserMock: RandomUser[], additionalUsers: Partial<FormattedUser>[]): FormattedUser[] {
+export function processUsers(randomUserMock: RandomUser[], additionalUsers: Partial<StoredUser>[] = []): StoredUser[] {
 	try {
 		const formattedRandomUsers = formatRandomUsers(randomUserMock);
 		const mergedUsers = mergeUsers(formattedRandomUsers, additionalUsers);

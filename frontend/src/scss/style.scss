@@ -1,10 +1,10 @@
-@import "variables";
-@import "header";
-@import "top-teachers";
-@import "statistics";
-@import "favorites";
-@import "about";
-@import "popup";
+@import 'variables';
+@import 'header';
+@import 'top-teachers';
+@import 'statistics';
+@import 'favorites';
+@import 'about';
+@import 'popup';
 
 body {
     margin: 0 auto;
@@ -48,7 +48,7 @@ p {
 }
 
 .section::before {
-    content: "";
+    content: '';
     position: absolute;
     justify-self: center;
     top: 0px;
@@ -69,6 +69,11 @@ p {
     padding: 5px 15px;
     color: $primary-color;
     transition: 0.2s;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
 .btn:hover {

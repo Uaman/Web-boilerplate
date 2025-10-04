@@ -1,3 +1,4 @@
+import { GlobalService } from '../service/service';
 import { StoredUser } from '../types/FormattedUser';
 
 export function setInfoPopupContent(user: StoredUser): void {
@@ -13,7 +14,6 @@ export function setInfoPopupContent(user: StoredUser): void {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ userId: user._id, favorite: user.favorite }),
 			};
-
 			fetch('http://localhost:3030/api/user/favorite', requestOptions).then((response) => {
 				if (response.ok) {
 					console.log('User favorite status updated');
@@ -22,7 +22,6 @@ export function setInfoPopupContent(user: StoredUser): void {
 				}
 			});
 		}
-
 		closeTeacherInfoPopupBtn.removeEventListener('click', hideTeacherInfoPopup);
 		teacherInfoPopup.close();
 	}
@@ -39,13 +38,13 @@ export function setInfoPopupContent(user: StoredUser): void {
 	const contactInfo = document.createElement('div');
 	contactInfo.classList.add('teacher-info-contact-details');
 	contactInfo.innerHTML = `
-		<img src="${user.picture_large ?? './images/patrick.png'}" alt="Teacher photo" />
+		<img src="${user.picture_large ?? './images/verstappen.png'}" alt="Teacher photo" />
 		<article>
 			<div class="headline">
 				<h2>${user.full_name}</h2>
 				<img src="${
-					user.favorite ? './images/star.png' : './images/star_outline.png'
-				}" alt="Favorite" class="favorite-icon" id="favorite-button"/>
+		user.favorite ? './images/star.png' : './images/star_outline.png'
+	}" alt="Favorite" class="favorite-icon" id="favorite-button"/>
 			</div>
 			<h4>${user.course}</h4>
 			<p>${user.city}, ${user.country}</p>
@@ -71,7 +70,6 @@ export function setInfoPopupContent(user: StoredUser): void {
 
 	const favoriteButton = document.getElementById('favorite-button') as HTMLImageElement;
 	favoriteButton?.addEventListener('click', () => {
-		console.log('Favorite button clicked');
 		user.favorite = !user.favorite;
 		const favoritesContainer = document.getElementById('favorites-slider-container');
 		const userCardFavorite = document.getElementById(`favorite-${user._id}`);
@@ -92,37 +90,30 @@ export function setInfoPopupContent(user: StoredUser): void {
 	});
 }
 
-export function handleUserInfoPopup(users: StoredUser[]): void {
+export function handleUserInfoPopup(): void {
 	const teachersGrid = document.getElementById('teachers-grid');
 	const favoriteTeachersSlider = document.getElementById('favorites-slider-container');
+
+	teachersGrid.addEventListener('click', handlePopupOpen);
+	favoriteTeachersSlider.addEventListener('click', handlePopupOpen);
+}
+
+function showTeacherInfoPopup(id: string) {
 	const teacherInfoPopup = document.getElementById('teacher-info-popup') as HTMLDialogElement;
 
-	function showTeacherInfoPopup(id: string) {
-		const teacher = users.find((user) => user._id.toString() === id);
-		setInfoPopupContent(teacher);
+	const teacher = GlobalService.users.find((user) => user._id.toString() === id);
+	setInfoPopupContent(teacher);
 
-		teacherInfoPopup.showModal();
+	teacherInfoPopup.showModal();
+}
+
+function handlePopupOpen(event: Event) {
+	const target = event.target as HTMLElement;
+
+	const teacherCard = target.closest('.teacher-card');
+
+	if (teacherCard) {
+		const id = teacherCard.id.includes('favorite') ? teacherCard.id.slice(9) : teacherCard.id;
+		showTeacherInfoPopup(id);
 	}
-
-	teachersGrid.addEventListener('click', (event) => {
-		const target = event.target as HTMLElement;
-
-		const teacherCard = target.closest('.teacher-card');
-
-		if (teacherCard) {
-			const id = teacherCard.id;
-			showTeacherInfoPopup(id);
-		}
-	});
-
-	favoriteTeachersSlider.addEventListener('click', (event) => {
-		const target = event.target as HTMLElement;
-
-		const teacherCard = target.closest('.teacher-card');
-
-		if (teacherCard) {
-			const id = teacherCard.id.slice(9);
-			showTeacherInfoPopup(id);
-		}
-	});
 }

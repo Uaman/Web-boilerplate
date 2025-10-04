@@ -1,11 +1,9 @@
+import { GlobalService } from './service/service';
 import { renderTable } from './render/renderTable';
-import { StoredUser } from './types/FormattedUser';
 import { SortingUserFilters } from './types/UserFilters';
+import { sortUsers } from './utils/sortUsers';
 
-export function setUpSorting(
-	users: StoredUser[],
-	sort: (users: StoredUser[], sortBy: keyof SortingUserFilters, order: 'asc' | 'desc') => StoredUser[],
-) {
+export function setUpSorting() {
 	const tableHead = document.getElementById('statistics-table-head');
 	let currentSortField: keyof SortingUserFilters | null = null;
 	let currentSortOrder: 'asc' | 'desc' = 'asc';
@@ -29,7 +27,7 @@ export function setUpSorting(
 		}
 		currentSortField = sortBy;
 
-		const sortedUsers = sort(users, sortBy, currentSortOrder);
+		const sortedUsers = sortUsers(GlobalService.displayedUsers, sortBy, currentSortOrder);
 
 		renderTable(sortedUsers);
 	});

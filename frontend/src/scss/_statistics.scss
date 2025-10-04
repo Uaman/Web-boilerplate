@@ -87,33 +87,23 @@
     gap: 1rem;
   }
 
-  a {
+  li {
+    display: inline;
+    font-size: 16px;
     text-decoration: none;
+    text-decoration: none;
+    font-weight: 500;
+    color: #1ab7d9;
 
-    li {
-      display: inline;
-      font-size: 16px;
-      text-decoration: none;
-      text-decoration: none;
-      font-weight: 500;
-      color: #1ab7d9;
-    }
-
-    li:hover {
-      color: #10616d;
-      cursor: pointer;
-      transition: 0.2s;
+    &.selected {
+      color: #222222;
     }
   }
 
-  &-selected-page-number {
-    li {
-      color: #222222 !important;
-    }
-
-    li:hover {
-      color: #222222 !important;
-    }
+  li:hover {
+    color: #10616d;
+    cursor: pointer;
+    transition: 0.2s;
   }
 }
 
