@@ -715,3 +715,65 @@ h2 {
 #teacherStar.active {
   color: gold;
 }
+
+/*PAGINATION TABLE*/
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  font-family: Roboto, sans-serif;
+}
+
+.pagination button {
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover {
+  color: #1976d2;
+  text-decoration: underline;
+}
+
+.pagination button.active {
+  font-weight: bold;
+  color: #1976d2;
+  text-decoration: underline;
+}
+
+.pagination span {
+  padding: 6px 8px;
+  color: #888;
+}
+
+
+.statistics th {
+  cursor: pointer;
+  padding: 10px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.statistics th.sorted {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.statistics th.sorted::after {
+  content: attr(data-arrow);
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+.statistics th.asc::after {
+  content: "↑";
+}
+.statistics th.desc::after {
+  content: "↓";
+}

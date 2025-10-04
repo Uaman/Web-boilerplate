@@ -1,7 +1,12 @@
 import { validatePhone } from "../utils/phone.js";
+import { courses } from "../utils/courses.js";
 
 function isCapitalized(str) {
   return typeof str === "string" && str[0] === str[0]?.toUpperCase();
+}
+
+function isHexColor(str) {
+  return /^#[0-9A-F]{6}$/i.test(str);
 }
 
 export function validateUsers(users) {
@@ -21,19 +26,29 @@ export function validateUsers(users) {
     }
 
     const phoneCheck = validatePhone(u.phone, u.country);
-    if (!phoneCheck.valid) {
-      errors.push(phoneCheck.error);
-    }
+    if (!phoneCheck.valid) errors.push(phoneCheck.error);
 
     if (!(typeof u.email === "string" && u.email.includes("@"))) {
       errors.push("email is invalid");
+    }
+
+    if (u.course && !courses.includes(u.course)) {
+      errors.push("course is not in allowed list");
+    }
+
+    if (u.bg_color && !isHexColor(u.bg_color)) {
+      errors.push("bg_color is not a valid HEX");
+    }
+
+    if (typeof u.favorite !== "boolean") {
+      errors.push("favorite must be boolean");
     }
 
     return {
       ...u,
       phone: phoneCheck.normalized || u.phone,
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   });
 }
