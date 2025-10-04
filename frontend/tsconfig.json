@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "./build/js",
+    "incremental": true,
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "composite": true
+  },
+  "include": [
+    "./src/**/*", ".eslintrc.cjs"],
+  "exclude": ["./node_modules", "test", "./build/js"]
+}
