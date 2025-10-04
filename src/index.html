@@ -1,21 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+<head itemscope itemtype="http://schema.org/WebSite">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teachinder</title>
 
-      <title>Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-      <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
 
-   </head>
+<body itemscope itemtype="http://schema.org/WebPage">
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-top">
+      <div class="logo">Teachinder</div>
+
+      <div class="search-box">
+        <input id="searchName" type="text" placeholder="Name, note or age to search">
+        <button id="searchBtn" class="btn-outline">Search</button>
+      </div>
+    </div>
+
+    <div class="container header-bottom">
+      <nav class="nav">
+        <a href="#teachers">Teachers</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#favorites">Favorites</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="btn-outline big" id="openAddTeacher">Add teacher</button>
+    </div>
+  </header>
+
+  <main class="main container">
+
+    <!-- Top Teachers -->
+    <section id="teachers" class="top-teachers">
+      <h2>Top Teachers</h2>
+
+      <!-- Filters -->
+      <div class="filters" id="filters">
+      </div>
+
+      <!-- Teachers list -->
+      <div class="teachers-list"></div>
+    </section>
+
+    <!-- Statistics -->
+    <section id="statistics" class="statistics">
+      <h2>Statistics</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Speciality</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Nationality</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="pagination">
+      </div>
+    </section>
+
+    <!-- Favorites -->
+    <section id="favorites" class="favorites">
+      <h2>Favorites</h2>
+      <div class="favorites-wrapper">
+        <button class="scroll-btn left">&#10094;</button>
+        <div class="favorites-list scrollable"></div>
+        <button class="scroll-btn right">&#10095;</button>
+      </div>
+    </section>
+
+    <!-- Info text -->
+    <section id="about" class="info-text">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec tortor nec felis pellentesque aliquam vitae ac nisl...</p>
+      <p>Phasellus pulvinar est ut nisl cursus feugiat. In ut lectus laoreet, lobortis urna a, porttitor sapien...</p>
+      <p>Nulla et suscipit eros. Nulla sit amet auctor erat, at laoreet metus. Integer egestas justo nunc...</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <nav class="nav footer-nav">
+        <a href="#teachers">Teachers</a>
+        <a href="#statistics">Statistics</a>
+        <a href="#favorites">Favorites</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="btn-outline big">Add teacher</button>
+    </div>
+  </footer>
+
+  <!-- Modal Add Teacher -->
+  <div id="addTeacherModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Teacher</h3>
+        <span class="close">&times;</span>
+      </div>
+      <form id="teach_add_popup" class="modal-form">
+        <label>Name</label>
+        <input name="full_name" type="text" placeholder="Enter name" required>
+
+        <label>Speciality</label>
+        <input name="course" type="text" placeholder="Course">
+
+        <div class="form-row">
+          <div>
+            <label>Country</label>
+            <input name="country" type="text" placeholder="Country">
+          </div>
+          <div>
+            <label>City</label>
+            <input name="city" type="text" placeholder="City">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label>Email</label>
+            <input name="email" type="email" placeholder="Email">
+          </div>
+          <div>
+            <label>Phone</label>
+            <input name="phone" type="tel" placeholder="Phone">
+          </div>
+        </div>
+
+        <label>Date of birth</label>
+        <input name="b_day" type="date">
+
+        <label>Gender</label>
+        <div class="radio-group">
+          <label><input type="radio" name="gender" value="Male"> Male</label>
+          <label><input type="radio" name="gender" value="Female"> Female</label>
+        </div>
+
+        <label>Background color</label>
+        <input name="bg_color" type="color" value="#ff4d4d">
+
+        <label>Notes (optional)</label>
+        <textarea name="note" rows="3"></textarea>
+
+        <button type="submit" class="btn-submit">Add</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Teacher Details -->
+  <div id="teacherDetailsModal" class="modal">
+    <div class="modal-content teacher-modal">
+      <div class="modal-header dark">
+        <h3>Teacher Info</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div class="teacher-profile">
+        <div class="teacher-photo">
+          <img id="teacherPhoto" src="images/default.png" alt="Teacher Photo">
+        </div>
+        <div class="teacher-data">
+          <div class="teacher-name-row">
+            <h2 id="teacherName">Unknown</h2>
+            <span id="teacherStar" class="star" style="display:none;">★</span>
+          </div>
+          <p><strong id="teacherSpeciality">Speciality</strong></p>
+          <p id="teacherLocation">City, Country</p>
+          <p id="teacherExtra">Age, Gender</p>
+          <p><a href="#" id="teacherEmail">email@example.com</a></p>
+          <p id="teacherPhone">+000000000</p>
+        </div>
+      </div>
+      <div class="teacher-description">
+        <p id="teacherNotes">Some description here...</p>
+        <a href="#" class="map-link">toggle map</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS logic -->
+  <script type="module" src="js/app.js"></script>
+</body>
 </html>
