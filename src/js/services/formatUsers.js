@@ -1,4 +1,3 @@
-import { randomUserMock, additionalUsers } from "../data/FE4U-Lab2-mock.js";
 import { getRandomCourse } from "../utils/courses.js";
 import { capitalize } from "../utils/capitalize.js";
 import { normalizePhone } from "../utils/phone.js";
@@ -7,6 +6,9 @@ function uuidv4() {
   return crypto.randomUUID();
 }
 
+// ---------------------------
+// ЗАВДАННЯ 2 (валідація: обчислення віку)
+// ---------------------------
 export function calculateAge(birthDate) {
   if (!birthDate) return null;
   const d = new Date(birthDate);
@@ -17,10 +19,11 @@ export function calculateAge(birthDate) {
   return age;
 }
 
+// ---------------------------
+// ЗАВДАННЯ 2 (генерація кольору для аватарок)
+// ---------------------------
 export function randomColor() {
-  return (
-    "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0")
-  );
+  return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
 }
 
 function capitalizeWords(str) {
@@ -30,23 +33,26 @@ function capitalizeWords(str) {
     .join(" ");
 }
 
-export function formatUsers() {
-  const formattedRandomUsers = randomUserMock
-    .filter((u) => u.email)
+// ---------------------------
+// ЗАВДАННЯ 1 (форматування користувачів із RandomUser API)
+// ---------------------------
+export function formatUsers(randomUsers = [], additionalUsers = []) {
+  const formattedRandomUsers = (randomUsers || [])
+    .filter((u) => u?.email)
     .map((u) => ({
       id: u.login?.uuid || uuidv4(),
       gender: capitalize(u.gender) || "Unknown",
       title: u.name?.title || "",
-      full_name: `${capitalize(u.name?.first)} ${capitalize(u.name?.last)}`,
+      full_name: `${capitalize(u.name?.first)} ${capitalize(u.name?.last)}`.trim(),
       city: capitalizeWords(u.location?.city) || "",
       state: capitalizeWords(u.location?.state) || "",
       country: capitalizeWords(u.location?.country) || "",
-      postcode: u.location?.postcode || "",
+      postcode: u.location?.postcode ?? "",
       coordinates: u.location?.coordinates || null,
       timezone: u.location?.timezone || null,
-      email: u.email,
+      email: u.email || "",
       b_date: u.dob?.date || null,
-      age: calculateAge(u.dob?.date),
+      age: calculateAge(u.dob?.date), // вік з API
       phone: normalizePhone(u.phone, u.location?.country) || "",
       picture_large: u.picture?.large || null,
       picture_thumbnail: u.picture?.thumbnail || u.picture?.large || null,
@@ -58,43 +64,46 @@ export function formatUsers() {
 
   const merged = [...formattedRandomUsers];
 
-  additionalUsers.forEach((u) => {
-    if (!u.full_name && !u.email) return;
+  // ---------------------------
+  // ЗАВДАННЯ 4 (мердж користувачів із json-server / доданих через форму)
+  // ---------------------------
+  (additionalUsers || []).forEach((u) => {
+    if (!u?.full_name && !u?.email) return;
 
     const existing = merged.find(
       (m) =>
         (u.email && m.email === u.email) ||
         (u.id && m.id === u.id) ||
-        (u.full_name &&
-          m.full_name?.toLowerCase() === u.full_name?.toLowerCase())
+        (u.full_name && m.full_name?.toLowerCase() === u.full_name?.toLowerCase())
     );
 
+    const capitalizeOr = (val, fallback = "") => (val ? capitalizeWords(val) : fallback);
+
     if (existing) {
-      existing.picture_large = u.picture_large || existing.picture_large;
-      existing.picture_thumbnail =
-        u.picture_thumbnail || u.picture_large || existing.picture_thumbnail;
-      existing.bg_color = u.bg_color || existing.bg_color;
-      existing.note = u.note || existing.note;
-      existing.course =
-        u.course ? capitalizeWords(u.course) : existing.course || "No course";
-      existing.city = capitalizeWords(u.city) || existing.city;
-      existing.state = capitalizeWords(u.state) || existing.state;
-      existing.country = capitalizeWords(u.country) || existing.country;
-      existing.email = u.email || existing.email;
-      existing.b_date = u.b_day || existing.b_date;
-      existing.age = u.b_day ? calculateAge(u.b_day) : existing.age;
-      existing.phone =
-        normalizePhone(u.phone, u.country) || existing.phone || "";
+      // Якщо користувач вже є - оновлюємо дані
+      existing.picture_large     = u.picture_large || existing.picture_large;
+      existing.picture_thumbnail = u.picture_thumbnail || u.picture_large || existing.picture_thumbnail;
+      existing.bg_color          = u.bg_color || existing.bg_color;
+      existing.note              = u.note || existing.note;
+      existing.course            = u.course ? capitalizeWords(u.course) : existing.course || "No course";
+      existing.city              = capitalizeOr(u.city, existing.city);
+      existing.state             = capitalizeOr(u.state, existing.state);
+      existing.country           = capitalizeOr(u.country, existing.country);
+      existing.email             = u.email || existing.email;
+      existing.b_date            = u.b_day || existing.b_date;
+      existing.age               = u.b_day ? calculateAge(u.b_day) : existing.age;
+      existing.phone             = normalizePhone(u.phone, u.country) || existing.phone || "";
     } else {
+      // Якщо це новий користувач - додаємо до масиву
       merged.push({
         id: u.id || uuidv4(),
         gender: capitalize(u.gender) || "Unknown",
         title: u.title || "",
         full_name: capitalizeWords(u.full_name || "Unknown User"),
-        city: capitalizeWords(u.city) || "",
-        state: capitalizeWords(u.state) || "",
-        country: capitalizeWords(u.country) || "",
-        postcode: u.postcode || "",
+        city: capitalizeOr(u.city),
+        state: capitalizeOr(u.state),
+        country: capitalizeOr(u.country),
+        postcode: u.postcode ?? "",
         coordinates: u.coordinates || null,
         timezone: u.timezone || null,
         email: u.email || "",

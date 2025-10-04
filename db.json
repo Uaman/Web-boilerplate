@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "id": "b517affa-9250-4293-b1de-2a6b24db7e4e",
+      "full_name": "Олексій",
+      "gender": "Male",
+      "b_date": "2004-09-29T00:00:00.000Z",
+      "age": 21,
+      "country": "Україна",
+      "city": "Kyiv",
+      "email": "eyexzy@gmail.com",
+      "phone": "+380959406152",
+      "course": "English",
+      "note": "12332424",
+      "favorite": false,
+      "bg_color": "#fbff00",
+      "picture_thumbnail": null,
+      "picture_large": null,
+      "isValid": true,
+      "errors": []
+    }
+  ]
+}

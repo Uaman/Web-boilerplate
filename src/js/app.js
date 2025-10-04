@@ -1,43 +1,45 @@
-import { formatUsers } from "./services/formatUsers.js";
+import { formatUsers, calculateAge } from "./services/formatUsers.js";
 import { validateUsers } from "./services/validateUsers.js";
 import { sortUsers } from "./services/sortUsers.js";
 import { validatePhone } from "./utils/phone.js";
 import { capitalize } from "./utils/capitalize.js";
 import { filterUsers } from "./services/filterUsers.js";
-import { calculateAge } from "./services/formatUsers.js";
+import { fetchRandomUsers } from "./services/api.js";
+// import { randomUserMock, additionalUsers } from "./data/FE4U-Lab2-mock.js";
 
-import { randomUserMock, additionalUsers } from "./data/FE4U-Lab2-mock.js";
-
-
-// ГЛОБАЛЬНИЙ СТЕЙТ
-
-// Отримуємо сирі дані, приводимо їх до єдиного формату і одразу валідуюємо
-let users = validateUsers(formatUsers(randomUserMock, additionalUsers));
-
-// Читаємо список обраних із localStorage (зберігаємо лише id)
+let users = []; // стартуємо з порожнього масиву
 let favorites = new Set(JSON.parse(localStorage.getItem("favorites") || "[]"));
-
-// Пробігаємося по користувачах і позначаємо тих, чиї id є в обраних
-users.forEach(u => { if (favorites.has(u.id)) u.favorite = true; });
-
-// Стан фільтрації, де пусті значення означають нічого не фільтрувати
 let filters = { country: "", age: "", gender: "", favorite: false, withPhoto: false };
-
-// Пошук одночасно по кількох полях: імʼя, нотатка, вік
-let search = { query: "" };
-
-// Налаштування сортування для таблиці статистики (зростання,спадання)
-let sort = { field: "", dir: "asc" };
-
-// Параметри пагінації
+let search  = { query: "" };
+let sort    = { field: "", dir: "asc" };
 let pagination = { page: 1, perPage: 10 };
 
+// Стан API-підвантаження
+const api = {
+  seed: "teachinder",
+  page: 1, // яку сторінку вже завантажили (почнемо з 1)
+  isLoading: false,
+};
 
 // ХЕЛПЕРИ ДЛЯ DOM
 
 // Скорочений синтаксис для вибору елементів DOM
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => root.querySelectorAll(sel);
+
+function setApiStatus(text = "") {
+  let holder = $("#apiStatus");
+  if (!holder) {
+    // створимо контейнер під списком викладачів
+    const sec = $("#teachers .top-teachers") || $("#teachers"); // підстрахуємось
+    holder = document.createElement("div");
+    holder.id = "apiStatus";
+    holder.style.margin = "16px 0";
+    const teachersSection = $("#teachers"); // секція
+    teachersSection?.appendChild(holder);
+  }
+  holder.textContent = text;
+}
 
 // Зберігає список обраних у локалсторедж
 function saveFavorites() {
@@ -53,8 +55,11 @@ function capitalizeWords(str) {
 }
 
 
-// ОБЧИСЛЕННЯ СПИСКУ ДЛЯ ВІДОБРАЖЕННЯ
+// ---------------------------
+// ЗАВДАННЯ 2 (фільтрація / сортування / пошук / валідація)
+// ---------------------------
 
+// ОБЧИСЛЕННЯ СПИСКУ ДЛЯ ВІДОБРАЖЕННЯ
 // Повертає відфільтрований і відсортований список користувачів
 function getVisibleUsers() {
   // Використовуємо універсальну функцію фільтрації
@@ -85,7 +90,6 @@ function getVisibleUsers() {
   return res;
 }
 
-
 // РЕНДЕР УСІХ БЛОКІВ
 
 // Викликає рендеринг усіх секцій сторінки
@@ -95,7 +99,6 @@ function render() {
   renderStatistics();
   renderFavorites();
 }
-
 
 // РЕНДЕР ФІЛЬТРІВ
 
@@ -157,7 +160,6 @@ function renderFilters() {
   $("#filterFav").onchange    = e => { filters.favorite = e.target.checked; render(); };
 }
 
-
 // РЕНДЕР КАРТОК ВЧИТЕЛІВ
 
 // Відображає список карток вчителів
@@ -168,6 +170,12 @@ function renderTeachers() {
 
   // Беремо вже відсортований масив
   const list = getVisibleUsers();
+
+  // Перевіряємо, чи є користувачі для відображення
+  if (list.length === 0) {
+    container.innerHTML = `<p class="empty-msg">Користувачів не знайдено</p>`;
+    return;
+  }
 
   // Створюємо картку для кожного користувача
   list.forEach(u => {
@@ -202,11 +210,31 @@ function renderTeachers() {
     // Додаємо картку в DOM
     container.appendChild(card);
   });
+
+  // КНОПКА LOAD MORE
+  if (users.length > 0) {
+    let controls = $("#apiControls");
+    if (!controls) {
+      controls = document.createElement("div");
+      controls.id = "apiControls";
+      controls.style.display = "flex";
+      controls.style.justifyContent = "center";
+      controls.style.margin = "16px 0";
+      container.parentElement.appendChild(controls);
+    }
+    controls.innerHTML = `
+      <button id="loadMoreBtn" class="btn-outline">Load more (10)</button>
+    `;
+    $("#loadMoreBtn").onclick = () => loadMoreFromApi();
+  }
 }
 
 
-// РЕНДЕР ТАБЛИЦІ (СТАТИСТИКА)
+// ---------------------------
+// ЗАВДАННЯ 2 (оновлення статистики, empty state)
+// ---------------------------
 
+// ТАБЛИЦЯ СТАТИСТИКА
 // Відображає таблицю статистики з пагінацією
 function renderStatistics() {
   const tbody = $(".statistics tbody");
@@ -214,6 +242,13 @@ function renderStatistics() {
   tbody.innerHTML = ""; // скидаємо вміст
 
   const allUsers = getVisibleUsers();
+
+  // Перевіряємо, чи є дані для відображення
+  if (allUsers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">Даних для відображення немає</td></tr>`;
+    return;
+  }
+
   const start = (pagination.page - 1) * pagination.perPage;
   const end = start + pagination.perPage;
   const pageUsers = allUsers.slice(start, end);
@@ -231,10 +266,8 @@ function renderStatistics() {
     tbody.appendChild(tr);
   });
 
-  // Викликаємо рендеринг пагінації
   renderPagination(allUsers.length);
 }
-
 
 // РЕНДЕР ПАГІНАЦІЇ
 
@@ -259,7 +292,6 @@ function renderPagination(total) {
   }
 }
 
-
 // РЕНДЕР БЛОКУ ОБРАНИХ
 
 // Відображає список обраних вчителів
@@ -270,6 +302,12 @@ function renderFavorites() {
 
   // Збираємо лише користувачів, які є в Set favorites
   const favUsers = users.filter(u => favorites.has(u.id));
+
+  // Перевіряємо, чи є обрані користувачі
+  if (favUsers.length === 0) {
+    list.innerHTML = `<p class="empty-msg">Обраних користувачів немає</p>`;
+    return;
+  }
 
   // Створюємо маленькі картки (схожі на основні)
   favUsers.forEach(u => {
@@ -284,16 +322,15 @@ function renderFavorites() {
       <h3>${u.full_name}</h3>
       <p>${u.country || ""}</p>
     `;
-    // Клік по фаворит-картці теж відкриває попап з деталями
+    // Клік по фейворит-картці теж відкриває попап з деталями
     div.addEventListener("click", () => openDetails(u));
     list.appendChild(div);
   });
 }
 
+// ПОПАП ДЕТАЛІ ВЧИТЕЛЯ
 
-// ПОПАП ДЕТАЛЕЙ ВЧИТЕЛЯ
-
-// Відкриває модальне вікно з детальною інформацією про вчителя
+// Відкриває попап з детальною інформацією про вчителя
 function openDetails(u) {
   const modal = $("#teacherDetailsModal");
   if (!modal) return;
@@ -324,10 +361,9 @@ function openDetails(u) {
   modal.style.display = "flex";
 }
 
-
 // ІНІТ ПОПАПІВ (відкрити/закрити) 
 
-// Налаштовує поведінку модальних вікон
+// Налаштовує поведінку попапів
 function setupModals() {
   const addTeacherModal = $("#addTeacherModal");
   const openBtns = $$(".btn-outline.big"); // кнопки Add teacher (хедер і футер)
@@ -357,7 +393,6 @@ function setupModals() {
   });
 }
 
-
 // ДОДАТИ/ПРИБРАТИ З ОБРАНИХ
 
 // Перемикає статус обраного для вчителя
@@ -376,8 +411,11 @@ function toggleFavorite(u) {
 }
 
 
-// ФОРМА ДОДАВАННЯ ВЧИТЕЛЯ 
+// ---------------------------
+// ЗАВДАННЯ 4 (json-server + POST при сабміті форми)
+// ---------------------------
 
+// ФОРМА ДОДАВАННЯ ВЧИТЕЛЯ 
 // Налаштовує форму для додавання нового вчителя
 function setupAddForm() {
   const form = $("#teach_add_popup");
@@ -401,10 +439,10 @@ function setupAddForm() {
     const bDay = fd.get("b_day") ? new Date(fd.get("b_day")) : null;
     const age = bDay ? calculateAge(bDay.toISOString()) : null;
 
-    // Стать (Male/Female або порожньо)
+    // Стать (чоловік жінка або порожньо)
     const gender = fd.get("gender") || "";
 
-    // Формуємо новий обʼєкт користувача
+    // Формуємо новий обєкт користувача
     const u = {
       id: crypto.randomUUID(), // унікальний id
       full_name: capitalizeWords(fd.get("full_name")),
@@ -430,8 +468,26 @@ function setupAddForm() {
       return;
     }
 
-    // Додаємо на початок списку, скидаємо форму, перемальовуємо і ховаємо попап
+    // Додаємо на початок списку
     users.unshift(validated);
+
+    // відправка на json-server (асинхронно, без блокування UI)
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(validated)
+    }).then(res => {
+      if (!res.ok) throw new Error("Failed to save on server");
+      return res.json();
+    }).then(saved => {
+      console.log("User saved on fake API:", saved);
+    }).catch(err => {
+      console.error("json-server error:", err);
+    });
+
+    // скидаємо форму, перемальовуємо і ховаємо попап
     form.reset();
     render();
     $("#addTeacherModal").style.display = "none";
@@ -441,7 +497,7 @@ function setupAddForm() {
 
 // Пошук у хедері 
 
-// Налаштовує пошук за ім'ям, нотаткою або віком
+// Налаштовує пошук за імям, нотаткою або віком
 function setupSearch() {
   // При кожному вводі символу оновлюємо результат
   $("#searchName")?.addEventListener("input", e => {
@@ -458,7 +514,6 @@ function setupSort() {
   $$(".statistics th").forEach(th => {
     // Для кожного заголовка вішаємо подію кліку
     th.addEventListener("click", () => {
-
       // Дізнаємось назву поля за текстом заголовка
       const field = th.innerText.toLowerCase();
       const map = {
@@ -474,10 +529,10 @@ function setupSort() {
       if (sort.field === selectedField) {
         // якщо вже сортуємо по цьому полі
         if (sort.dir === "asc") {
-          sort.dir = "desc";   // другий клік - спадання
+          sort.dir = "desc"; // другий клік - спадання
         } else if (sort.dir === "desc") {
-          sort.field = "";     // третій клік - скидаємо сортування й повертаємо таблицю у початковий стан
-          sort.dir = "asc";    // напрямок повертаємо в дефолт
+          sort.field = ""; // третій клік - скидаємо сортування й повертаємо таблицю у початковий стан
+          sort.dir = "asc"; // напрямок повертаємо в дефолт
         }
       } else {
         // якщо це новий стовпець - ставимо за зростанням
@@ -499,6 +554,80 @@ function setupSort() {
   });
 }
 
+// ---------------------------
+// ЗАВДАННЯ 1 (отримання 50 користувачів із API)
+// ---------------------------
+async function loadInitialData() {
+  try {
+    api.isLoading = true;
+    setApiStatus("Loading users…");
+
+    // 1) Підвантажуємо сирих користувачів з RandomUser
+    const raw = await fetchRandomUsers({ results: 50, page: api.page, seed: api.seed });
+    const formattedRemote = formatUsers(raw, []); // форматування тільки апі-шних
+
+    // 2) Підвантажуємо локальних користувачів з json-server
+    let localUsers = [];
+    try {
+      const res = await fetch("http://localhost:3000/users");
+      if (res.ok) localUsers = await res.json();
+    } catch (e) {
+      console.warn("json-server not available");
+    }
+
+    // 3) Об’єднуємо відформатованих remote + готових local
+    const merged = [...formattedRemote, ...localUsers];
+
+    // 4) Валідовуємо
+    const validated = validateUsers(merged);
+    users = validated.filter(u => u.isValid);
+
+    // 5) Відновлюємо фаворити
+    users.forEach(u => { if (favorites.has(u.id)) u.favorite = true; });
+
+    setApiStatus("");
+    render();
+  } catch (err) {
+    console.error(err);
+    setApiStatus("Failed to load from API. Check internet or try again.");
+  } finally {
+    api.isLoading = false;
+  }
+}
+
+// ---------------------------
+// ЗАВДАННЯ 3 (кнопка  +10 користувачів)
+// ---------------------------
+async function loadMoreFromApi() {
+  if (api.isLoading) return;
+  api.isLoading = true;
+  try {
+    setApiStatus("Loading more…");
+    api.page += 1; // наступна сторінка
+
+    const raw = await fetchRandomUsers({ results: 10, page: api.page, seed: api.seed });
+    const formatted = formatUsers(raw, []);
+    const validated = validateUsers(formatted).filter(u => u.isValid);
+
+    // уникаємо дублікатів за id
+    const have = new Set(users.map(u => u.id));
+    const unique = validated.filter(u => !have.has(u.id));
+
+    users.push(...unique);
+
+    // якщо хтось уже був у фаворитах — промаркуємо
+    users.forEach(u => { if (favorites.has(u.id)) u.favorite = true; });
+
+    setApiStatus("");
+    render();
+  } catch (e) {
+    console.error(e);
+    setApiStatus("Failed to load more.");
+    api.page -= 1; // повернемо лічильник
+  } finally {
+    api.isLoading = false;
+  }
+}
 
 // ІНІЦІАЛІЗАЦІЯ ПРОГРАМИ 
 
@@ -510,8 +639,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSearch();
   setupSort();
 
-  // Початковий рендер сторінки
-  render();
+  loadInitialData();
 
   // Кнопки скролу для блоку обраних вліво або вправо 
   $(".scroll-btn.left")?.addEventListener("click", () => {

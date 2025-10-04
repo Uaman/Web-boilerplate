@@ -777,3 +777,10 @@ h2 {
 .statistics th.desc::after {
   content: "↓";
 }
+
+.empty-msg {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  margin: 16px 0;
+}
