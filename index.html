@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <link rel='icon' type='image/svg+xml' href='/humtr.svg' />
+    <link rel='stylesheet' href='/src/style/style.scss'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>teachinder</title>
+  </head>
+  <body>
+  <div data-include='/src/components/header.html'></div>
+  <hr>
+  <div data-include='/src/components/top-teachers.html'></div>
+  <hr>
+  <div data-include='/src/components/statistics.html'></div>
+  <hr>
+  <div data-include='/src/components/favourites.html'></div>
+  <hr>
+  <div data-include='/src/components/footer.html'></div>
+  <div data-include='/src/components/modals.html'></div>
+  <script type='module' src='/src/script/component-loader.js'></script>
+  <script type="module" src="/src/script/top-teachers/top-teachers.js"></script>
+  <script type="module" src="/src/script/top-teachers/top-teachers-filtered.js"></script>
+  <script type="module" src="/src/script/top-teachers/top-teachers-search.js"></script>
+  <script type="module" src="/src/script/statistics/statistics.js"></script>
+  <script type="module" src="/src/script/favourites/favourites.js"></script>
+  <script type="module" src="/src/script/modals/teacher-info/teacher-info.js"></script>
+  <script type="module" src="/src/script/modals/add-teacher/add-teacher.js"></script>
+  <script type='module' src='/src/script/modals/modal-buttons.js'></script>
+  </body>
+</html>

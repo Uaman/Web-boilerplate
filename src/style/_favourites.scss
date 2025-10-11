@@ -1,0 +1,99 @@
+.favourites {
+  margin-bottom: 80px;
+}
+
+.carousel {
+  --card-width: 240px;
+  --gap: 24px;
+  --btn-size: 44px;
+  --btn-offset: 8px;
+  position: relative;
+  isolation: isolate;
+}
+
+.carousel-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--gap);
+  align-items: stretch;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  padding-inline: calc(var(--btn-size) + var(--btn-offset));
+  scroll-snap-type: x proximity;
+}
+
+.carousel .teacher-card {
+  flex: 0 0 var(--card-width);
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel .teacher-avatar-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-list {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.carousel-button-prev,
+.carousel-button-next {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  width: var(--btn-size);
+  height: var(--btn-size);
+  display: grid;
+  place-items: center;
+  border: none;
+  appearance: none;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--main-color) 90%, transparent);
+  cursor: pointer;
+  z-index: 101;
+
+  &:hover { background-color: color-mix(in srgb, var(--main-color) 100%, transparent); }
+  &:focus-visible { outline: 2px solid var(--accent-color); }
+}
+
+.carousel-button-prev { left: var(--btn-offset); }
+.carousel-button-next { right: var(--btn-offset); }
+
+.carousel-button-prev img,
+.carousel-button-next img {
+  width: 50%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+}
+
+.carousel-button-prev img { transform: rotate(180deg); }
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .carousel {
+    --card-width: 200px;
+    --btn-size: 40px;
+    --gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    --card-width: 180px;
+    --btn-size: 36px;
+    --gap: 12px;
+  }
+}

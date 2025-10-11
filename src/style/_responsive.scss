@@ -1,0 +1,57 @@
+@media (max-width: 768px) {
+  body {
+    position: static;
+    left: auto;
+    padding: 0 16px;
+    max-width: none;
+  }
+
+  hr {
+    width: 100%;
+  }
+
+  .section-heading {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .upper-header,
+  .lower-header {
+    gap: 12px;
+  }
+
+  #search-input {
+    width: 160px;
+  }
+  #search-input:hover {
+    width: 220px;
+  }
+
+  .top-teachers-filters {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 14px 18px;
+    align-items: center;
+  }
+
+  .top-teachers-filters .vertical-separator {
+    display: none;
+  }
+
+  .top-teachers-filters .filter-group:has(select) {
+    order: 1;
+  }
+
+  .top-teachers-filters .filter-group:has(input[type="checkbox"]) {
+    order: 2;
+  }
+
+  .top-teachers-filters .filter-group {
+    min-width: max-content;
+  }
+
+  .top-teachers-list {
+    grid-template-columns: repeat(3, 152px);
+    gap: 32px;
+  }
+}
