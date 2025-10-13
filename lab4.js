@@ -1,3 +1,4 @@
+//lab4
 import { validateUser, sortUsers, COURSES } from "./lab2.js";
 
 const $  = (sel, root = document) => root.querySelector(sel);
