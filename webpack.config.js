@@ -47,15 +47,8 @@ const CONFIG = {
       cssProcessorOptions: { discardComments: { removeAll: true } },
     }),
     new CopyWebpackPlugin([
-      {
-        from: "src/images/",
-        to: "images/",
-      },
-      {
-        from: "src/*.txt",
-        to: "./[name].[ext]",
-        toType: "template",
-      },
+      { from: "src/images/", to: "images/" },
+      { from: "src/*.txt", to: "./[name].[ext]", toType: "template" },
     ]),
     new ImageminPlugin({
       disable: devMode,
@@ -65,43 +58,39 @@ const CONFIG = {
       gifsicle: { optimizationLevel: 1 },
       svgo: {},
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   module: {
     rules: [
+      // Babel для сучасного JS (optional chaining, async/await і т.д.)
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+          },
+        },
+      },
       {
         test: /\.(css|scss)$/i,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            // options: {
-            //   hmr: devMode,
-            // },
-          },
+          { loader: MiniCssExtractPlugin.loader },
           {
             loader: "css-loader",
-            options: {
-              sourceMap: true,
-              importLoaders: 2,
-            },
+            options: { sourceMap: true, importLoaders: 2 },
           },
-          {
-            loader: "postcss-loader",
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: { sourceMap: true },
-          },
+          { loader: "postcss-loader", options: { sourceMap: true } },
+          { loader: "sass-loader", options: { sourceMap: true } },
         ],
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif)$/i,
         use: [
           {
             loader: "file-loader",
-            options: {},
+            options: { name: "images/[name].[ext]" },
           },
         ],
       },
@@ -113,20 +102,15 @@ const CONFIG = {
     port: 3001,
     hot: true,
     watchContentBase: true,
-    noInfo: true,
+    overlay: false,
   },
 };
 
+// Production mode tweaks
 if (!devMode) {
   CONFIG.output.publicPath = "./";
   CONFIG.output.filename = "js/app.js";
   CONFIG.plugins.push(new MinifyPlugin());
-  CONFIG.module.rules.push({
-    test: [/\.js$/],
-    exclude: [/node_modules/],
-    loader: "babel-loader",
-    options: { presets: ["env"] },
-  });
 }
 
 module.exports = CONFIG;
