@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": "b517affa-9250-4293-b1de-2a6b24db7e4e",
+      "id": "408a907e-2ce8-4cc0-8b82-47dac47db9b8",
       "full_name": "Олексій",
       "gender": "Male",
       "b_date": "2004-09-29T00:00:00.000Z",
@@ -11,9 +11,9 @@
       "email": "eyexzy@gmail.com",
       "phone": "+380959406152",
       "course": "English",
-      "note": "12332424",
+      "note": "123",
       "favorite": false,
-      "bg_color": "#fbff00",
+      "bg_color": "#a600ff",
       "picture_thumbnail": null,
       "picture_large": null,
       "isValid": true,

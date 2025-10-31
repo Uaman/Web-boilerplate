@@ -5,7 +5,6 @@ import { validatePhone } from "./utils/phone.js";
 import { capitalize } from "./utils/capitalize.js";
 import { filterUsers } from "./services/filterUsers.js";
 import { fetchRandomUsers } from "./services/api.js";
-// import { randomUserMock, additionalUsers } from "./data/FE4U-Lab2-mock.js";
 
 let users = []; // стартуємо з порожнього масиву
 let favorites = new Set(JSON.parse(localStorage.getItem("favorites") || "[]"));
@@ -13,6 +12,9 @@ let filters = { country: "", age: "", gender: "", favorite: false, withPhoto: fa
 let search  = { query: "" };
 let sort    = { field: "", dir: "asc" };
 let pagination = { page: 1, perPage: 10 };
+let leafletMap = null;
+
+let statsChart = null;
 
 // Стан API-підвантаження
 const api = {
@@ -54,41 +56,64 @@ function capitalizeWords(str) {
     .join(" ");
 }
 
-
-// ---------------------------
-// ЗАВДАННЯ 2 (фільтрація / сортування / пошук / валідація)
-// ---------------------------
+// фільтрація  сортування  пошук  валідація
 
 // ОБЧИСЛЕННЯ СПИСКУ ДЛЯ ВІДОБРАЖЕННЯ
-// Повертає відфільтрований і відсортований список користувачів
+//----- Завдання 3.  Підключити до сторінки бібліотеку lodash. Використовуючи її  відрефакторити функції (мапинг, валідація, сортинг, фільтерінг та пошук).   
 function getVisibleUsers() {
-  // Використовуємо універсальну функцію фільтрації
+  // Фільтрація
   let res = filterUsers(users, filters);
 
-  // Додаткові умови фільтрації
-  if (filters.withPhoto) res = res.filter(u => u.picture_thumbnail || u.picture_large); // Якщо вибрано тільки з фото, фільтруємо користувачів, у яких є хоча б одне фото
+  // тільки з фото
+  if (filters.withPhoto)
+    res = _.filter(res, u => u.picture_thumbnail || u.picture_large);
 
-  if (filters.age) {
-    if (filters.age === "lt30") res = res.filter(u => u.age < 30); // менше 30 - залишаємо з віком до 30 років
-    if (filters.age === "30-40") res = res.filter(u => u.age >= 30 && u.age <= 40); // Якщо 30–40 -залишаємо з віком від 30 до 40 років включно
-    if (filters.age === "gt40") res = res.filter(u => u.age > 40); // Якщо більше 40 - залишаємо з віком понад 40 років
-  }
+  // фільтр за віком
+  if (filters.age === "lt30") res = _.filter(res, u => u.age < 30);
+  if (filters.age === "30-40") res = _.filter(res, u => u.age >= 30 && u.age <= 40);
+  if (filters.age === "gt40") res = _.filter(res, u => u.age > 40);
 
-  // Пошук
+  // пошук
   if (search.query) {
-    const q = search.query.toLowerCase();
-    res = res.filter(u =>
-      (u.full_name || "").toLowerCase().includes(q) ||
-      (u.note || "").toLowerCase().includes(q) ||
-      String(u.age || "").includes(q)
+    const q = _.toLower(search.query);
+    res = _.filter(res, u =>
+      _.includes(_.toLower(u.full_name || ""), q) ||
+      _.includes(_.toLower(u.note || ""), q) ||
+      _.includes(String(u.age || ""), q)
     );
   }
 
-  // Сортування
-  if (sort.field) res = sortUsers(res, sort.field, sort.dir);
+  // сортування
+  if (sort.field)
+    res = _.orderBy(res, [sort.field], [sort.dir]);
 
   return res;
 }
+/*
+  // Старий варіант 
+  function getVisibleUsers() {
+    let res = filterUsers(users, filters);
+
+    if (filters.withPhoto) res = res.filter(u => u.picture_thumbnail || u.picture_large);
+    if (filters.age) {
+      if (filters.age === "lt30") res = res.filter(u => u.age < 30);
+      if (filters.age === "30-40") res = res.filter(u => u.age >= 30 && u.age <= 40);
+      if (filters.age === "gt40") res = res.filter(u => u.age > 40);
+    }
+
+    if (search.query) {
+      const q = search.query.toLowerCase();
+      res = res.filter(u =>
+        (u.full_name || "").toLowerCase().includes(q) ||
+        (u.note || "").toLowerCase().includes(q) ||
+        String(u.age || "").includes(q)
+      );
+    }
+
+    if (sort.field) res = sortUsers(res, sort.field, sort.dir);
+    return res;
+  }
+*/
 
 // РЕНДЕР УСІХ БЛОКІВ
 
@@ -173,7 +198,7 @@ function renderTeachers() {
 
   // Перевіряємо, чи є користувачі для відображення
   if (list.length === 0) {
-    container.innerHTML = `<p class="empty-msg">Користувачів не знайдено</p>`;
+    container.innerHTML = `<p class="empty-msg">No users found</p>`;
     return;
   }
 
@@ -229,10 +254,7 @@ function renderTeachers() {
   }
 }
 
-
-// ---------------------------
-// ЗАВДАННЯ 2 (оновлення статистики, empty state)
-// ---------------------------
+// оновлення статистики, empty state)
 
 // ТАБЛИЦЯ СТАТИСТИКА
 // Відображає таблицю статистики з пагінацією
@@ -245,7 +267,7 @@ function renderStatistics() {
 
   // Перевіряємо, чи є дані для відображення
   if (allUsers.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">Даних для відображення немає</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" class="empty-msg">There is no data to display</td></tr>`;
     return;
   }
 
@@ -267,6 +289,154 @@ function renderStatistics() {
   });
 
   renderPagination(allUsers.length);
+}
+
+// --------- Завдання 2. Підключити до сторінки бібліотеку chart.js. Замінити таблиці зі  статистикою на piechart.   
+function renderChart() {
+  const canvas = document.getElementById("statsChart");
+  if (!canvas) return;
+
+  // Безпечне очищення попереднього графіка
+  const existing = Chart.getChart(canvas);
+  if (existing) {
+    existing.destroy();
+  }
+
+  const ctx = canvas.getContext("2d");
+
+  // Групуємо користувачів за статтю
+  const genderCounts = { Male: 0, Female: 0, Unknown: 0 };
+  users.forEach(u => {
+    if (u.gender === "Male") genderCounts.Male++;
+    else if (u.gender === "Female") genderCounts.Female++;
+    else genderCounts.Unknown++;
+  });
+
+  // Створюємо нову діаграму
+  statsChart = new Chart(ctx, {
+    type: "pie",
+    data: {
+      labels: ["Male", "Female", "Unknown"],
+      datasets: [{
+        data: Object.values(genderCounts),
+        backgroundColor: ["#36A2EB", "#FF6384", "#CCCCCC"],
+        borderColor: "#fff",
+        borderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: {
+            font: { size: 14 },
+          },
+        },
+        title: {
+          display: true,
+          text: "Distribution of teachers by gender",
+          font: { size: 16, weight: "bold" },
+        },
+      },
+      layout: {
+        padding: 10,
+      },
+    },
+  });
+}
+
+// Кнопки для перемикання Таблиця / Діаграма / flat таблиця
+function setupChartToggle() {
+  const btnTable = document.getElementById("showTableBtn");
+  const btnChart = document.getElementById("showChartBtn");
+  const btnPivot = document.getElementById("showPivotBtn");
+  const tableContainer = document.getElementById("tableContainer");
+  const chartContainer = document.getElementById("chartContainer");
+  const pivotContainer = document.getElementById("pivotContainer");
+
+  if (!btnTable || !btnChart || !btnPivot) return;
+
+  const hideAll = () => {
+    [tableContainer, chartContainer, pivotContainer].forEach(c => (c.style.display = "none"));
+    [btnTable, btnChart, btnPivot].forEach(b => b.classList.remove("active"));
+  };
+
+  btnTable.addEventListener("click", () => {
+    hideAll();
+    btnTable.classList.add("active");
+    tableContainer.style.display = "block";
+  });
+
+  btnChart.addEventListener("click", () => {
+    hideAll();
+    btnChart.classList.add("active");
+    chartContainer.style.display = "block";
+    setTimeout(() => renderChart(), 50);
+  });
+
+  btnPivot.addEventListener("click", () => {
+    hideAll();
+    btnPivot.classList.add("active");
+    pivotContainer.style.display = "block";
+    setTimeout(() => renderPivot(), 50);
+  });
+}
+
+// --------- Завдання 5. Підключити до сторінки бібліотеку WebDataRocks....
+let pivot = null;
+
+function renderPivot() {
+  const container = document.getElementById("pivotContainer");
+  if (!container) return;
+
+  // Очистити контейнер перед створенням нового
+  container.innerHTML = "";
+
+  // Безпечне знищення попереднього екземпляра
+  if (pivot && typeof pivot.dispose === "function") {
+    try {
+      // У деяких версіях WebDataRocks dispose викликає внутрішній null error —
+      // тому обгортаємо у безшумний блок
+      pivot.dispose();
+    } catch (_) {
+      // нічого не робимо, щоб не засмічувати консоль
+    }
+    pivot = null;
+  }
+
+  // Підготовка даних
+  const flatData = users.map(u => ({
+    "Name": u.full_name || "",
+    "Course": u.course || "",
+    "Age": u.age || "",
+    "Gender": u.gender || "",
+    "Country": u.country || "",
+    "City": u.city || "",
+    "Email": u.email || "",
+  }));
+
+  // Ініціалізація нового звіту
+  pivot = new WebDataRocks({
+    container: "#pivotContainer",
+    toolbar: true,
+    report: {
+      dataSource: { data: flatData },
+      slice: {
+        rows: [{ uniqueName: "Country" }],
+        columns: [{ uniqueName: "Gender" }],
+        measures: [{ uniqueName: "Name", aggregation: "count" }],
+      },
+      options: {
+        grid: {
+          type: "flat",
+          title: "All Teachers (Flat view)",
+        },
+      },
+      localization: "https://cdn.webdatarocks.com/loc/en.json",
+    },
+  });
 }
 
 // РЕНДЕР ПАГІНАЦІЇ
@@ -305,7 +475,7 @@ function renderFavorites() {
 
   // Перевіряємо, чи є обрані користувачі
   if (favUsers.length === 0) {
-    list.innerHTML = `<p class="empty-msg">Обраних користувачів немає</p>`;
+    list.innerHTML = `<p class="empty-msg">There are no selected users</p>`;
     return;
   }
 
@@ -345,6 +515,83 @@ function openDetails(u) {
   $("#teacherEmail").href = "mailto:" + (u.email || "");
   $("#teacherPhone").innerText = u.phone || "";
   $("#teacherNotes").innerText = u.note || "";
+
+  //------ Завдання 4. Підключити до сторінки бібліотеку day.js. Додати до сторінки  користувача, поле, яке буде показувати, скільки днів залишилось до наступного  дня народження. 
+  if (u.b_date) {
+    const bday = dayjs(u.b_date); // день народження
+    const today = dayjs(); // сьогоднішня дата
+
+    // Наступний день народження у поточному або наступному році
+    let nextBday = bday.year(today.year());
+    if (nextBday.isBefore(today, "day")) {
+      nextBday = nextBday.add(1, "year");
+    }
+
+    const daysLeft = nextBday.diff(today, "day");
+
+    // Створюємо або оновлюємо елемент із цією інформацією
+    let birthdayInfo = document.getElementById("birthdayInfo");
+    if (!birthdayInfo) {
+      birthdayInfo = document.createElement("p");
+      birthdayInfo.id = "birthdayInfo";
+      $("#teacherExtra").insertAdjacentElement("afterend", birthdayInfo);
+    }
+
+    birthdayInfo.innerHTML = `<strong>${daysLeft}</strong> days left until the next birthday.`;
+  }
+
+  // ------------- Завдання 1. Підключити до сторінки бібліотеку leaflet. Додати до картки  викладача розташування, використовуючи координати надані в данних.
+  // Карта Leaflet
+  const mapContainer = document.getElementById("mapContainer");
+  const mapLink = document.querySelector(".map-link");
+
+  // очищаємо перед показом
+  mapContainer.style.display = "none";
+  mapContainer.innerHTML = "";
+  mapLink.style.display = "inline";
+
+  if (
+    u.coordinates &&
+    typeof u.coordinates.latitude === "number" &&
+    typeof u.coordinates.longitude === "number" &&
+    Math.abs(u.coordinates.latitude) <= 90 &&
+    Math.abs(u.coordinates.longitude) <= 180
+  ) {
+    const lat = parseFloat(u.coordinates.latitude);
+    const lon = parseFloat(u.coordinates.longitude);
+
+    mapLink.onclick = (e) => {
+      e.preventDefault();
+
+      if (mapContainer.style.display === "none") {
+        mapContainer.style.display = "block";
+
+        // якщо карта вже існує — повністю закриваємо стару
+        if (leafletMap) {
+          leafletMap.remove();
+          leafletMap = null;
+        }
+
+        // створюємо нову карту і зберігаємо глобально
+        leafletMap = L.map(mapContainer).setView([lat, lon], 6);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(leafletMap);
+
+        L.marker([lat, lon])
+          .addTo(leafletMap)
+          .bindPopup(`${u.full_name}<br>${u.city}, ${u.country}`)
+          .openPopup();
+
+        setTimeout(() => leafletMap.invalidateSize(), 250);
+      } else {
+        mapContainer.style.display = "none";
+      }
+    };
+  } else {
+    mapLink.style.display = "none";
+  }
 
   // Зірочка у попапі. Активний клас лише якщо в обраних
   const starEl = $("#teacherStar");
@@ -410,101 +657,104 @@ function toggleFavorite(u) {
   render();
 }
 
-
-// ---------------------------
-// ЗАВДАННЯ 4 (json-server + POST при сабміті форми)
-// ---------------------------
+// json-server + POST при сабміті форми
 
 // ФОРМА ДОДАВАННЯ ВЧИТЕЛЯ 
 // Налаштовує форму для додавання нового вчителя
+// ФОРМА ДОДАВАННЯ ВЧИТЕЛЯ
 function setupAddForm() {
   const form = $("#teach_add_popup");
   if (!form) return;
 
-  form.addEventListener("submit", e => {
-    e.preventDefault(); // не перезавантажуємо сторінку
+  // Прибираємо попередній слухач (щоб не дублювався при повторному відкритті)
+  form.replaceWith(form.cloneNode(true));
+  const newForm = $("#teach_add_popup");
 
-    // Забираємо дані форми
-    const fd = new FormData(form);
+  newForm.addEventListener("submit", async e => {
+    e.preventDefault();
 
-    // Валідація телефону залежно від країни
-    const country = capitalize(fd.get("country"));
-    const phoneCheck = validatePhone(fd.get("phone"), country);
+    const fd = new FormData(newForm);
+    const country = capitalize(fd.get("country") || "");
+    const rawPhone = fd.get("phone")?.trim() || "";
+
+    if (!rawPhone) {
+      alert("Please enter a phone number before submitting.");
+      return;
+    }
+
+    const phoneCheck = validatePhone(rawPhone, country);
     if (!phoneCheck.valid) {
       alert("Invalid phone: " + phoneCheck.error);
       return;
     }
 
-    // Рахуємо вік із дати народження (якщо вказана)
     const bDay = fd.get("b_day") ? new Date(fd.get("b_day")) : null;
     const age = bDay ? calculateAge(bDay.toISOString()) : null;
-
-    // Стать (чоловік жінка або порожньо)
     const gender = fd.get("gender") || "";
 
-    // Формуємо новий обєкт користувача
     const u = {
-      id: crypto.randomUUID(), // унікальний id
+      id: crypto.randomUUID(),
       full_name: capitalizeWords(fd.get("full_name")),
       gender: capitalize(gender),
-      b_date: bDay ? bDay.toISOString() : null, // зберігаємо ISO-дату
+      b_date: bDay ? bDay.toISOString() : null,
       age,
       country,
       city: capitalizeWords(fd.get("city")),
       email: fd.get("email"),
-      phone: phoneCheck.normalized, // нормалізований телефон
+      phone: phoneCheck.normalized,
       course: fd.get("course"),
       note: fd.get("note"),
-      favorite: false, // новий але не у олюблених
+      favorite: false,
       bg_color: fd.get("bg_color") || "#ccc",
-      picture_thumbnail: null, // якщо без фото то будуть ініціали
+      picture_thumbnail: null,
       picture_large: null,
     };
 
-    // Перевіряємо через validateUsers
     const [validated] = validateUsers([u]);
     if (!validated.isValid) {
       alert("Validation failed:\n" + validated.errors.join("\n"));
       return;
     }
 
-    // Додаємо на початок списку
     users.unshift(validated);
-
-    // відправка на json-server (асинхронно, без блокування UI)
-    fetch("http://localhost:3000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(validated)
-    }).then(res => {
-      if (!res.ok) throw new Error("Failed to save on server");
-      return res.json();
-    }).then(saved => {
-      console.log("User saved on fake API:", saved);
-    }).catch(err => {
-      console.error("json-server error:", err);
-    });
-
-    // скидаємо форму, перемальовуємо і ховаємо попап
-    form.reset();
     render();
+
+    try {
+      const res = await fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(validated),
+      });
+      if (!res.ok) throw new Error("Failed to save on server");
+      console.log("User saved on fake API:", await res.json());
+    } catch (err) {
+      console.error("json-server error:", err);
+    }
+
+    newForm.reset();
     $("#addTeacherModal").style.display = "none";
   });
 }
 
-
 // Пошук у хедері 
-
-// Налаштовує пошук за імям, нотаткою або віком
+//----- Завдання 3.  Підключити до сторінки бібліотеку lodash. Використовуючи її  відрефакторити функції (мапинг, валідація, сортинг, фільтерінг та пошук).   
 function setupSearch() {
-  // При кожному вводі символу оновлюємо результат
-  $("#searchName")?.addEventListener("input", e => {
+  const onSearch = _.debounce(e => {
     search.query = e.target.value.trim();
     render();
-  });
+  }, 300); // затримка 0.3 сек для зменшення кількості ререндерів
+
+  $("#searchName")?.addEventListener("input", onSearch);
 }
+/*
+  //Старий варіант
+  function setupSearch() {
+    $("#searchName")?.addEventListener("input", e => {
+      search.query = e.target.value.trim();
+      render();
+    });
+  }
+*/
 
 // Сортування у таблиці 
 
@@ -554,9 +804,7 @@ function setupSort() {
   });
 }
 
-// ---------------------------
-// ЗАВДАННЯ 1 (отримання 50 користувачів із API)
-// ---------------------------
+// отримання 50 користувачів із API
 async function loadInitialData() {
   try {
     api.isLoading = true;
@@ -564,7 +812,7 @@ async function loadInitialData() {
 
     // 1) Підвантажуємо сирих користувачів з RandomUser
     const raw = await fetchRandomUsers({ results: 50, page: api.page, seed: api.seed });
-    const formattedRemote = formatUsers(raw, []); // форматування тільки апі-шних
+    const formattedRemote = await formatUsers(raw, []);
 
     // 2) Підвантажуємо локальних користувачів з json-server
     let localUsers = [];
@@ -595,27 +843,22 @@ async function loadInitialData() {
   }
 }
 
-// ---------------------------
-// ЗАВДАННЯ 3 (кнопка  +10 користувачів)
-// ---------------------------
+// кнопка  +10 користувачів
 async function loadMoreFromApi() {
   if (api.isLoading) return;
   api.isLoading = true;
   try {
     setApiStatus("Loading more…");
-    api.page += 1; // наступна сторінка
+    api.page += 1;
 
     const raw = await fetchRandomUsers({ results: 10, page: api.page, seed: api.seed });
-    const formatted = formatUsers(raw, []);
+    const formatted = await formatUsers(raw, []);
     const validated = validateUsers(formatted).filter(u => u.isValid);
 
-    // уникаємо дублікатів за id
     const have = new Set(users.map(u => u.id));
     const unique = validated.filter(u => !have.has(u.id));
 
     users.push(...unique);
-
-    // якщо хтось уже був у фаворитах — промаркуємо
     users.forEach(u => { if (favorites.has(u.id)) u.favorite = true; });
 
     setApiStatus("");
@@ -623,7 +866,7 @@ async function loadMoreFromApi() {
   } catch (e) {
     console.error(e);
     setApiStatus("Failed to load more.");
-    api.page -= 1; // повернемо лічильник
+    api.page -= 1;
   } finally {
     api.isLoading = false;
   }
@@ -638,6 +881,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupAddForm();
   setupSearch();
   setupSort();
+  setupChartToggle(); // Added as requested
 
   loadInitialData();
 

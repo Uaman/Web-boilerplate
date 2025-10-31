@@ -6,9 +6,7 @@ function uuidv4() {
   return crypto.randomUUID();
 }
 
-// ---------------------------
-// ЗАВДАННЯ 2 (валідація: обчислення віку)
-// ---------------------------
+// обчислення віку
 export function calculateAge(birthDate) {
   if (!birthDate) return null;
   const d = new Date(birthDate);
@@ -19,9 +17,7 @@ export function calculateAge(birthDate) {
   return age;
 }
 
-// ---------------------------
-// ЗАВДАННЯ 2 (генерація кольору для аватарок)
-// ---------------------------
+// випадковий колір для аватарок
 export function randomColor() {
   return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, "0");
 }
@@ -29,17 +25,25 @@ export function randomColor() {
 function capitalizeWords(str) {
   return (str || "")
     .split(" ")
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
+    .map(s => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase())
     .join(" ");
 }
 
-// ---------------------------
-// ЗАВДАННЯ 1 (форматування користувачів із RandomUser API)
-// ---------------------------
-export function formatUsers(randomUsers = [], additionalUsers = []) {
-  const formattedRandomUsers = (randomUsers || [])
-    .filter((u) => u?.email)
-    .map((u) => ({
+//-------- Завдання 1. Підключити до сторінки бібліотеку leaflet. Додати до картки  викладача розташування, використовуючи координати надані в данних.   
+export async function formatUsers(randomUsers = [], additionalUsers = []) {
+  const formattedRandomUsers = [];
+
+  for (const u of randomUsers.filter(u => u?.email)) {
+    const lat = parseFloat(u.location?.coordinates?.latitude);
+    const lon = parseFloat(u.location?.coordinates?.longitude);
+
+    // якщо координати невалідні, просто ставимо null (не викликаємо geocodeCity)
+    const coordinates =
+      !isNaN(lat) && !isNaN(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180
+        ? { latitude: lat, longitude: lon }
+        : null;
+
+    formattedRandomUsers.push({
       id: u.login?.uuid || uuidv4(),
       gender: capitalize(u.gender) || "Unknown",
       title: u.name?.title || "",
@@ -48,11 +52,11 @@ export function formatUsers(randomUsers = [], additionalUsers = []) {
       state: capitalizeWords(u.location?.state) || "",
       country: capitalizeWords(u.location?.country) || "",
       postcode: u.location?.postcode ?? "",
-      coordinates: u.location?.coordinates || null,
+      coordinates,
       timezone: u.location?.timezone || null,
       email: u.email || "",
       b_date: u.dob?.date || null,
-      age: calculateAge(u.dob?.date), // вік з API
+      age: calculateAge(u.dob?.date),
       phone: normalizePhone(u.phone, u.location?.country) || "",
       picture_large: u.picture?.large || null,
       picture_thumbnail: u.picture?.thumbnail || u.picture?.large || null,
@@ -60,18 +64,16 @@ export function formatUsers(randomUsers = [], additionalUsers = []) {
       course: getRandomCourse(),
       bg_color: randomColor(),
       note: null,
-    }));
+    });
+  }
 
   const merged = [...formattedRandomUsers];
 
-  // ---------------------------
-  // ЗАВДАННЯ 4 (мердж користувачів із json-server / доданих через форму)
-  // ---------------------------
-  (additionalUsers || []).forEach((u) => {
-    if (!u?.full_name && !u?.email) return;
+  for (const u of additionalUsers || []) {
+    if (!u?.full_name && !u?.email) continue;
 
     const existing = merged.find(
-      (m) =>
+      m =>
         (u.email && m.email === u.email) ||
         (u.id && m.id === u.id) ||
         (u.full_name && m.full_name?.toLowerCase() === u.full_name?.toLowerCase())
@@ -79,22 +81,28 @@ export function formatUsers(randomUsers = [], additionalUsers = []) {
 
     const capitalizeOr = (val, fallback = "") => (val ? capitalizeWords(val) : fallback);
 
+    const lat = parseFloat(u.coordinates?.latitude);
+    const lon = parseFloat(u.coordinates?.longitude);
+    const coordinates =
+      !isNaN(lat) && !isNaN(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180
+        ? { latitude: lat, longitude: lon }
+        : null;
+
     if (existing) {
-      // Якщо користувач вже є - оновлюємо дані
-      existing.picture_large     = u.picture_large || existing.picture_large;
+      existing.picture_large = u.picture_large || existing.picture_large;
       existing.picture_thumbnail = u.picture_thumbnail || u.picture_large || existing.picture_thumbnail;
-      existing.bg_color          = u.bg_color || existing.bg_color;
-      existing.note              = u.note || existing.note;
-      existing.course            = u.course ? capitalizeWords(u.course) : existing.course || "No course";
-      existing.city              = capitalizeOr(u.city, existing.city);
-      existing.state             = capitalizeOr(u.state, existing.state);
-      existing.country           = capitalizeOr(u.country, existing.country);
-      existing.email             = u.email || existing.email;
-      existing.b_date            = u.b_day || existing.b_date;
-      existing.age               = u.b_day ? calculateAge(u.b_day) : existing.age;
-      existing.phone             = normalizePhone(u.phone, u.country) || existing.phone || "";
+      existing.bg_color = u.bg_color || existing.bg_color;
+      existing.note = u.note || existing.note;
+      existing.course = u.course ? capitalizeWords(u.course) : existing.course || "No course";
+      existing.city = capitalizeOr(u.city, existing.city);
+      existing.state = capitalizeOr(u.state, existing.state);
+      existing.country = capitalizeOr(u.country, existing.country);
+      existing.email = u.email || existing.email;
+      existing.b_date = u.b_day || existing.b_date;
+      existing.age = u.b_day ? calculateAge(u.b_day) : existing.age;
+      existing.phone = normalizePhone(u.phone, u.country) || existing.phone || "";
+      existing.coordinates = coordinates || existing.coordinates;
     } else {
-      // Якщо це новий користувач - додаємо до масиву
       merged.push({
         id: u.id || uuidv4(),
         gender: capitalize(u.gender) || "Unknown",
@@ -104,7 +112,7 @@ export function formatUsers(randomUsers = [], additionalUsers = []) {
         state: capitalizeOr(u.state),
         country: capitalizeOr(u.country),
         postcode: u.postcode ?? "",
-        coordinates: u.coordinates || null,
+        coordinates,
         timezone: u.timezone || null,
         email: u.email || "",
         b_date: u.b_day || null,
@@ -118,7 +126,7 @@ export function formatUsers(randomUsers = [], additionalUsers = []) {
         note: u.note || null,
       });
     }
-  });
+  }
 
   return merged;
 }
