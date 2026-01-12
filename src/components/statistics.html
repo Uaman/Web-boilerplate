@@ -1,0 +1,35 @@
+<section class="statistics">
+    <h1 class="section-heading">Statistics</h1>
+    <div class="statistics-views">
+        <button class="standard-button" id="table-button">Table</button>
+        <button class="standard-button" id="pie-chart-button">Pie-chart</button>
+        <button class="standard-button" id="webdatarocks-button">WebDataRocks</button>
+    </div>
+    <div class="statistics-table-wrapper">
+        <div class="statistics-table-wrapper">
+            <table class="statistics-table">
+                <thead>
+                <tr>
+                    <th scope="col" data-sort="full_name">Name</th>
+                    <th scope="col" data-sort="course">Speciality</th>
+                    <th scope="col" data-sort="age">Age</th>
+                    <th scope="col" data-sort="gender">Gender</th>
+                    <th scope="col" data-sort="country">Nationality</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-navigation">
+        </div>
+    </div>
+    <div class="statistics-chart-wrapper">
+        <canvas id="pie-chart"></canvas>
+    </div>
+    <div class="statistics-webdatarocks-wrapper">
+        <div id="pivot-container"></div>
+        <button class="standard-button" id="webdatarocks-by-country-button">Report by countries</button>
+        <button class="standard-button" id="webdatarocks-flat-button">Flat table</button>
+    </div>
+</section>

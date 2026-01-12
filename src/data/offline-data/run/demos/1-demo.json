@@ -1,0 +1,86 @@
+[
+  {
+    "gender": "Female",
+    "title": "Ms",
+    "full_name": "Matilda Aalto",
+    "city": "Tornio",
+    "state": "Central Ostrobothnia",
+    "country": "Finland",
+    "postcode": 88244,
+    "coordinates": {
+      "latitude": "79.9136",
+      "longitude": "83.6836"
+    },
+    "timezone": {
+      "offset": "+6:00",
+      "description": "Almaty, Dhaka, Colombo"
+    },
+    "email": "matilda.aalto@example.com",
+    "b_date": "1995-09-12T20:08:25.350Z",
+    "age": 26,
+    "phone": "+3586843874",
+    "picture_large": "https://randomuser.me/api/portraits/women/80.jpg",
+    "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/women/80.jpg",
+    "id": "HETUNaNNA760undefined",
+    "favorite": false,
+    "course": "Law",
+    "bg_color": null,
+    "note": null
+  },
+  {
+    "gender": "Female",
+    "title": "Miss",
+    "full_name": "Sigrid Sviggum",
+    "city": "Ramsøy",
+    "state": "Hordaland",
+    "country": "Norway",
+    "postcode": "5904",
+    "coordinates": {
+      "latitude": "62.3170",
+      "longitude": "102.2678"
+    },
+    "timezone": {
+      "offset": "-5:00",
+      "description": "Eastern Time (US & Canada), Bogota, Lima"
+    },
+    "email": "sigrid.sviggum@example.com",
+    "b_date": "1993-10-03T01:40:10.720Z",
+    "age": 28,
+    "phone": "+4732189027",
+    "picture_large": "https://randomuser.me/api/portraits/women/3.jpg",
+    "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/women/3.jpg",
+    "id": "FN03109315264",
+    "favorite": false,
+    "course": "Law",
+    "bg_color": null,
+    "note": null
+  },
+  {
+    "gender": "Female",
+    "title": "Mrs",
+    "full_name": "Leah Diaz",
+    "city": "Vallejo",
+    "state": "Wyoming",
+    "country": "United States",
+    "postcode": 38797,
+    "coordinates": {
+      "latitude": "85.7862",
+      "longitude": "-0.6726"
+    },
+    "timezone": {
+      "offset": "+5:00",
+      "description": "Ekaterinburg, Islamabad, Karachi, Tashkent"
+    },
+    "email": "leah.diaz@example.com",
+    "b_date": "1992-12-20T09:32:27.922Z",
+    "age": 29,
+    "phone": null,
+    "picture_large": "https://randomuser.me/api/portraits/women/6.jpg",
+    "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/women/6.jpg",
+    "id": "SSN807-33-0374",
+    "favorite": false,
+    "course": "Chess",
+    "bg_color": null,
+    "note": null
+  }
+]

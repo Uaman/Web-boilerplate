@@ -1,0 +1,74 @@
+<div class="modal-wrapper" id="add-teacher-modal" style="display: none;">
+    <div class="modal-blur"></div>
+    <div class="modal add-teacher-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Add Teacher</h2>
+            <button class="modal-close-button" type="button"><img src="/src/static/images/x.svg" alt="close-modal-button"></button>
+        </div>
+        <div class="add-teacher-form-wrapper">
+            <form class="add-teacher-form">
+                <div class="add-teacher-margin-wrapper">
+                    <label for="teacher-name">Name</label>
+                    <input type="text" id="teacher-name" placeholder="Enter name" name="teacher-name" required/>
+                </div>
+                <div class="add-teacher-margin-wrapper"><label for="teacher-speciality">Speciality</label>
+                    <select id="teacher-speciality" name="teacher-speciality" required>
+                    </select></div>
+                <div class="add-teacher-input-wrapper add-teacher-margin-wrapper">
+                    <div class="add-teacher-vertical-wrapper add-teacher-half-wrapper">
+                        <label for="teacher-country">Country</label>
+                        <select id="teacher-country" name="teacher-country" required>
+                        </select>
+                    </div>
+                    <div class="add-teacher-vertical-wrapper add-teacher-half-wrapper">
+                        <label for="teacher-city">City</label>
+                        <input type="text" id="teacher-city" name="teacher-city" required/>
+                    </div>
+                </div>
+                <div class="add-teacher-input-wrapper add-teacher-margin-wrapper">
+                    <div class="add-teacher-vertical-wrapper add-teacher-half-wrapper">
+                        <label for="teacher-email">Email</label>
+                        <input type="email" id="teacher-email" name="teacher-email" required/>
+                    </div>
+                    <div class="add-teacher-vertical-wrapper add-teacher-half-wrapper">
+                        <label for="teacher-phone">Phone</label>
+                        <input type="tel" id="teacher-phone" name="teacher-phone" required/>
+                    </div>
+                </div>
+                <div class="add-teacher-half-wrapper add-teacher-margin-wrapper">
+                    <label for="teacher-dob">Date of birth</label>
+                    <input type="date" id="teacher-dob" name="teacher-dob" placeholder="dd/mm/yyyy" required/>
+                </div>
+                <div class="add-teacher-half-wrapper add-teacher-margin-wrapper">
+                    <div class="add-teacher-sex-input">
+                        <span>Sex</span>
+                        <label for="teacher-sex-male">Male</label><input id="teacher-sex-male" type="radio" name="teacher-sex" value="male" required/>
+                        <label for="teacher-sex-female">Female</label><input id="teacher-sex-female" type="radio" name="teacher-sex" value="female" />
+                    </div>
+                </div>
+                <div class="add-teacher-half-wrapper add-teacher-input-wrapper add-teacher-margin-wrapper">
+                    <label for="teacher-color">Background color</label>
+                    <input type="color" id="teacher-color" name="teacher-color" required/>
+                </div>
+                <div class="add-teacher-vertical-wrapper add-teacher-margin-wrapper">
+                    <label for="teacher-notes">Notes (optional)</label>
+                    <textarea id="teacher-notes" name="teacher-notes"></textarea>
+                </div>
+
+                <button class="standard-button add-teacher-modal-button" type="submit">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-wrapper" id="teacher-info-modal" style="display: none;">
+    <div class="modal-blur"></div>
+    <div class="modal teacher-info-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Teacher Info</h2>
+            <button class="modal-close-button" type="button"><img src="/src/static/images/x.svg" alt="close-modal-button"></button>
+        </div>
+        <div class="teacher-info-modal-body">
+        </div>
+        <div id="map"></div>
+    </div>
+</div>

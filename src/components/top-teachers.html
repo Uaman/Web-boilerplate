@@ -1,0 +1,48 @@
+<section class="top-teachers">
+    <h1 class="section-heading">Top Teachers</h1>
+    <div class="top-teachers-filters">
+        <div class="filter-group">
+            <label for="filter-age">Age</label>
+            <select id="filter-age" name="age">
+                <option value="all">All</option>
+                <option value="18-29">18-29</option>
+                <option value="30-39">30-39</option>
+                <option value="40-49">40-49</option>
+                <option value="50-59">50-59</option>
+                <option value="70-99">70-99</option>
+                <option value="100">100-_</option>
+            </select>
+        </div>
+        <span class="vertical-separator" aria-hidden="true"></span>
+        <div class="filter-group">
+            <label for="filter-country">Country</label>
+            <select id="filter-country" name="country">
+                <option value="all">All</option>
+            </select>
+        </div>
+        <span class="vertical-separator" aria-hidden="true"></span>
+        <div class="filter-group">
+            <label for="filter-sex">Sex</label>
+            <select id="filter-sex" name="sex">
+                <option value="all">All</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </div>
+        <span class="vertical-separator" aria-hidden="true"></span>
+        <div class="filter-group">
+            <input id="filter-only-with-photo" type="checkbox" name="only-with-photo" />
+            <label for="filter-only-with-photo">Only with photo</label>
+        </div>
+        <span class="vertical-separator" aria-hidden="true"></span>
+        <div class="filter-group">
+            <input id="filter-only-favourites" type="checkbox" name="only-favourites" />
+            <label for="filter-only-favourites">Only favourites</label>
+        </div>
+    </div>
+    <div class="top-teachers-list"></div>
+    <div class="top-teachers-footer">
+        <div class="top-teachers-navigation"></div>
+        <button class="standard-button load-some-random-teachers" type="button">Load 10 more teachers</button>
+    </div>
+</section>
