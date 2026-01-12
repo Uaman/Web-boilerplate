@@ -1,0 +1,30 @@
+[
+  {
+    "gender": "Female",
+    "title": "Miss",
+    "full_name": "Sigrid Sviggum",
+    "city": "Ramsøy",
+    "state": "Hordaland",
+    "country": "Norway",
+    "postcode": "5904",
+    "coordinates": {
+      "latitude": "62.3170",
+      "longitude": "102.2678"
+    },
+    "timezone": {
+      "offset": "-5:00",
+      "description": "Eastern Time (US & Canada), Bogota, Lima"
+    },
+    "email": "sigrid.sviggum@example.com",
+    "b_date": "1993-10-03T01:40:10.720Z",
+    "age": 28,
+    "phone": "+4732189027",
+    "picture_large": "https://randomuser.me/api/portraits/women/3.jpg",
+    "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/women/3.jpg",
+    "id": "FN03109315264",
+    "favorite": false,
+    "course": "Law",
+    "bg_color": null,
+    "note": null
+  }
+]

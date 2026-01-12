@@ -1,0 +1,61 @@
+{
+  "users": [
+    {
+      "gender": "Female",
+      "title": "Mrs",
+      "full_name": "Vanessa Morgan",
+      "city": "Houston",
+      "state": "Florida",
+      "country": "United States",
+      "postcode": 69723,
+      "coordinates": {
+        "latitude": "-8.8001",
+        "longitude": "-168.5588"
+      },
+      "timezone": {
+        "offset": "+9:30",
+        "description": "Adelaide, Darwin"
+      },
+      "email": "vanessa.morgan@example.com",
+      "b_date": "1955-11-22T15:47:38.848Z",
+      "age": 66,
+      "phone": "+18355866028",
+      "picture_large": "https://randomuser.me/api/portraits/women/69.jpg",
+      "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/women/69.jpg",
+      "id": "SSN375-57-5719",
+      "favorite": false,
+      "course": "Law",
+      "bg_color": null,
+      "note": null
+    },
+    {
+      "gender": "Male",
+      "title": "Monsieur",
+      "full_name": "Noa Bertrand",
+      "city": "Reiden",
+      "state": "Schwyz",
+      "country": "Switzerland",
+      "postcode": 9703,
+      "coordinates": {
+        "latitude": "-74.4969",
+        "longitude": "-152.0049"
+      },
+      "timezone": {
+        "offset": "-3:00",
+        "description": "Brazil, Buenos Aires, Georgetown"
+      },
+      "email": "noa.bertrand@example.com",
+      "b_date": "1955-10-20T18:03:04.151Z",
+      "age": 66,
+      "phone": "+41783016263",
+      "picture_large": "https://randomuser.me/api/portraits/men/4.jpg",
+      "picture_thumbnail": "https://randomuser.me/api/portraits/thumb/men/4.jpg",
+      "id": "AVS756.7424.4611.08",
+      "favorite": false,
+      "course": "Mathematics",
+      "bg_color": null,
+      "note": null
+    }
+  ],
+  "filteredPercent": 5.263157894736842
+}
