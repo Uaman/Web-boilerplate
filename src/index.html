@@ -1,21 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachfinder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page" id="page">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+  <header class="header">
+    <div class="header__top">
+      <a href="#" class="logo">Teachfinder</a>
+      <form class="search" id="search-form">
+        <input type="text" id="search-input" placeholder="Name, note or age to search">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+    <nav class="nav">
+      <ul class="nav__list">
+        <li><a href="#teachers">Teachers</a></li>
+        <li><a href="#statistics">Statistics</a></li>
+        <li><a href="#favorites">Favorites</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <button class="add-btn open-add">Add teacher</button>
+    </nav>
+  </header>
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <main>
+    <section class="section" id="teachers">
+      <h2>Top Teachers</h2>
 
-      <title>Project</title>
+      <form class="filters" id="filters">
+        <div class="filters__item">
+          <label for="filter-age">Age</label>
+          <select name="age" id="filter-age">
+            <option value="">All</option>
+            <option value="18-31">18-31</option>
+            <option value="32-45">32-45</option>
+            <option value="46-60">46-60</option>
+            <option value="61-120">61+</option>
+          </select>
+        </div>
+        <div class="filters__item">
+          <label for="filter-country">Country</label>
+          <select name="country" id="filter-country">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="filters__item">
+          <label for="filter-gender">Sex</label>
+          <select name="gender" id="filter-gender">
+            <option value="">All</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+        <div class="filters__item"><label><input type="checkbox" name="photo"> Only with photo</label></div>
+        <div class="filters__item"><label><input type="checkbox" name="favorite"> Only favorites</label></div>
+      </form>
 
-      <link rel="stylesheet" href="./css/app.css">
+      <ul class="teachers" id="teachers-list"></ul>
+      <p class="empty" id="teachers-empty" hidden>No teachers found</p>
+      <p class="status" id="status"></p>
+      <button type="button" class="next-btn" id="next-btn">Next</button>
+    </section>
 
-   </head>
+    <section class="section" id="statistics">
+      <h2>Statistics</h2>
+      <p class="stats-count" id="stats-count"></p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th data-field="full_name">Name</th>
+            <th data-field="course">Speciality</th>
+            <th data-field="age">Age</th>
+            <th>Gender</th>
+            <th data-field="country">Nationality</th>
+          </tr>
+        </thead>
+        <tbody id="stats-body"></tbody>
+      </table>
+    </section>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+    <section class="section" id="favorites">
+      <h2>Favorites</h2>
+      <div class="slider">
+        <button class="arrow">&#10094;</button>
+        <ul class="teachers teachers--small" id="favorites-list"></ul>
+        <button class="arrow">&#10095;</button>
+      </div>
+      <p class="empty" id="favorites-empty" hidden>No favorites yet</p>
+    </section>
+
+    <section class="section about" id="about">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque facere, hic impedit itaque molestiae sit tempore? Ea in mollitia natus rerum voluptates. Ea ex excepturi facere tempora. Aliquid asperiores hic impedit iusto natus quaerat ratione sit? Culpa iusto optio voluptas voluptate. Enim eveniet fugit iure maiores molestiae, praesentium quia.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventore ipsum odio officiis omnis quisquam sed tempora?</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedita id iusto mollitia, odit sint ullam veritatis vero?</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <ul class="nav__list">
+      <li><a href="#teachers">Teachers</a></li>
+      <li><a href="#statistics">Statistics</a></li>
+      <li><a href="#favorites">Favorites</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <button class="add-btn open-add">Add teacher</button>
+  </footer>
+</div>
+
+<div class="popup" id="teach_add_popup">
+  <div class="popup__window">
+    <div class="popup__head"><span>Add Teacher</span><button class="close">&#10006;</button></div>
+    <form class="form" id="add-form" novalidate>
+      <label class="full">Name
+        <input type="text" name="full_name" placeholder="Enter name">
+      </label>
+      <label class="full">Speciality
+        <select name="course"></select>
+      </label>
+      <label>Country
+        <select name="country"></select>
+      </label>
+      <label>City
+        <input type="text" name="city">
+      </label>
+      <label>State
+        <input type="text" name="state">
+      </label>
+      <label>Email
+        <input type="email" name="email">
+      </label>
+      <label>Phone
+        <input type="tel" name="phone">
+      </label>
+      <label>Date of birth
+        <input type="date" name="b_date">
+      </label>
+      <div class="full radio">
+        <span>Sex</span>
+        <label>Male <input type="radio" name="gender" value="Male"></label>
+        <label>Female <input type="radio" name="gender" value="Female"></label>
+      </div>
+      <div class="full radio">
+        <span>Background color</span>
+        <input type="color" name="bg_color" value="#cccccc">
+      </div>
+      <label class="full">Notes (optional)
+        <textarea name="note" rows="5"></textarea>
+      </label>
+      <p class="form__error full" id="form-error"></p>
+      <button type="submit" class="submit">Add</button>
+    </form>
+  </div>
+</div>
+
+<div class="popup" id="popup-info">
+  <div class="popup__window popup__window--info">
+    <div class="popup__head"><span>Teacher Info</span><button class="close">&#10006;</button></div>
+    <div class="info">
+      <div class="info__top">
+        <img id="info-photo" src="" alt="">
+        <span class="info__star">&#9734;</span>
+        <h2 id="info-name"></h2>
+        <h4 id="info-subject"></h4>
+        <p id="info-place"></p>
+        <p id="info-age"></p>
+        <p><a id="info-email" href="#"></a></p>
+        <p id="info-phone"></p>
+      </div>
+      <p class="info__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab autem consectetur culpa cumque, distinctio dolor dolore dolorem doloremque ea explicabo facilis nam nesciunt nisi pariatur perspiciatis porro quis similique temporibus veniam veritatis? A ab ad, aliquam amet consequatur cupiditate debitis deserunt doloribus dolorum earum eius eos minus nostrum odit omnis perferendis...</p>
+      <a href="#" class="map-link">toggle map</a>
+    </div>
+  </div>
+</div>
+
+<script src="js/lab2.js"></script>
+<script src="js/api.js"></script>
+<script src="js/script.js"></script>
+</body>
 </html>
