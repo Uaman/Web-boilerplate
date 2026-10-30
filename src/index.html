@@ -1,21 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 
-   <head itemscope itemtype="http://schema.org/WebSite">
+<head itemscope itemtype="http://schema.org/WebSite">
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta name="msapplication-tap-highlight" content="no">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teachinder</title>
 
-      <title>Project</title>
+  <link rel="stylesheet" href="./css/app.css">
+</head>
 
-      <link rel="stylesheet" href="./css/app.css">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container">
 
-   </head>
+    <header class="header">
+      <div class="header__top">
+        <h1 class="logo">Teachinder</h1>
+        <form class="search-form">
+          <input type="text" name="query" placeholder="Name, note or age to search" autocomplete="off">
+          <button type="submit">Search</button>
+        </form>
+      </div>
 
-   <body itemscope itemtype="http://schema.org/WebPage">
-      <script type="text/javascript" src="./js/app.js"></script>
-      
-  </body>
+      <nav class="header__nav">
+        <ul class="nav-list">
+          <li><a href="#teachers">Teachers</a></li>
+          <li><a href="#statistics">Statistics</a></li>
+          <li><a href="#favorites">Favorites</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+        <button class="btn btn--outline" type="button" data-modal-open="modal-add-teacher">Add teacher</button>
+      </nav>
+    </header>
+
+    <main class="main">
+      <section class="teachers" id="teachers">
+        <h2 class="section-title">Top Teachers</h2>
+        <form class="filters">
+          <label>Age
+            <select name="age">
+              <option value="">All</option>
+              <option value="18-31">18-31</option>
+              <option value="32-45">32-45</option>
+              <option value="46-60">46-60</option>
+              <option value="61-100">61+</option>
+            </select>
+          </label>
+          <label>Country
+            <select name="country">
+              <option value="">All</option>
+            </select>
+          </label>
+          <label>Sex
+            <select name="gender">
+              <option value="">All</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </label>
+          <label>
+            <input type="checkbox" name="with-photo">
+            Only with photo
+          </label>
+          <label>
+            <input type="checkbox" name="favorites">
+            Only favorites
+          </label>
+        </form>
+
+        <!-- Картки викладачів додаються через JS -->
+        <div class="teachers-grid" id="teachers-grid"></div>
+        <div class="teachers-actions">
+          <p class="teachers-status" id="teachers-status" role="status"></p>
+          <button class="btn btn--outline" id="teachers-next" type="button">Next</button>
+        </div>
+      </section>
+
+      <section class="statistics-section" id="statistics">
+        <h2 class="section-title">Statistics</h2>
+        <table class="statistics-table" id="statistics-table">
+          <thead>
+            <tr>
+              <th data-sort="full_name" aria-sort="none">Name</th>
+              <th data-sort="course" aria-sort="none">Speciality</th>
+              <th data-sort="age" aria-sort="none">Age</th>
+              <th data-sort="gender" aria-sort="none">Gender</th>
+              <th data-sort="country" aria-sort="none">Nationality</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <nav class="pagination" id="statistics-pagination" aria-label="Pagination"></nav>
+      </section>
+
+      <section class="favorites-section" id="favorites">
+        <h2 class="section-title">Favorites</h2>
+        <div class="carousel">
+          <button class="carousel__btn carousel__btn--prev" id="favorites-prev" type="button" aria-label="Previous">&lt;</button>
+          <div class="carousel__items" id="favorites-list"></div>
+          <button class="carousel__btn carousel__btn--next" id="favorites-next" type="button" aria-label="Next">&gt;</button>
+        </div>
+      </section>
+
+      <section class="about-text" id="about">
+        <h2 class="section-title">About</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque facere, hic impedit itaque molestiae sit tempore? Ea in mollitia natus rerum
+          voluptates. Ea ex excepturi facere tempora. Aliquid asperiores hic impedit iusto natus quaerat ratione sit? Culpa iusto optio voluptas voluptate.
+          Enim eveniet fugit iure maiores molestiae, praesentium quia.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eligendi illum in inventore ipsum odio officiis omnis quisquam sed tempora?
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque esse expedita id iusto mollitia, odit sint ullam veritatis vero?</p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <nav class="footer__nav">
+        <ul class="nav-list">
+          <li><a href="#teachers">Teachers</a></li>
+          <li><a href="#statistics">Statistics</a></li>
+          <li><a href="#favorites">Favorites</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+        <button class="btn btn--outline" type="button" data-modal-open="modal-add-teacher">Add teacher</button>
+      </nav>
+    </footer>
+
+  </div>
+
+  <div class="modal-overlay" id="modal-overlay">
+
+    <!-- Попап 1: форма додавання викладача -->
+    <div class="modal" id="modal-add-teacher" role="dialog" aria-modal="true" aria-labelledby="modal-add-teacher-title">
+      <div class="modal__header">
+        <h3 id="modal-add-teacher-title">Add Teacher</h3>
+        <button class="modal__close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <form class="modal__form modal__body" id="teach_add_form" novalidate>
+        <div class="form-group">
+          <label for="add-full_name">Name</label>
+          <input id="add-full_name" name="full_name" type="text" placeholder="Enter name" autocomplete="off">
+        </div>
+        <div class="form-group-row">
+          <div class="form-group">
+            <label for="add-course">Speciality</label>
+            <select id="add-course" name="course"></select>
+          </div>
+          <div class="form-group">
+            <label for="add-gender">Sex</label>
+            <select id="add-gender" name="gender">
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group-row">
+          <div class="form-group">
+            <label for="add-country">Country</label>
+            <select id="add-country" name="country"></select>
+          </div>
+          <div class="form-group">
+            <label for="add-city">City</label>
+            <input id="add-city" name="city" type="text">
+          </div>
+        </div>
+        <div class="form-group-row">
+          <div class="form-group">
+            <label for="add-email">Email</label>
+            <input id="add-email" name="email" type="email">
+          </div>
+          <div class="form-group">
+            <label for="add-phone">Phone</label>
+            <input id="add-phone" name="phone" type="tel">
+          </div>
+        </div>
+        <div class="form-group-row">
+          <div class="form-group">
+            <label for="add-b_date">Date of birth</label>
+            <input id="add-b_date" name="b_date" type="date">
+          </div>
+          <div class="form-group">
+            <label for="add-bg_color">Background color</label>
+            <input id="add-bg_color" name="bg_color" type="color" value="#ffffff">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="add-note">Notes</label>
+          <textarea id="add-note" name="note" rows="4"></textarea>
+        </div>
+        <p class="form-error form-error--general" role="alert" hidden></p>
+        <button type="submit" class="btn btn--outline">Add</button>
+      </form>
+    </div>
+
+    <!-- Попап 2: інформація про викладача (вміст генерується в app.js) -->
+    <div class="modal" id="modal-teacher-info" role="dialog" aria-modal="true" aria-labelledby="modal-teacher-info-title">
+      <div class="modal__header">
+        <h3 id="modal-teacher-info-title">Teacher Info</h3>
+        <button class="modal__close" type="button" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal__body" id="teacher-info-content"></div>
+    </div>
+
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
 </html>
