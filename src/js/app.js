@@ -2,10 +2,10 @@ import {
   getFormattedUsers,
   capitalize,
   filterUsers,
-  sortUsers,
   searchUsers,
   validateUser,
   courses,
+  daysToBirthday,
 } from "./functions.js";
 
 //CONSTANTS
@@ -14,17 +14,28 @@ const PAGE_SIZE = 10;
 const LOAD_SIZE = 50;
 const API_URL = "https://randomuser.me/api/";
 const SERVER_URL = "http://localhost:3001/teachers";
-const STATS_PAGE_SIZE = 10;
 const FAVORITES_VISIBLE = 5;
 const USERS = [];
+const FLAT_COLUMNS = [
+  "Name",
+  "Speciality",
+  "Age",
+  "Gender",
+  "Country",
+  "City",
+  "Email",
+  "Phone",
+  "Birthday",
+];
 
 let currentList = USERS;
 let currentTeacher = null;
+let map = null;
+let marker = null;
+let statsChart = null;
 let shownCount = PAGE_SIZE;
-let sortField = null;
-let sortOrder = 1;
-let statsPage = 1;
 let favoritesStart = 0;
+let pivot = null;
 
 //ELEMENTS
 
@@ -43,15 +54,20 @@ const sexSelect = document.querySelector("#sex-filter");
 const photoCheckbox = document.querySelector("#photo-filter");
 const favoritesCheckbox = document.querySelector("#favorites-filter");
 
-const statsHead = document.querySelector(".stats-table thead");
-const statsBody = document.querySelector(".stats-table tbody");
-const statsPagination = document.querySelector(".stats-pagination");
-
 const addModal = document.querySelector("#add-teacher-modal");
 const addForm = document.querySelector(".popup-form");
 const addError = document.querySelector("#add-error");
 const teacherCountry = document.querySelector("#teacher-country");
 const teacherCourse = document.querySelector("#teacher-speciality");
+
+const statsField = document.querySelector("#stats-field");
+const statsCanvas = document.querySelector("#stats-chart");
+const chartView = document.querySelector("#chart-view");
+const pivotBox = document.querySelector("#stats-pivot");
+const statsTabs = document.querySelectorAll(".stats-tab");
+
+const mapBox = document.querySelector("#popup-map");
+const mapToggle = document.querySelector(".popup-map-toggle");
 
 //REQUESTS
 
@@ -147,10 +163,7 @@ async function showMore() {
 
 //FILTER AND SEARCH
 function renderCountries() {
-  const countries = [...new Set(USERS.map((u) => u.country))]
-    .filter(Boolean)
-    .sort();
-
+  const countries = _.sortBy(_.uniq(_.compact(_.map(USERS, "country"))));
   const selected = countrySelect.value;
   countrySelect.innerHTML = optionsHtml(countries, "All");
   countrySelect.value = selected;
@@ -170,14 +183,13 @@ function applyFilters() {
       ageSelect.value === "45+"
         ? [45, Infinity]
         : ageSelect.value.split("-").map(Number);
-    result = result.filter((u) => u.age >= min && u.age <= max);
+    result = _.filter(result, (u) => _.inRange(u.age, min, max + 1));
   }
   if (photoCheckbox.checked) {
-    result = result.filter((u) => u.picture_large);
+    result = _.filter(result, "picture_large");
   }
 
   currentList = searchUsers(result, searchInput.value);
-  statsPage = 1;
   renderTeachers(currentList);
   renderStats();
 }
@@ -190,7 +202,7 @@ function refreshTeachers() {
 //TEACHER POPUP, FAVORITES
 
 function openPopup(id) {
-  const teacher = USERS.find((user) => user.id === id);
+  const teacher = _.find(USERS, { id });
   if (!teacher) return;
   currentTeacher = teacher;
 
@@ -210,7 +222,15 @@ function openPopup(id) {
     `${teacher.age}, ${capitalize(teacher.gender)}`;
   document.querySelector("#popup-phone").textContent = teacher.phone;
   document.querySelector("#popup-note").textContent = teacher.note;
-
+  mapBox.hidden = true;
+  mapToggle.hidden = !hasCoordinates(teacher);
+  const days = daysToBirthday(teacher.b_date);
+  const birthday = document.querySelector("#popup-birthday");
+  birthday.hidden = days === null;
+  birthday.textContent =
+    days === 0
+      ? "Happy birthday!"
+      : `Birthday is in ${days} ${days === 1 ? "day" : "days"}`;
   zyrochkaPalay();
   document.querySelector("#teacher-modal").classList.add("open");
 }
@@ -229,7 +249,7 @@ function toggleFavorite() {
 }
 
 function renderFavorites() {
-  const favorites = USERS.filter((teacher) => teacher.favorite);
+  const favorites = _.filter(USERS, "favorite");
   const maxStart = Math.max(0, favorites.length - FAVORITES_VISIBLE);
   favoritesStart = Math.min(favoritesStart, maxStart);
 
@@ -250,81 +270,150 @@ function moveFavorites(step) {
   renderFavorites();
 }
 
+//MAP
+
+function hasCoordinates(teacher) {
+  return (
+    teacher.coordinates?.latitude != null &&
+    teacher.coordinates?.longitude != null
+  );
+}
+
+function renderMap({ latitude, longitude }) {
+  const position = [Number(latitude), Number(longitude)];
+
+  if (!map) {
+    map = L.map(mapBox);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+    marker = L.marker(position).addTo(map);
+  }
+
+  map.invalidateSize();
+  map.setView(position, 5);
+  marker.setLatLng(position);
+}
+
+function toggleMap() {
+  mapBox.hidden = !mapBox.hidden;
+  if (!mapBox.hidden) renderMap(currentTeacher.coordinates);
+}
+
 //STATS TABLE
 
-function pageNumbers(current, total) {
-  const pages = new Set([1, total, current - 1, current, current + 1]);
-  if (current <= 2) {
-    pages.add(2);
-    pages.add(3);
+function statsKey(teacher, field) {
+  if (field === "age") {
+    if (teacher.age <= 31) return "18-31";
+    if (teacher.age <= 45) return "32-45";
+    return "46+";
   }
-  const list = [...pages]
-    .filter((p) => p >= 1 && p <= total)
-    .sort((a, b) => a - b);
-
-  const result = [];
-  list.forEach((p, i) => {
-    if (i > 0 && p - list[i - 1] > 1) result.push("...");
-    result.push(p);
-  });
-  return result;
+  if (field === "gender") return capitalize(teacher.gender) ?? "Unknown";
+  return teacher[field] ?? "Unknown";
 }
 
 function renderStats() {
-  const sorted = sortField
-    ? sortUsers(currentList, sortField, sortOrder)
-    : currentList;
-  const start = (statsPage - 1) * STATS_PAGE_SIZE;
+  const counts = _.countBy(currentList, (teacher) =>
+    statsKey(teacher, statsField.value),
+  );
+  const labels = Object.keys(counts);
+  const colors = labels.map(
+    (_, i) => `hsl(${(i * 360) / labels.length}, 65%, 60%)`,
+  );
 
-  statsBody.innerHTML = sorted
-    .slice(start, start + STATS_PAGE_SIZE)
-    .map(
-      (teacher) => `
-        <tr>
-          <td>${teacher.full_name}</td>
-          <td>${teacher.course ?? ""}</td>
-          <td>${teacher.age ?? ""}</td>
-          <td>${capitalize(teacher.gender) ?? ""}</td>
-          <td>${teacher.country ?? ""}</td>
-        </tr>`,
-    )
-    .join("");
-
-  statsHead.querySelectorAll("th").forEach((th) => {
-    th.classList.toggle(
-      "sort-asc",
-      th.dataset.field === sortField && sortOrder === 1,
-    );
-    th.classList.toggle(
-      "sort-desc",
-      th.dataset.field === sortField && sortOrder === -1,
-    );
-  });
-
-  const pages = Math.ceil(sorted.length / STATS_PAGE_SIZE);
-  statsPagination.innerHTML = pageNumbers(statsPage, pages)
-    .map((p) =>
-      p === "..."
-        ? `<span class="page-dots">...</span>`
-        : `<a href="#" class="page-link ${p === statsPage ? "active" : ""}" data-page="${p}">${p}</a>`,
-    )
-    .join("");
-}
-
-function sortStatsBy(field) {
-  if (sortField === field) {
-    sortOrder = -sortOrder;
-  } else {
-    sortField = field;
-    sortOrder = 1;
+  if (!statsChart) {
+    statsChart = new Chart(statsCanvas, {
+      type: "pie",
+      data: { labels: [], datasets: [{ data: [] }] },
+      options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { position: "right" } },
+      },
+    });
   }
-  statsPage = 1;
-  renderStats();
+
+  statsChart.data.labels = labels;
+  statsChart.data.datasets[0].data = Object.values(counts);
+  statsChart.data.datasets[0].backgroundColor = colors;
+  statsChart.update();
 }
 
-function goToStatsPage(page) {
-  statsPage = page;
-  renderStats();
+//STATS REPORTS
+
+function pivotData() {
+  return _.map(USERS, (teacher) => ({
+    Name: teacher.full_name,
+    Speciality: teacher.course,
+    Age: teacher.age,
+    Gender: capitalize(teacher.gender),
+    Country: teacher.country,
+    City: teacher.city,
+    Email: teacher.email,
+    Phone: teacher.phone,
+    Birthday: teacher.b_date ? teacher.b_date.slice(0, 10) : "",
+  }));
+}
+
+function pivotReport(view) {
+  const dataSource = { data: pivotData() };
+
+  if (view === "flat") {
+    return {
+      dataSource,
+      slice: {
+        rows: _.map(FLAT_COLUMNS, (uniqueName) => ({ uniqueName })),
+        flatOrder: FLAT_COLUMNS,
+      },
+      options: {
+        grid: { type: "flat", showTotals: "off", showGrandTotals: "off" },
+      },
+    };
+  }
+
+  return {
+    dataSource,
+    slice: {
+      rows: [{ uniqueName: "Country" }],
+      columns: [{ uniqueName: "[Measures]" }],
+      measures: [
+        { uniqueName: "Name", caption: "Teachers", aggregation: "count" },
+        {
+          uniqueName: "Age",
+          caption: "Average age",
+          aggregation: "average",
+          format: "age",
+        },
+      ],
+    },
+    formats: [{ name: "age", decimalPlaces: 1 }],
+    options: { grid: { type: "classic" } },
+  };
+}
+
+function showStatsView(view) {
+  statsTabs.forEach((tab) =>
+    tab.classList.toggle("active", tab.dataset.view === view),
+  );
+  chartView.hidden = view !== "chart";
+  pivotBox.hidden = view === "chart";
+
+  if (view === "chart") {
+    renderStats();
+    return;
+  }
+
+  const report = pivotReport(view);
+  if (pivot) {
+    pivot.setReport(report);
+  } else {
+    pivot = new WebDataRocks({
+      container: "#stats-pivot",
+      width: "100%",
+      height: 450,
+      report,
+    });
+  }
 }
 
 //ADD TEACHER FORM
@@ -423,22 +512,24 @@ function handleClick(event) {
     return;
   }
 
-  const th = target.closest("th[data-field]");
-  if (th) {
-    sortStatsBy(th.dataset.field);
+  if (target.closest(".popup-map-toggle")) {
+    event.preventDefault();
+    toggleMap();
     return;
   }
 
-  const pageLink = target.closest(".page-link");
-  if (pageLink) {
-    event.preventDefault();
-    goToStatsPage(Number(pageLink.dataset.page));
+  const statsTab = target.closest(".stats-tab");
+  if (statsTab) {
+    showStatsView(statsTab.dataset.view);
+    return;
   }
 }
 
 function handleChange(event) {
   if (event.target.closest(".filters")) {
     refreshTeachers();
+  } else if (event.target === statsField) {
+    renderStats();
   }
 }
 
