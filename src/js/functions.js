@@ -15,188 +15,170 @@ export const courses = [
   "Statistics",
 ];
 
-let nextId = 1;
+const FIELD_PATHS = {
+  title: ["title", "name.title"],
+  city: ["city", "location.city"],
+  state: ["state", "location.state"],
+  country: ["country", "location.country"],
+  postcode: ["postcode", "location.postcode"],
+  coordinates: ["coordinates", "location.coordinates"],
+  timezone: ["timezone", "location.timezone"],
+  b_date: ["b_day", "dob.date"],
+  picture_large: ["picture_large", "picture.large"],
+  picture_thumbnail: ["picture_thumbnail", "picture.thumbnail"],
+};
+
+function firstDefined(user, paths) {
+  return _.find(
+    _.map(paths, (path) => _.get(user, path)),
+    (value) => !_.isNil(value),
+  );
+}
+
+function nameKey(user) {
+  return _.toLower(_.trim(user.full_name));
+}
 
 function formatMockUsers(user) {
   const result = {
+    ..._.mapValues(FIELD_PATHS, (paths) => firstDefined(user, paths)),
     gender: user.gender,
-    title: user.title ?? user.name?.title,
-    full_name: user.full_name || `${user.name?.first} ${user.name?.last}`,
-    city: user.city ?? user.location?.city,
-    state: user.state ?? user.location?.state,
-    country: user.country ?? user.location?.country,
-    postcode: user.postcode ?? user.location?.postcode,
-    coordinates: user.coordinates ?? user.location?.coordinates,
-    timezone: user.timezone ?? user.location?.timezone,
     email: user.email,
-    b_date: user.b_day ?? user.dob?.date,
+    phone: user.phone,
+    favorite: user.favorite,
+    bg_color: user.bg_color,
+    full_name:
+      user.full_name ||
+      _.compact([_.get(user, "name.first"), _.get(user, "name.last")]).join(
+        " ",
+      ),
     age:
-      user.dob?.age ??
+      _.get(user, "dob.age") ??
       (user.b_day
         ? new Date().getFullYear() - new Date(user.b_day).getFullYear()
         : null),
-    phone: user.phone,
-    picture_large: user.picture_large ?? user.picture?.large,
-    picture_thumbnail: user.picture_thumbnail ?? user.picture?.thumbnail,
-    id: typeof user.id === "string" ? user.id : `teach-${nextId++}`,
-    favorite: user.favorite,
-    course:
-      capitalize(user.course) ??
-      courses[Math.floor(Math.random() * courses.length)],
-    bg_color: user.bg_color,
+    id: _.isString(user.id) ? user.id : _.uniqueId("teach-"),
+    course: capitalize(user.course) ?? _.sample(courses),
     note: user.note ?? "",
   };
 
-  return Object.fromEntries(
-    Object.entries(result).map(([key, value]) => [key, value ?? null]),
-  );
+  return _.mapValues(result, (value) => _.defaultTo(value, null));
 }
 
 //TASK 1
 export function getFormattedUsers(
   usersList = [...randomUserMock, ...additionalUsers],
 ) {
-  const merged = new Map();
+  const formatted = _.filter(_.map(usersList, formatMockUsers), nameKey);
 
-  for (const user of usersList.map(formatMockUsers)) {
-    const key = user.full_name ? user.full_name.trim().toLowerCase() : "";
-    if (!key) continue;
-
-    const old = merged.get(key);
-    merged.set(
-      key,
-      old
-        ? Object.fromEntries(
-            Object.keys(user).map((k) => [k, user[k] ?? old[k]]),
-          )
-        : user,
-    );
-  }
-
-  return [...merged.values()];
+  return _.map(_.groupBy(formatted, nameKey), (group) =>
+    _.reduce(group, (old, user) =>
+      _.mapValues(user, (value, key) => value ?? old[key]),
+    ),
+  );
 }
 
 //TASK 2
 export function validateUser(user) {
-  const strings = ["full_name", "note", "state", "city", "country"];
+  return (
+    isCapitalizedString(user.full_name) &&
+    isCapitalizedString(user.city) &&
+    isCapitalizedString(user.country) &&
+    (_.isNil(user.state) || isCapitalizedString(user.state)) &&
+    (user.note === "" || isCapitalizedString(user.note)) &&
+    _.isString(user.gender) &&
+    !_.isEmpty(user.gender) &&
+    _.isFinite(user.age) &&
+    isValidPhone(user.phone) &&
+    _.isString(user.email) &&
+    _.includes(user.email, "@")
+  );
+}
 
-  for (const name of strings) {
-    const value = user[name];
-    if (name === "state" && value == null) {
-      continue;
-    }
-    if (typeof value !== "string") {
-      return false;
-    }
-    if (name === "note" && value === "") {
-      continue;
-    }
-    const first = value.charAt(0);
-    if (!/\p{L}/u.test(first) || first !== first.toUpperCase()) {
-      return false;
-    }
-  }
-
-  if (typeof user.gender !== "string" || user.gender === "") {
-    return false;
-  }
-
-  if (typeof user.age !== "number" || isNaN(user.age)) {
-    return false;
-  }
-
-  if (!isValidPhone(user.phone)) return false;
-
-  if (typeof user.email !== "string" || !user.email.includes("@")) {
-    return false;
-  }
-  return true;
+function isCapitalizedString(value) {
+  if (!_.isString(value)) return false;
+  const first = value.charAt(0);
+  return /\p{L}/u.test(first) && first === _.toUpper(first);
 }
 
 function isValidPhone(phone) {
   return (
-    typeof phone === "string" &&
+    _.isString(phone) &&
     /^[\d\s\-()+]+$/.test(phone) &&
-    phone.replace(/\D/g, "").length >= 8
+    _.size(_.replace(phone, /\D/g, "")) >= 8
   );
 }
 
 //TASK 3
 export function filterUsers(users, values) {
-  return users.filter((user) =>
-    Object.entries(values).every(([key, value]) => user[key] === value),
-  );
+  return _.filter(users, values);
 }
 
 //TASK 4
 export function sortUsers(users, field, order = 1) {
-  const way = order === 1 ? 1 : -1;
-  return [...users].sort((a, b) => {
-    const x = a[field];
-    const y = b[field];
+  return _.orderBy(
+    users,
+    [(user) => _.isNil(user[field]), (user) => sortValue(user, field)],
+    ["asc", order === 1 ? "asc" : "desc"],
+  );
+}
 
-    if (x == null && y == null) {
-      return 0;
-    }
-    if (x == null) {
-      return 1;
-    }
-    if (y == null) {
-      return -1;
-    }
-
-    if (typeof x === "number") {
-      return (x - y) * way;
-    }
-    if (field === "b_date") {
-      return (new Date(x) - new Date(y)) * way;
-    }
-    return x.localeCompare(y) * way;
-  });
+function sortValue(user, field) {
+  const value = user[field];
+  if (field == "b_date") {
+    return new Date(value).getTime();
+    return _.isString(value) ? _.deburr(_.toLower(value)) : value;
+  }
 }
 
 //TASK 5
 export function findUser(users, field, value) {
-  return users.find((user) => matchesField(user, field, value));
+  return _.find(users, (user) => matchesField(user, field, value));
 }
 
 //TASK 6
 export function countPercentage(users, condition) {
-  if (users.length === 0) {
-    return 0;
-  }
-  const match = users.filter(condition).length;
-  return Math.round((match / users.length) * 100 * 100) / 100;
+  if (_.isEmpty(users)) return 0;
+  return _.round((_.filter(users, condition).length / users.length) * 100, 2);
 }
 
 //additional
 export function capitalize(str) {
-  return typeof str === "string" && str
-    ? str.charAt(0).toUpperCase() + str.slice(1)
-    : null;
+  return _.isString(str) && str ? _.upperFirst(str) : null;
 }
 
 function matchesField(user, field, value) {
   const x = user[field];
-  if (typeof x === "number") {
-    return x === value;
-  }
+  if (_.isNumber(x)) return x === value;
   if (field === "b_date") {
     return new Date(x).toDateString() === new Date(value).toDateString();
   }
-  if (typeof x === "string") {
-    return x.toLocaleLowerCase().includes(String(value).toLowerCase());
-  }
+  if (_.isString(x)) return _.includes(_.toLower(x), _.toLower(value));
   return false;
 }
 
 export function searchUsers(users, query) {
   const que = query.trim();
-  if (!que) return users;
-  return users.filter(
-    (user) =>
-      matchesField(user, "full_name", que) ||
-      matchesField(user, "note", que) ||
-      matchesField(user, "age", Number(que)),
+  if (_.isEmpty(que)) return users;
+  const checks = [
+    ["full_name", que],
+    ["note", que],
+    ["age", Number(que)],
+  ];
+  return _.filter(users, (user) =>
+    _.some(checks, ([field, value]) => matchesField(user, field, value)),
   );
+}
+
+export function daysToBirthday(bDate) {
+  if (!bDate) return null;
+
+  const birth = dayjs(bDate.slice(0, 10));
+  if (!birth.isValid()) return null;
+
+  const today = dayjs().startOf("day");
+  let next = birth.year(today.year());
+  if (next.isBefore(today)) next = next.add(1, "year");
+
+  return next.diff(today, "day");
 }
