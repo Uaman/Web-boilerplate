@@ -9,6 +9,14 @@
     <title>Teachinder</title>
 
     <link rel="stylesheet" href="./css/app.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.webdatarocks.com/latest/webdatarocks.min.css"
+    />
   </head>
 
   <body itemscope itemtype="http://schema.org/WebPage">
@@ -89,21 +97,34 @@
 
     <section class="statistics" id="statistics">
       <h2 class="section-title">Statistics</h2>
-      <div class="table-wrapper">
-        <table class="stats-table">
-          <thead>
-            <tr>
-              <th data-field="full_name">Name</th>
-              <th data-field="course">Speciality</th>
-              <th data-field="age">Age</th>
-              <th>Gender</th>
-              <th data-field="country">Nationality</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+      <div class="stats-tabs">
+        <button type="button" class="stats-tab" data-view="flat">
+          All teachers
+        </button>
+        <button type="button" class="stats-tab active" data-view="chart">
+          Chart
+        </button>
+        <button type="button" class="stats-tab" data-view="countries">
+          By country
+        </button>
       </div>
-      <nav class="stats-pagination"></nav>
+
+      <div id="chart-view">
+        <div class="filter-group">
+          <label class="filter-group-title" for="stats-field">Group by</label>
+          <select class="filter-group-select" id="stats-field">
+            <option value="course">Speciality</option>
+            <option value="country">Country</option>
+            <option value="gender">Gender</option>
+            <option value="age">Age group</option>
+          </select>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="stats-chart"></canvas>
+        </div>
+      </div>
+
+      <div id="stats-pivot" hidden></div>
     </section>
 
     <hr class="divider" />
@@ -185,10 +206,12 @@
               <p class="popup-meta" id="popup-age-gender"></p>
               <a class="popup-email" id="popup-email" href="#"></a>
               <p class="popup-phone" id="popup-phone"></p>
+              <p class="popup-meta" id="popup-birthday"></p>
             </div>
           </div>
           <p class="popup-description" id="popup-note"></p>
           <a href="#" class="popup-map-toggle">toggle map</a>
+          <div id="popup-map" class="popup-map" hidden></div>
         </div>
       </div>
     </div>
@@ -261,7 +284,11 @@
         </form>
       </div>
     </div>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/dayjs.min.js"></script>
+    <script src="https://cdn.webdatarocks.com/latest/webdatarocks.js"></script>
     <script type="module" src="./js/app.js"></script>
   </body>
 </html>
