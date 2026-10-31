@@ -1,0 +1,61 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.stats-tabs {
+  display: flex;
+  gap: 30px;
+  margin-top: 34px;
+  padding-left: 20px;
+  border-bottom: 1px solid $c-text;
+
+  &__tab {
+    padding: 0 0 10px;
+    border: 0;
+    background: none;
+    color: $c-link;
+    font: inherit;
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      color: $c-accent;
+    }
+
+    &[aria-selected='true'] {
+      color: $c-text;
+      box-shadow: inset 0 -4px 0 $c-text;
+    }
+  }
+
+  @include mobile {
+    gap: 20px;
+    padding-left: 0;
+    overflow-x: auto;
+
+    &__tab {
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+  }
+}
+
+.stats-panel {
+  margin-top: 30px;
+}
+
+.stats-chart {
+  position: relative;
+  height: 420px;
+  margin-top: 20px;
+
+  @include mobile {
+    height: 320px;
+  }
+}
+
+.stats-total {
+  margin-top: 20px;
+  padding-left: 20px;
+  color: $c-muted;
+}
