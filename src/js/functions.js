@@ -127,8 +127,8 @@ function sortValue(user, field) {
   const value = user[field];
   if (field == "b_date") {
     return new Date(value).getTime();
-    return _.isString(value) ? _.deburr(_.toLower(value)) : value;
   }
+  return _.isString(value) ? _.deburr(_.toLower(value)) : value;
 }
 
 //TASK 5
